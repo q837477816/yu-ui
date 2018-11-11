@@ -3,6 +3,7 @@
         class="yu-button"
         :class="{[`icon-${iconPosition}`]: true}">
         <yu-icon class="icon" v-if="icon" :name="icon"></yu-icon>
+        <yu-icon class="loading" name="loading"></yu-icon>
         <div class="content">
             <slot></slot>
         </div>
@@ -27,6 +28,14 @@ export default {
 </script>
 
 <style lang="scss">
+    @keyframes spin{
+        0%{
+            transform: rotate(0deg);
+        }
+        100%{
+            transform: rotate(360deg);
+        }
+    }
     .yu-button{
         display: inline-flex;
         justify-content: center;
@@ -63,6 +72,9 @@ export default {
                 margin-right: 0;
                 margin-left: .3em;
             }
+        }
+        .loading{
+            animation: spin 1s infinite linear;
         }
     }
 </style>
