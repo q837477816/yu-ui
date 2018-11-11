@@ -2,9 +2,7 @@
     <button 
         class="yu-button"
         :class="{[`icon-${iconPosition}`]: true}">
-        <svg v-if="icon" class="icon">
-            <use :xlink:href="`#i-${icon}`"></use>
-        </svg>
+        <yu-icon v-if="icon" :name="icon"></yu-icon>
         <div class="content">
             <slot></slot>
         </div>
