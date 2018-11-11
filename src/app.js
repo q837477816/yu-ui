@@ -6,4 +6,7 @@ Vue.component('yu-button', Button)
 Vue.component('yu-icon', Icon)
 new Vue({
     el: '#app',
+    data: {
+        loading1: false
+    }
 })
