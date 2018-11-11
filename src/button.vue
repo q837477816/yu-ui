@@ -2,7 +2,7 @@
     <button 
         class="yu-button"
         :class="{[`icon-${iconPosition}`]: true}">
-        <yu-icon v-if="icon" :name="icon"></yu-icon>
+        <yu-icon class="icon" v-if="icon" :name="icon"></yu-icon>
         <div class="content">
             <slot></slot>
         </div>
