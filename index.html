@@ -16,7 +16,7 @@
             --border-radius: 4px;
             --color: #999;
             --border-color: #999;
-            --border-color-hover: #666;
+            --border-color-hover: red;
         }
         #app{
             margin: 20px;
@@ -36,6 +36,11 @@
     <yu-button :loading="true" icon='settings' icon-position="right">设置</yu-button>
     <yu-button icon='settings' icon-position="left">设置</yu-button>
     <yu-button :loading="loading1" icon='settings' icon-position="left" @click="loading1 = !loading1">设置</yu-button>
+    <yu-button-group>
+        <yu-button icon='left'>上一页</yu-button>
+        <yu-button>更多</yu-button>
+        <yu-button icon='right' icon-position="right">下一页</yu-button>
+    </yu-button-group>
 </div>
 
 <script src="./src/app.js"></script>
