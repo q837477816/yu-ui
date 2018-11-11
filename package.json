@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/q837477816/yu-ui/issues"
   },
-  "homepage": "https://github.com/q837477816/yu-ui#readme"
+  "homepage": "https://github.com/q837477816/yu-ui#readme",
+  "dependencies": {
+    "vue": "^2.5.17"
+  }
 }
