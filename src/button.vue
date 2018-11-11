@@ -1,7 +1,7 @@
 <template>
     <button 
         class="yu-button"
-        :class="{[`icon-${iconPosition ? iconPosition : 'left'}`]: true}">
+        :class="{[`icon-${iconPosition}`]: true}">
         <svg v-if="icon" class="icon">
             <use :xlink:href="`#i-${icon}`"></use>
         </svg>
@@ -14,7 +14,17 @@
 <script>
 export default {
     name: 'yu-button',
-    props: ['icon', 'iconPosition']
+    // props: ['icon', 'iconPosition']
+    props: {
+        icon: {},
+        iconPosition: {
+            type: String,
+            default: 'left',
+            validator(val) {
+                return ['left', 'right'].includes(val); 
+            }
+        }
+    }
 }
 </script>
 
