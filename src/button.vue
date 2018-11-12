@@ -12,8 +12,12 @@
 </template>
 
 <script>
+import Icon from './icon'
 export default {
     name: 'yu-button',
+    components: {
+        'yu-icon': Icon
+    },
     props: {
         icon: {},
         loading: {
