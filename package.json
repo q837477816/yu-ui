@@ -4,8 +4,8 @@
   "description": "一个Vue UI框架",
   "main": "dist/index.js",
   "scripts": {
-    "dev-test": "parcel watch test/* --no-cache && karma start",
-     "test": "parcel build test/* --no-cache --no-minify && karma start --single-run"
+    "dev-test": "parcel watch test/* --no-cache & karma start",
+    "test": "parcel build test/* --no-cache --no-minify && karma start --single-run"
   },
   "repository": {
     "type": "git",
