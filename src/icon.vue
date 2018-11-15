@@ -7,7 +7,7 @@
 <script>
 import './svg.js' 
 export default {
-    name: 'icon',
+    name: 'YuIcon',
     props: {
         name: {
             type: String
@@ -16,6 +16,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .yu-icon{width: 1em; height: 1em;}
 </style>

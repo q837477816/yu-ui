@@ -26,25 +26,33 @@
         }
     </style>
     <style>
-        .icon{width: 1em; height: 1em;}
+        .box {margin-bottom: 20px;}
     </style>
 </head>
 <body>
 <div id="app">
-    <yu-button>按钮</yu-button>
-    <yu-button icon='settings'>设置</yu-button>
-    <yu-button :loading="true" icon='settings' icon-position="right">设置</yu-button>
-    <yu-button icon='settings' icon-position="left">设置</yu-button>
-    <yu-button :loading="loading1" icon='settings' icon-position="left" @click="loading1 = !loading1">设置</yu-button>
-    <yu-button-group>
-        <div>
-            <yu-button icon='left'>上一页</yu-button>
-
-        </div>
-        <yu-button>更多</yu-button>
-        <yu-button icon='right' icon-position="right">下一页</yu-button>
-    </yu-button-group>
-    <div class="test"></div>
+    <div class="box">
+        <yu-input value="张三" disabled></yu-input>
+        <yu-input value="李四" readonly></yu-input>
+        <yu-input value="王五"></yu-input>
+    </div>
+    <div class="box">
+        <yu-input value="王五" error="姓名不能为空"></yu-input>
+    </div>
+    
+    <div class="box">
+        <yu-button>按钮</yu-button>
+        <yu-button icon='settings'>设置</yu-button>
+        <yu-button :loading="true" icon='settings' icon-position="right">设置</yu-button>
+        <yu-button-group>
+            <div>
+                <yu-button icon='left'>上一页</yu-button>
+    
+            </div>
+            <yu-button>更多</yu-button>
+            <yu-button icon='right' icon-position="right">下一页</yu-button>
+        </yu-button-group>
+    </div>
 </div>
 
 <script src="./src/app.js"></script>
