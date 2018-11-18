@@ -36,8 +36,9 @@
         <yu-input value="李四" readonly></yu-input>
         <yu-input value="王五"></yu-input>
     </div>
+
     <div class="box">
-        <yu-input value="王五" error="姓名不能为空"></yu-input>
+        <yu-input value="王五" @change="inputChange" error="姓名不能为空"></yu-input>
     </div>
     
     <div class="box">
