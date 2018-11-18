@@ -38,7 +38,8 @@
     </div>
 
     <div class="box">
-        <yu-input value="王五" @change="inputChange" error="姓名不能为空"></yu-input>
+        <yu-input v-model="message" @change="inputChange" error="姓名不能为空"></yu-input>
+        <p>{{message}}</p>
     </div>
     
     <div class="box">

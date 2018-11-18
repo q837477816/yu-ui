@@ -12,7 +12,8 @@ Vue.component('yu-input', Input)
 new Vue({
     el: '#app',
     data: {
-        loading1: false
+        loading1: false,
+        message: 'hi'
     },
     methods:{
         inputChange(e) {
