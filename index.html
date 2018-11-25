@@ -26,100 +26,22 @@
         }
     </style>
     <style>
-        .box {margin-bottom: 20px;}
+        .demo {
+            background: #ddd;
+            border: 1px solid #666;
+            height: 100px;
+        }
     </style>
     
 </head>
 <body>
 <div id="app">
-
-    <div style="border: 1px solid black">
-        <yu-row gutter="20">
-            <yu-col 
-                span="2" 
-                :phone="{span: 24}"
-                :pad="{span: 8}"
-                :narrow-pc="{span:4}"
-                :pc="{span: 2}"
-                :wide-pc="{span: 1}">
-                1
-            </yu-col>
-            <yu-col 
-                span="22" 
-                :phone="{span: 24, offset: 0}"
-                :pad="{span: 16}"
-                :narrow-pc="{span:20}"
-                :pc="{span: 22}"
-                :wide-pc="{span: 23}">
-                2
-            </yu-col>
-        </yu-row>
-    
-        <yu-row gutter="20">
-            <yu-col>1</yu-col>
-            <yu-col>2</yu-col>
-            <yu-col>3</yu-col>
-        </yu-row>
-    
-        <yu-row gutter="20">
-            <yu-col>1</yu-col>
-            <yu-col>2</yu-col>
-            <yu-col>3</yu-col>
-            <yu-col>4</yu-col>
-        </yu-row gutter="20">
-    
-        <yu-row gutter="20">
-            <yu-col span="2">1</yu-col>
-            <yu-col span="22">2</yu-col>
-        </yu-row>
-    
-        <yu-row>
-            <yu-col span="4">1</yu-col>
-            <yu-col span="20">2</yu-col>
-        </yu-row>
-    
-        <yu-row>
-            <yu-col span="2">1</yu-col>
-            <yu-col span="20" offset="2">2</yu-col>
-        </yu-row>
-    
-        <yu-row>
-            <yu-col span="4">1</yu-col>
-            <yu-col span="18" offset="2">2</yu-col>
-        </yu-row>
-    
-        <yu-row>
-            <yu-col span="4">1</yu-col>
-            <yu-col span="15" offset="2">2</yu-col>
-        </yu-row>
-    </div>
-
-
-    <hr>
-    <div class="box">
-        <yu-input value="张三" disabled></yu-input>
-        <yu-input value="李四" readonly></yu-input>
-        <yu-input value="王五"></yu-input>
-    </div>
-
-    <div class="box">
-        <yu-input v-model="message" @change="inputChange" error="姓名不能为空"></yu-input>
-        <p>{{message}}</p>
-    </div>
-    
-    <div class="box">
-        <yu-button>按钮</yu-button>
-        <yu-button icon='settings'>设置</yu-button>
-        <yu-button :loading="true" icon='settings' icon-position="right">设置</yu-button>
-        <yu-button-group>
-            <div>
-                <yu-button icon='left'>上一页</yu-button>
-    
-            </div>
-            <yu-button>更多</yu-button>
-            <yu-button icon='right' icon-position="right">下一页</yu-button>
-        </yu-button-group>
-    </div>
+    <yu-layout>
+        <yu-header></yu-header>
+        <yu-sider></yu-sider>
+        <yu-content></yu-content>
+        <yu-footer></yu-footer>
+    </yu-layout>
 </div>
 
 <script src="./src/app.js"></script>
