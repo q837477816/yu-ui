@@ -4,6 +4,13 @@
     </div>
 </template>
 
+<script>
+export default {
+    name: 'YuSider'
+}
+</script>
+
+
 <style lang="scss" scoped>
 .sider {
     
