@@ -19,7 +19,6 @@
             --border-color-hover: #666;
         }
         #app{
-            margin: 20px;
         }
         body{
             font-size: var(--font-size)
@@ -27,20 +26,36 @@
     </style>
     <style>
         .demo {
-            background: #ddd;
             border: 1px solid #666;
+            min-height: 100px;
+        }
+        .sider {
+            background: #333;
+            width: 150px;
+        }
+        .sider.slide-enter, .sider.slide-leave-to {
+            margin-left: -150px !important;
+        }
+        .header {
+            background: #999;
             height: 100px;
+        }
+        .footer {
+            background: #ccc;
+            height: 50px;
         }
     </style>
     
 </head>
 <body>
 <div id="app">
-    <yu-layout>
-        <yu-header></yu-header>
-        <yu-sider></yu-sider>
-        <yu-content></yu-content>
-        <yu-footer></yu-footer>
+    <yu-layout style="height: 100vh;">
+        <yu-sider>sider</yu-sider>
+        <yu-layout>
+            <yu-header>header</yu-header>
+            <yu-content>content</yu-content>
+            <yu-footer>footer</yu-footer>
+        </yu-layout>
     </yu-layout>
 </div>
 

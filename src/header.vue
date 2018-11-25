@@ -4,6 +4,12 @@
     </div>
 </template>
 
+<script>
+export default {
+    name: 'YuHeader'
+}
+</script>
+
 <style lang="scss" scoped>
 .header {
     
