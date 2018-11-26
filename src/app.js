@@ -10,6 +10,8 @@ import Header from './header.vue'
 import Sider from './sider.vue'
 import Content from './content.vue'
 import Footer from './footer.vue'
+import Toast from './toast.vue'
+import plugin from './plugin'
 
 Vue.component('yu-button', Button)
 Vue.component('yu-icon', Icon)
@@ -22,6 +24,9 @@ Vue.component('yu-header', Header)
 Vue.component('yu-sider', Sider)
 Vue.component('yu-content', Content)
 Vue.component('yu-footer', Footer)
+Vue.component('yu-toast', Toast)
+
+Vue.use(plugin)
 
 new Vue({
     el: '#app',
@@ -29,9 +34,14 @@ new Vue({
         loading1: false,
         message: 'hi'
     },
+    created() {
+    },
     methods:{
         inputChange(e) {
             console.log(e)
+        },
+        showToast() {
+            this.$toast('厉害')
         }
     }
 })
