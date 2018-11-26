@@ -35,6 +35,9 @@ new Vue({
         message: 'hi'
     },
     created() {
+        this.$toast('很多文字很多文字很多文', {
+            enableHtml: false,
+        })
     },
     methods:{
         inputChange(e) {
