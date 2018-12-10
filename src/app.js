@@ -12,6 +12,11 @@ import Content from './content.vue'
 import Footer from './footer.vue'
 import Toast from './toast.vue'
 import plugin from './plugin'
+import Tabs from './tabs'
+import TabsHead from './tabs-head'
+import TabsBody from './tabs-body'
+import TabsItem from './tabs-item'
+import TabsPane from './tabs-pane'
 
 Vue.component('yu-button', Button)
 Vue.component('yu-icon', Icon)
@@ -25,26 +30,64 @@ Vue.component('yu-sider', Sider)
 Vue.component('yu-content', Content)
 Vue.component('yu-footer', Footer)
 Vue.component('yu-toast', Toast)
-
 Vue.use(plugin)
+Vue.component('yu-tabs', Tabs)
+Vue.component('yu-tabs-head', TabsHead)
+Vue.component('yu-tabs-body', TabsBody)
+Vue.component('yu-tabs-item', TabsItem)
+Vue.component('yu-tabs-pane', TabsPane)
+
+
+
 
 new Vue({
     el: '#app',
     data: {
-        loading1: false,
-        message: 'hi'
+        selectedTab: 'sports'
     },
     created() {
-        this.$toast('很多文字很多文字很多文', {
-            enableHtml: false,
-        })
+       
     },
     methods:{
         inputChange(e) {
             console.log(e)
         },
-        showToast() {
-            this.$toast('厉害')
+        showToast1() {
+            this.$toast(`你的智商目前为 ${parseInt(Math.random() * 100)}。`, {
+                enableHtml: false,
+                position: 'top',
+                closeButton: {
+                    text: '去充值',
+                    callback() {
+                        alert('充值成功！')
+                    }
+                }
+            })
+        },
+        showToast2() {
+            this.$toast(`你的智商目前为 ${parseInt(Math.random() * 100)}。`, {
+                enableHtml: false,
+                position: 'middle',
+                closeButton: {
+                    text: '去充值',
+                    callback() {
+                        alert('充值成功！')
+                    }
+                }
+            })
+        },
+        showToast3() {
+            this.$toast(`你的智商目前为 ${parseInt(Math.random() * 100)}。`, {
+                enableHtml: false,
+                position: 'bottom',
+                closeButton: {
+                    text: '去充值',
+                    callback() {
+                        alert('充值成功！')
+                    },
+                    autoClose: 3
+                }
+            })
         }
     }
 })
