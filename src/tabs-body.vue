@@ -6,7 +6,10 @@
 
 <script>
 export default {
-    name: 'YuTabsBody'
+    name: 'YuTabsBody',
+    inject: ['eventBus'],
+    created() {
+    }
 }
 </script>
 
