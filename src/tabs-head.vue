@@ -12,7 +12,6 @@ export default {
     name: 'YuTabsHead',
     inject: ['eventBus'],
     created() {
-        this.$emit('update:seleted')
     }
 }
 </script>
