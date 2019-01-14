@@ -6,6 +6,7 @@
 
 <script>
 import Vue from 'vue'
+import { throws } from 'assert';
 export default {
     name: 'YuTabs',
     props: {
@@ -32,6 +33,10 @@ export default {
         }
     },
     mounted() {
+        if (!this.$children.length) {
+            console && console.warn &&
+            console.warn('tabs 的子组件应是tabs-head和tabs-body，但是没有子组件')
+        }
         this.$children.forEach(vm => {
             if (vm.$options.name === 'YuTabsHead') {
                 vm.$children.forEach(childVm => {
