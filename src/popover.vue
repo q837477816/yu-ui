@@ -1,5 +1,5 @@
 <template>
-    <div class="popover" @click.stop="xxx">
+    <div class="popover" ref="popover" @click="onClick">
         <div ref="contentWrapper" class="content-wrapper" v-if="visible">
             <slot name="content" ></slot>
         </div>
@@ -17,29 +17,40 @@ export default {
             visible: false
         }
     },
-    mounted() {
-        console.log(this.$refs.triggerWrapper)
-    },
     methods: {
-        xxx() {
-            this.visible = !this.visible;
-            if (this.visible) {
-                this.$nextTick(() => {
-                    document.body.appendChild(this.$refs.contentWrapper)
-                    let {width, height, top, left} = this.$refs.triggerWrapper.getBoundingClientRect()
-                    console.log(width, height, top, left)
-                    this.$refs.contentWrapper.style.left = left + window.scrollX + 'px'
-                    this.$refs.contentWrapper.style.top = top + window.scrollY + 'px'
-                    let eventHandle = () => {
-                        this.visible = false;
-                        document.removeEventListener('click', eventHandle)
-                    }
-                    document.addEventListener('click', eventHandle)
-                })
-            }
+        positionContent() {
+            document.body.appendChild(this.$refs.contentWrapper)
+            let {width, height, top, left} = this.$refs.triggerWrapper.getBoundingClientRect()
+            this.$refs.contentWrapper.style.left = left + window.scrollX + 'px'
+            this.$refs.contentWrapper.style.top = top + window.scrollY + 'px'
         },
-        zzz() {
-            console.log('zzz')
+
+        onClickDocument(e) {
+            if (this.$refs.contentWrapper && this.$refs.contentWrapper.contains(e.target)) { return }
+            this.close()
+        },
+
+        open() {
+            this.visible = true
+            this.$nextTick(() => {
+                this.positionContent()
+                document.addEventListener('click', this.onClickDocument)
+            })
+        },
+
+        close() {
+            this.visible = false
+            document.removeEventListener('click', this.onClickDocument)
+        },
+
+        onClick(event) {
+            if (this.$refs.triggerWrapper.contains(event.target)) {
+                if (this.visible) {
+                    this.close()
+                } else {
+                    this.open()
+                }
+            }
         }
     }
 }
