@@ -1,10 +1,10 @@
 <template>
-    <div class="popover" ref="popover" @click="onClick">
+    <div class="popover" ref="popover">
         <div 
             ref="contentWrapper" 
             :class="['content-wrapper', `position-${position}`]" 
             v-if="visible">
-            <slot name="content" ></slot>
+            <slot name="content"></slot>
         </div>
         <span ref="triggerWrapper" style="display: inline-block;">
             <slot></slot>
@@ -22,12 +22,32 @@ export default {
             validator(value) {
                 return ['top', 'bottom', 'left', 'right'].includes(value)
             }
+        },
+        trigger: {
+            type: String,
+            default: 'click',
+            validator(value) {
+                return ['click', 'hover'].includes(value)
+            }
         }
     },
     data() {
         return {
-            visible: false
+            visible: false,
         }
+    },
+    mounted() {
+        if (this.trigger === 'click') {
+            this.$refs.popover.addEventListener('click', this.onClick)
+        } else {
+            this.$refs.popover.addEventListener('mouseenter', this.open)
+            this.$refs.popover.addEventListener('mouseleave', this.close)
+        }
+    },
+    destroyed() {
+        this.$refs.popover.removeEventListener('click', this.onClick)
+        this.$refs.popover.removeEventListener('mouseenter', this.open)
+        this.$refs.popover.removeEventListener('mouseleave', this.close)
     },
     methods: {
         positionContent() {
@@ -58,7 +78,8 @@ export default {
         },
 
         onClickDocument(e) {
-            if (this.$refs.contentWrapper && this.$refs.contentWrapper.contains(e.target)) { return }
+            if (this.$refs.popover && (this.$refs.popover === e.target || this.$refs.popover.contains(e.target))) { return }
+            if (this.$refs.contentWrapper && (this.$refs.contentWrapper === e.target || this.$refs.contentWrapper.contains(e.target))) { return }
             this.close()
         },
 
