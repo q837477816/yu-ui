@@ -4,7 +4,7 @@
             ref="contentWrapper" 
             :class="['content-wrapper', `position-${position}`]" 
             v-if="visible">
-            <slot name="content"></slot>
+            <slot name="content" :close="close"></slot>
         </div>
         <span ref="triggerWrapper" style="display: inline-block;">
             <slot></slot>
