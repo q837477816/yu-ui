@@ -139,6 +139,7 @@ export default {
             transform: translateY(-100%);
             &::before, &::after {
                 left: 10px;
+                border-bottom: none;
             }
             &::before {
                 border-top-color: black;
@@ -152,6 +153,7 @@ export default {
         &.position-bottom {
             margin-top: 10px;
             &::before, &::after {
+                border-top: none;
                 left: 10px;
             }
             &::before {
@@ -169,6 +171,7 @@ export default {
             &::before, &::after {
                 top: 50%;
                 transform: translateY(-50%);
+                border-right: none;
             }
             &::before {
                 border-left-color: black;
@@ -184,6 +187,7 @@ export default {
             &::before, &::after {
                 top: 50%;
                 transform: translateY(-50%);
+                border-left: none;
             }
             &::before {
                 border-right-color: black;
