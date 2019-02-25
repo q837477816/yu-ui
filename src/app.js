@@ -18,6 +18,8 @@ import TabsBody from './tabs-body'
 import TabsItem from './tabs-item'
 import TabsPane from './tabs-pane'
 import Popover from './popover'
+import Collapse from './collapse'
+import CollapseItem from './collapse-item'
 
 Vue.component('yu-button', Button)
 Vue.component('yu-icon', Icon)
@@ -38,6 +40,8 @@ Vue.component('yu-tabs-body', TabsBody)
 Vue.component('yu-tabs-item', TabsItem)
 Vue.component('yu-tabs-pane', TabsPane)
 Vue.component('yu-popover', Popover)
+Vue.component('yu-collapse', Collapse)
+Vue.component('yu-collapse-item', CollapseItem)
 
 
 
@@ -51,45 +55,8 @@ new Vue({
        
     },
     methods:{
-        inputChange(e) {
-            console.log(e)
-        },
-        showToast1() {
-            this.$toast(`你的智商目前为 ${parseInt(Math.random() * 100)}。`, {
-                enableHtml: false,
-                position: 'top',
-                closeButton: {
-                    text: '去充值',
-                    callback() {
-                        alert('充值成功！')
-                    }
-                }
-            })
-        },
-        showToast2() {
-            this.$toast(`你的智商目前为 ${parseInt(Math.random() * 100)}。`, {
-                enableHtml: false,
-                position: 'middle',
-                closeButton: {
-                    text: '去充值',
-                    callback() {
-                        alert('充值成功！')
-                    }
-                }
-            })
-        },
-        showToast3() {
-            this.$toast(`你的智商目前为 ${parseInt(Math.random() * 100)}。`, {
-                enableHtml: false,
-                position: 'bottom',
-                closeButton: {
-                    text: '去充值',
-                    callback() {
-                        alert('充值成功！')
-                    },
-                    autoClose: 3
-                }
-            })
+        yyy() {
+            // console.log('yyyy')
         }
     }
 })
