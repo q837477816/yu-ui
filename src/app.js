@@ -49,7 +49,7 @@ Vue.component('yu-collapse-item', CollapseItem)
 new Vue({
     el: '#app',
     data: {
-        selectedTab: 'sports'
+        selectedTab: '2'
     },
     created() {
        
