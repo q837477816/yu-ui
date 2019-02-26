@@ -20,7 +20,7 @@ export default {
         name: {
             type: String,
             required: true
-        }
+        } 
     },
     inject: ['eventBus'],
     data() {
