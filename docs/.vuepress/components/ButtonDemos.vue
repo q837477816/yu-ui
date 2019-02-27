@@ -7,7 +7,6 @@
 
         <pre><code>{{usage}}</code></pre>
     </div>
-
 </template>
 
 <script>

@@ -5,7 +5,7 @@
         @click="$emit('click')">
         <yu-icon class="icon" v-if="icon && !loading" :name="icon"></yu-icon>
         <yu-icon class="loading icon" v-if="loading" name="loading"></yu-icon>
-        <div class="content">
+        <div class="yu-content">
             <slot></slot>
         </div>
     </button>
@@ -75,11 +75,11 @@ export default {
             order: 1;
             margin-right: .3em;
         }
-        > .content{
+        > .yu-content{
             order: 2;
         }
         &.icon-right{
-            > .content{
+            > .yu-content{
                 order: 1
             }
             > .icon{

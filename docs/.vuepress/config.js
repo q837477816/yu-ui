@@ -1,7 +1,7 @@
 module.exports = {
     base: '/yu-ui/',
     title: 'yu-ui',
-    description: '一个好用的UI框架',
+    description: '一个基于Vue的UI框架',
     themeConfig: {
         sidebar: [
             {
