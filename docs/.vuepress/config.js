@@ -1,4 +1,5 @@
 module.exports = {
+    base: '/yu-ui/',
     title: 'yu-ui',
     description: '一个好用的UI框架',
     themeConfig: {
@@ -13,7 +14,12 @@ module.exports = {
             {
                 title: '组件',
                 children: [
-                    '/components/button'
+                    '/components/button',
+                    '/components/layout',
+                    '/components/input',
+                    '/components/tabs',
+                    '/components/toast',
+                    '/components/popover',
                 ]
             },
         ]

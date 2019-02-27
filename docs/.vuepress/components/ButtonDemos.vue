@@ -4,10 +4,8 @@
         <yu-button icon="settings">默认按钮</yu-button>
         <yu-button :loading="true">默认按钮</yu-button>
         <yu-button disabled>默认按钮</yu-button>
-        
-        <pre>
-            <code>{{usage}}</code>
-        </pre>
+
+        <pre><code>{{usage}}</code></pre>
     </div>
 
 </template>
