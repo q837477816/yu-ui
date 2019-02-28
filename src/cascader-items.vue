@@ -14,19 +14,16 @@
 <script>
 export default {
     name: 'YuCascaderItems',
-    
     props: {
         items: {
             type: Array
         }
     },
-
     data() {
         return {
             leftSelected: null
         }
     },
-
     computed: {
         rightItems() {
             if (this.leftSelected && this.leftSelected.children) {
