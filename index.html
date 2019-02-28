@@ -24,7 +24,7 @@
             font-size: var(--font-size)
         }
         .test {
-            background: red;
+            height: 200px !important;
         }
     </style>
     
@@ -32,7 +32,9 @@
 </head>
 <body>
 <div id="app" style="padding: 100px">
-    <yu-cascader :source="source"></yu-cascader>
+    <p>111</p>
+    <yu-cascader :source="source" popover-height="200px"></yu-cascader>
+    <p>222</p>
 
 </div>
 
