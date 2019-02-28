@@ -93,6 +93,19 @@ new Vue({
                     {name: '泉州'},
                     {name: '三明'},
                 ]
+            },
+            {
+                name: '安徽',
+                children: [
+                    {
+                        name: '合肥',
+                        children: [
+                            {name: '琼海'},
+                            {name: '庐阳'},
+                        ]
+                    },
+                    {name: '芜湖'},
+                ]
             }
         ]
     },
