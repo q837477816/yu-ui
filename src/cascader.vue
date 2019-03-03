@@ -1,6 +1,6 @@
 <template>
-    <div class="cascader">
-        <div class="trigger" @click="popoverVisible = !popoverVisible">
+    <div class="cascader" ref="cascader">
+        <div class="trigger" @click="toggle">
             {{result || '&nbsp;'}}
         </div>
         <div class="popover-wrapper" v-if="popoverVisible">
@@ -51,6 +51,28 @@ export default {
         }
     },
     methods: {
+        onClickDocument(e) {
+            let {cascader} = this.$refs
+            if (cascader === e.target || cascader.contains(e.target)) { return }
+            this.close()
+        },
+        open() {
+            this.popoverVisible = true
+            this.$nextTick(() => {
+                document.addEventListener('click', this.onClickDocument)
+            })
+        },
+        close() {
+            this.popoverVisible = false
+            document.removeEventListener('click', this.onClickDocument)
+        },
+        toggle() {
+            if (this.popoverVisible) {
+                this.close()
+            } else {
+                this.open()
+            }
+        },
         onUpdateSelected(newSelected) {
             this.$emit('update:selected', newSelected)
             if (this.loadData) {
@@ -68,6 +90,7 @@ export default {
 <style lang="scss" scoped>
 @import 'var';
 .cascader {
+    display: inline-block;
     position: relative;
     .trigger {
         height: $input-height;
