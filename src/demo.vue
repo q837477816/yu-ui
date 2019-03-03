@@ -1,8 +1,8 @@
 <template>
     <div class="demo-wrapper">
-        selected: {{selected}}
+        <!-- selected: {{selected}} -->
         <yu-cascader :source="source" popoverHeight="200px" :selected="selected" @update:selected="selected = $event"></yu-cascader>
-        222222222
+        <!-- 222222222 -->
     </div>
 </template>
 
@@ -94,7 +94,7 @@ body{
     font-size: var(--font-size)
 }
 .demo-wrapper {
-    margin: 50px;
+    padding: 20px;
 }
 </style>
 
