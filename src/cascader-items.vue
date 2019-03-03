@@ -3,7 +3,7 @@
         <div class="left">
             <div class="label" v-for="(item,index) in items" :key="index" @click="onClickLabel(item)">
                 <span class="name">{{item.name}}</span>
-                <icon class="icon" v-if="!item.isLeaf" name="right"></icon>
+                <icon class="icon" v-if="rightArrowVisible(item)" name="right"></icon>
             </div>
         </div>
         <div class="right" v-if="rightItems">
@@ -12,6 +12,7 @@
                 :height="height" 
                 :level="level + 1"
                 :selected="selected"
+                :loadData="loadData"
                 @update:selected="onUpdateSelected"
             ></yu-cascader-items>
         </div>
@@ -39,6 +40,9 @@ export default {
         level: {
             type: Number,
             default: 0
+        },
+        loadData: {
+            type: Function
         }
     },
     data() {
@@ -57,6 +61,9 @@ export default {
         }
     },
     methods: {
+        rightArrowVisible(item) {
+            return this.loadData ? !item.isLeaf : item.children
+        },
         onClickLabel(item) {
             let copy = JSON.parse(JSON.stringify(this.selected))
             copy[this.level] = item

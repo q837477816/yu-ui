@@ -9,6 +9,7 @@
                 :items="source"  
                 :height="popoverHeight" 
                 :selected="selected"
+                :loadData="loadData"
                 @update:selected="onUpdateSelected"
             ></cascader-items>
         </div>

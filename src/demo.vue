@@ -3,7 +3,7 @@
         <yu-cascader 
             :source="source" 
             popoverHeight="200px" 
-            :selected.sync="selected" 
+            :selected.sync="selected"
             @update:selected="xxx"
             :load-data="loadData"
         ></yu-cascader>
@@ -22,7 +22,7 @@ function ajax(parentId = 0) {
                 node.isLeaf = children.length === 0
             })
             resolve(result)
-        }, 2000);
+        }, 500);
     })
 }
 export default {
@@ -38,7 +38,6 @@ export default {
     created() {
         ajax(0).then((result) => {
             this.source = result
-            console.log(result)
         })
     },
 
