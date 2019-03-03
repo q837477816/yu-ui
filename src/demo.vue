@@ -1,8 +1,10 @@
 <template>
     <div class="demo-wrapper">
-        <!-- selected: {{selected}} -->
-        <yu-cascader :source="source" popoverHeight="200px" :selected="selected" @update:selected="selected = $event"></yu-cascader>
-        <!-- 222222222 -->
+        <yu-cascader 
+            :source="source" 
+            popoverHeight="200px" 
+            :selected.sync="selected" 
+        ></yu-cascader>
     </div>
 </template>
 
