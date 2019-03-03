@@ -34,6 +34,9 @@ export default {
             default: () => {
                 return []
             }
+        },
+        loadData: {
+            type: Function
         }
     },
     data() {
@@ -49,6 +52,13 @@ export default {
     methods: {
         onUpdateSelected(newSelected) {
             this.$emit('update:selected', newSelected)
+            if (this.loadData) {
+                let lastItem = newSelected[newSelected.length - 1]
+                let updateSource = (result) => {
+                    result.length && this.$set(lastItem, 'children', result)
+                }
+                !lastItem.isLeaf && this.loadData(lastItem, updateSource)
+            }
         }
     }
 }
