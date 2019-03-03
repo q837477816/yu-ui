@@ -31,9 +31,15 @@ module.exports = {
                     options: {
                         presets: [
                             '@babel/preset-env'
+                        ],
+                        plugins: [
+                            '@babel/plugin-proposal-class-properties',
+                            '@babel/plugin-transform-runtime'
                         ]
+                        
                     }
-                }
+                },
+                exclude: /node_modules/
             },
             {
                 test: /\.css$/,
