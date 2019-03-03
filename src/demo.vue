@@ -1,7 +1,7 @@
 <template>
     <div class="demo-wrapper">
-        1111111111
-        <yu-cascader :source="source" popoverHeight="200px"></yu-cascader>
+        selected: {{selected}}
+        <yu-cascader :source="source" popoverHeight="200px" :selected="selected" @update:selected="selected = $event"></yu-cascader>
         222222222
     </div>
 </template>
@@ -12,6 +12,7 @@ export default {
 
     data() {
         return {
+            selected: [],
             source: [
                 {
                     name: '浙江',

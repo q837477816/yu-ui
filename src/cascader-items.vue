@@ -1,13 +1,20 @@
 <template>
     <div class="cascader-items" :style="{height: height}">
+        {{level}}
         <div class="left">
-            <div class="label" v-for="(item,index) in items" :key="index" @click="leftSelected = item">
+            <div class="label" v-for="(item,index) in items" :key="index" @click="onClickLabel(item)">
                 {{item.name}}
                 <icon class="icon" v-if="item.children" name="right"></icon>
             </div>
         </div>
         <div class="right" v-if="rightItems">
-            <yu-cascader-items :items="rightItems" :height="height"></yu-cascader-items>
+            <yu-cascader-items 
+                :items="rightItems" 
+                :height="height" 
+                :level="level + 1"
+                :selected="selected"
+                @update:selected="onUpdateSelected"
+            ></yu-cascader-items>
         </div>
     </div>
 </template>
@@ -23,20 +30,41 @@ export default {
         },
         height: {
             type: String
+        },
+        selected: {
+            type: Array,
+            default: () => {
+                return []
+            }
+        },
+        level: {
+            type: Number,
+            default: 0
         }
     },
     data() {
         return {
-            leftSelected: null
+            
         }
     },
     computed: {
         rightItems() {
-            if (this.leftSelected && this.leftSelected.children) {
-                return this.leftSelected.children
+            let currentSelected = this.selected[this.level]
+            if (currentSelected && currentSelected.children) {
+                return currentSelected.children
             } else {
                 return null
             }
+        }
+    },
+    methods: {
+        onClickLabel(item) {
+            let copy = JSON.parse(JSON.stringify(this.selected))
+            copy[this.level] = item
+            this.$emit('update:selected', copy)
+        },
+        onUpdateSelected(newSelected) {
+            this.$emit('update:selected', newSelected)
         }
     }
 }
