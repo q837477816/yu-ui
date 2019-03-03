@@ -10,6 +10,7 @@
                 :height="popoverHeight" 
                 :selected="selected"
                 :loadData="loadData"
+                :loading-item="loadingItem"
                 @update:selected="onUpdateSelected"
             ></cascader-items>
         </div>
@@ -47,6 +48,7 @@ export default {
     data() {
         return {
             popoverVisible: false,
+            loadingItem: {}
         }
     },
     computed: {
@@ -73,9 +75,13 @@ export default {
             if (this.loadData) {
                 let lastItem = newSelected[newSelected.length - 1]
                 let updateSource = (result) => {
+                    this.loadingItem = {} // TODO: 用户连续点击多个时，异步存在BUG
                     result.length && this.$set(lastItem, 'children', result)
                 }
-                !lastItem.isLeaf && this.loadData(lastItem, updateSource)
+                if (!lastItem.isLeaf) {
+                    this.loadingItem = lastItem
+                    this.loadData(lastItem, updateSource)
+                }
             }
         }
     }
@@ -88,6 +94,7 @@ export default {
     display: inline-block;
     position: relative;
     .trigger {
+        background-color: #fff;
         height: $input-height;
         line-height: $input-height;
         display: inline-flex;
@@ -104,6 +111,7 @@ export default {
         margin-top: 4px;
         background-color: #fff;
         display: flex;
+        z-index: 1;
         @extend .box-shadow;
     }
 }
