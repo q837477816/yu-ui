@@ -2,13 +2,13 @@
     <div class="demo-wrapper">
         <yu-slides :selected.sync="selected">
             <yu-slides-item name="name1">
-                <div class="box">0</div>
-            </yu-slides-item>
-            <yu-slides-item name="name2">
                 <div class="box">1</div>
             </yu-slides-item>
-            <yu-slides-item name="name3">
+            <yu-slides-item name="name2">
                 <div class="box">2</div>
+            </yu-slides-item>
+            <yu-slides-item name="name3">
+                <div class="box">3</div>
             </yu-slides-item>
         </yu-slides>
     </div>
@@ -20,7 +20,7 @@ export default {
 
     data() {
         return {
-            selected: 'name2'
+            selected: undefined
         }
     },
 
