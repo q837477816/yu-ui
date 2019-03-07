@@ -1,59 +1,34 @@
 <template>
     <div class="demo-wrapper">
-        <yu-cascader 
-            :source="source" 
-            popoverHeight="200px" 
-            :selected.sync="selected"
-            @update:selected="xxx"
-            :load-data="loadData"
-        ></yu-cascader>
+        <yu-slides :selected.sync="selected">
+            <yu-slides-item name="name1">
+                <div class="box">0</div>
+            </yu-slides-item>
+            <yu-slides-item name="name2">
+                <div class="box">1</div>
+            </yu-slides-item>
+            <yu-slides-item name="name3">
+                <div class="box">2</div>
+            </yu-slides-item>
+        </yu-slides>
     </div>
 </template>
 
 <script>
-import db from './db.js'
-
-function ajax(parentId = 0) {
-    return new Promise((resolve, reject) => {
-        let timerId = setTimeout(() => {
-            let result = db.filter(item => item.parent_id === parentId)
-            result.forEach(node => {
-                const children = db.filter(item => item.parent_id === node.id)
-                node.isLeaf = children.length === 0
-            })
-            resolve(result)
-        }, 500);
-    })
-}
 export default {
     name: 'demo',
 
     data() {
         return {
-            selected: [],
-            source: []
+            selected: 'name2'
         }
     },
 
     created() {
-        ajax(0).then((result) => {
-            this.source = result
-        })
     },
 
     methods: {
-        loadData(item, cb) {
-            let {id} = item
-            ajax(id).then(result => {
-                cb(result)
-            })
-        },
-        xxx() {
-            ajax(this.selected[0].id).then(result => {
-                let lastLevelSelected = this.source.filter(item => item.id === this.selected[0].id)[0]
-                this.$set(lastLevelSelected, 'children', result)
-            })
-        }
+        
     }
 
 }
@@ -70,6 +45,15 @@ body{
 }
 .demo-wrapper {
     padding: 20px;
+}
+.box {
+    width: 100%;
+    height: 300px;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
 }
 </style>
 

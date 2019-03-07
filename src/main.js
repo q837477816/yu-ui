@@ -24,6 +24,8 @@ import Popover from './popover'
 import Collapse from './collapse'
 import CollapseItem from './collapse-item'
 import Cascader from './cascader'
+import Slides from './slides'
+import SlidesItem from './slides-item'
 
 Vue.component('yu-button', Button)
 Vue.component('yu-icon', Icon)
@@ -47,6 +49,8 @@ Vue.component('yu-popover', Popover)
 Vue.component('yu-collapse', Collapse)
 Vue.component('yu-collapse-item', CollapseItem)
 Vue.component('yu-cascader', Cascader)
+Vue.component('yu-slides', Slides)
+Vue.component('yu-slides-item', SlidesItem)
 
 new Vue({
     render: h => h(demo)
