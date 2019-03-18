@@ -4,7 +4,6 @@
         @mouseenter="onMouseEnter" 
         @mouseleave="onMouseLeave"
         @touchstart="onTouchStart"
-        @touchmove="onTouchMove"
         @touchend="onTouchEnd">
         <div class="yu-slides-window" ref="window">
             <div class="yu-slides-wrapper">
@@ -18,6 +17,8 @@
             <span 
                 v-for="n in childrenLength" 
                 :class="{active: selectedIndex === n - 1}"
+                :key="n"
+                :data-index="n"
                 @click="select(n-1)"
             >{{n}}</span>
             <span @click="select(selectedIndex + 1)">
@@ -41,6 +42,10 @@ export default {
         autoPlay: {
             type: Boolean,
             default: true
+        },
+        autoPlayDelay: {
+            type: Number,
+            default: 2000
         }
     },
     data() {
@@ -77,8 +82,6 @@ export default {
             if (e.touches.length > 1) return // 多指触控直接返回
             this.startTouch = e.touches[0]
         },
-        onTouchMove() {
-        },
         onTouchEnd(e) {
             let endTouch = e.changedTouches[0]
             let {clientX: x1, clientY: y1} = this.startTouch
@@ -108,9 +111,9 @@ export default {
                 let index = this.names.indexOf(this.getSelected())
                 let newIndex = index + 1
                 this.select(newIndex)
-                this.timerId = setTimeout(run, 2000)
+                this.timerId = setTimeout(run, this.autoPlayDelay)
             }
-            this.timerId = setTimeout(run, 2000);
+            this.timerId = setTimeout(run, this.autoPlayDelay);
         },
         pause() {
             window.clearTimeout(this.timerId)
