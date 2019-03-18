@@ -1,64 +1,39 @@
-const expect = chai.expect;
-import Vue from 'vue'
+import {expect} from 'chai'
+import {mount} from '@vue/test-utils'
 import Popover from '../src/popover'
 
-Vue.config.productionTip = false
-Vue.config.devtools = false
-
-describe('Popover', () => {
-
+describe('Button.vue', () => {
     it('存在.', () => {
         expect(Popover).to.be.exist
     })
 
-    it('可以接收 position', (done) => {
-        Vue.component('yu-popover', Popover)
-        const div = document.createElement('div')
-        document.body.appendChild(div)
-        div.innerHTML = `
-        <yu-popover position="bottom" ref="a">
-            <template slot="content">
-                弹出内容
-            </template>
-            <button>点我</button>
-        </yu-popover>
-        `
-        const vm = new Vue({
-            el: div
+    it('可以接收 position', () => {
+        const wrapper = mount(Popover, {
+            slots: {
+                default: {template: `<button>点我</button>`},
+                content: '<div>弹出内容</div>'
+            },
+            propsData: {
+                position: 'bottom'
+            }
         })
-        vm.$el.querySelector('button').click()
-        vm.$nextTick(() => {
-            const {contentWrapper} = vm.$refs.a.$refs
-            expect(contentWrapper.classList.contains('position-bottom')).to.be.true
-            done()
-        })
+        wrapper.find('button').trigger('click')
+        let classes = wrapper.find('.content-wrapper').classes()
+        expect(classes).to.include('position-bottom')
     })
 
-    xit('可以设置 trigger', (done) => {
-        Vue.component('yu-popover', Popover)
-        const div = document.createElement('div')
-        document.body.appendChild(div)
-        div.innerHTML = `
-        <yu-popover trigger="hover" ref="a">
-            <template slot="content">
-                弹出内容
-            </template>
-            <button>点我</button>
-        </yu-popover>
-        `
-        const vm = new Vue({
-            el: div
+    it('可以设置 trigger', () => {
+        const wrapper = mount(Popover, {
+            slots: {
+                default: {template: `<button>点我</button>`},
+                content: '<div>弹出内容</div>'
+            },
+            propsData: {
+                trigger: 'hover'
+            }
         })
-        vm.$nextTick(() => {
-            let event = new Event('mouseenter')
-            vm.$el.dispatchEvent(event)
-            vm.$nextTick(() => {
-                const {contentWrapper} = vm.$refs.a.$refs
-                expect(contentWrapper).to.exist
-                done()
-            })
-        })
-        
+        expect(wrapper.find('.content-wrapper').element).to.not.exist
+        wrapper.find('.popover').trigger('mouseenter')
+        expect(wrapper.find('.content-wrapper').element).to.exist
     })
-    
 })
