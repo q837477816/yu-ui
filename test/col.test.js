@@ -1,103 +1,68 @@
-const expect = chai.expect;
-import Vue from 'vue'
-import Row from '../src/row'
+import {expect} from 'chai'
+import {mount} from '@vue/test-utils'
 import Col from '../src/col'
 
-Vue.config.productionTip = false
-Vue.config.devtools = false
-
-describe('Col', () => {
-
+describe('Button.vue', () => {
     it('存在.', () => {
         expect(Col).to.be.exist
     })
 
     it('接受 span 属性', () => {
-        const div = document.createElement('div')
-        document.body.appendChild(div)
-        const Constructor = Vue.extend(Col)
-        const vm = new Constructor({
+        const wrapper = mount(Col, {
             propsData: {
                 span: 1
             }
-        }).$mount(div)
-        expect(vm.$el.classList.contains('col-1')).to.eq(true)
-        div.remove()
-        vm.$destroy()
+        })
+        expect(wrapper.classes('col-1')).to.be.true
     })
 
     it('接受 offset 属性', () => {
-        const div = document.createElement('div')
-        document.body.appendChild(div)
-        const Constructor = Vue.extend(Col)
-        const vm = new Constructor({
+        const wrapper = mount(Col, {
             propsData: {
                 offset: 1
             }
-        }).$mount(div)
-        expect(vm.$el.classList.contains('offset-1')).to.eq(true)
-        div.remove()
-        vm.$destroy()
+        })
+        expect(wrapper.classes('offset-1')).to.be.true
     })
 
     it('接受 pc 属性', () => {
-        const div = document.createElement('div')
-        document.body.appendChild(div)
-        const Constructor = Vue.extend(Col)
-        const vm = new Constructor({
+        const wrapper = mount(Col, {
             propsData: {
                 pc: {span: 1, offset: 2}
             }
-        }).$mount(div)
-        expect(vm.$el.classList.contains('col-pc-1')).to.eq(true)
-        expect(vm.$el.classList.contains('offset-pc-2')).to.eq(true)
-        div.remove()
-        vm.$destroy()
+        })
+        expect(wrapper.classes('col-pc-1')).to.be.true
+        expect(wrapper.classes('offset-pc-2')).to.be.true
     })
 
     it('接受 pad 属性', () => {
-        const div = document.createElement('div')
-        document.body.appendChild(div)
-        const Constructor = Vue.extend(Col)
-        const vm = new Constructor({
+        const wrapper = mount(Col, {
             propsData: {
                 pad: {span: 1, offset: 2}
             }
-        }).$mount(div)
-        expect(vm.$el.classList.contains('col-pad-1')).to.eq(true)
-        expect(vm.$el.classList.contains('offset-pad-2')).to.eq(true)
-        div.remove()
-        vm.$destroy()
+        })
+        expect(wrapper.classes('col-pad-1')).to.be.true
+        expect(wrapper.classes('offset-pad-2')).to.be.true
     })
 
     it('接受 narrow-pc 属性', () => {
-        const div = document.createElement('div')
-        document.body.appendChild(div)
-        const Constructor = Vue.extend(Col)
-        const vm = new Constructor({
+        const wrapper = mount(Col, {
             propsData: {
                 narrowPc: {span: 1, offset: 2}
             }
-        }).$mount(div)
-        expect(vm.$el.classList.contains('col-narrow-pc-1')).to.eq(true)
-        expect(vm.$el.classList.contains('offset-narrow-pc-2')).to.eq(true)
-        div.remove()
-        vm.$destroy()
+        })
+        expect(wrapper.classes('col-narrow-pc-1')).to.be.true
+        expect(wrapper.classes('offset-narrow-pc-2')).to.be.true
     })
 
     it('接受 wide-pc 属性', () => {
-        const div = document.createElement('div')
-        document.body.appendChild(div)
-        const Constructor = Vue.extend(Col)
-        const vm = new Constructor({
+        const wrapper = mount(Col, {
             propsData: {
                 widePc: {span: 1, offset: 2}
             }
-        }).$mount(div)
-        expect(vm.$el.classList.contains('col-wide-pc-1')).to.eq(true)
-        expect(vm.$el.classList.contains('offset-wide-pc-2')).to.eq(true)
-        div.remove()
-        vm.$destroy()
+        })
+        expect(wrapper.classes('col-wide-pc-1')).to.be.true
+        expect(wrapper.classes('offset-wide-pc-2')).to.be.true
     })
 
 })
