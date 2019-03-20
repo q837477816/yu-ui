@@ -41,9 +41,9 @@ export default {
     methods: {
         onClick() {
             if (this.disabled) { return }
+            this.$emit('click', this)
             if (this.eventBus) {
                 this.eventBus.$emit('update:selected', this.name, this)
-                this.$emit('click', this)
             }
         }
     }
