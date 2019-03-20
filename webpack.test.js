@@ -1,6 +1,5 @@
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
     mode: 'development',
     output: {
@@ -12,13 +11,6 @@ module.exports = {
         alias: {
             'vue$': 'vue/dist/vue.esm.js' // 用 webpack 1 时需用 'vue/dist/vue.common.js'
         }
-    },
-    devServer: {
-        port: 3000,
-        progress: true,
-        open: true,
-        contentBase: './dist',
-        compress: true
     },
     module: {
         rules: [{

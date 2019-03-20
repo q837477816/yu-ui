@@ -1,10 +1,8 @@
 import chai,{expect} from 'chai'
-import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 chai.use(sinonChai)
-import {shallowMount, mount} from '@vue/test-utils'
+import {mount} from '@vue/test-utils'
 import Button from '../src/button'
-import Vue from 'vue'
 
 describe('Button.vue', () => {
     it('存在.', () => {
@@ -33,34 +31,26 @@ describe('Button.vue', () => {
     })
 
     it('icon 默认的 order 是 1', () => {
-        const div = document.createElement('div')
-        document.body.appendChild(div)
-        const Constructor = Vue.extend(Button)
-        const vm = new Constructor({
+        const wrapper = mount(Button, {
+            attachToDocument: true,
             propsData: {
                 icon: 'settings',
             }
-        }).$mount(div)
-        const icon = vm.$el.querySelector('svg')
+        })
+        const icon = wrapper.find('svg').element
         expect(getComputedStyle(icon).order).to.eq('1')
-        vm.$el.remove()
-        vm.$destroy()
     })
 
     it('设置 iconPosition 可以改变 order', () => {
-        const div = document.createElement('div')
-        document.body.appendChild(div)
-        const Constructor = Vue.extend(Button)
-        const vm = new Constructor({
+        const wrapper = mount(Button, {
+            attachToDocument: true,
             propsData: {
                 icon: 'settings',
                 iconPosition: 'right'
             }
-        }).$mount(div)
-        const icon = vm.$el.querySelector('svg')
+        })
+        const icon = wrapper.find('svg').element
         expect(getComputedStyle(icon).order).to.eq('2')
-        vm.$el.remove()
-        vm.$destroy()
     })
 
     it('点击 button 触发 click 事件', () => {
@@ -69,11 +59,10 @@ describe('Button.vue', () => {
                 icon: 'settings',
             }
         })
-        const vm = wrapper.vm
         const callback = sinon.fake();
+        const vm = wrapper.vm
         vm.$on('click', callback)
-        vm.$el.click()
+        wrapper.trigger('click')
         expect(callback).to.have.been.called
-
     })
 })

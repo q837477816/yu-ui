@@ -1,4 +1,5 @@
 const expect = chai.expect;
+import {mount} from '@vue/test-utils'
 import Vue from 'vue'
 import Row from '../src/row'
 import Col from '../src/col'
@@ -40,18 +41,13 @@ describe('Row', () => {
     })
 
     it('接受 align 属性', () => {
-        const div = document.createElement('div')
-        document.body.appendChild(div)
-        const Constructor = Vue.extend(Row)
-        const vm = new Constructor({
+        const wrapper = mount(Row, {
+            attachToDocument: true,
             propsData: {
                 align: 'right'
             }
-        }).$mount(div)
-        const element = vm.$el
-        expect(getComputedStyle(element).justifyContent).to.eq('flex-end')
-        div.remove()
-        vm.$destroy()
+        })
+        expect(getComputedStyle(wrapper.element).justifyContent).to.eq('flex-end')
     })
 
 })

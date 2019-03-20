@@ -1,4 +1,4 @@
-const webpackConfig = require('./webpack.karma.config.js')
+const webpackConfig = require('./webpack.test.js')
 module.exports = function (config) {
     config.set({
         frameworks: ['mocha', 'sinon-chai'],
