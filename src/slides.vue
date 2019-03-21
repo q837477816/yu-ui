@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="yu-slides-dots">
-            <span @click="select(selectedIndex - 1)">
+            <span data-action="prev" @click="select(selectedIndex - 1)">
                 <yu-icon name="left"></yu-icon>
             </span>
             <span 
@@ -21,7 +21,7 @@
                 :data-index="n"
                 @click="select(n-1)"
             >{{n}}</span>
-            <span @click="select(selectedIndex + 1)">
+            <span data-action="next" @click="select(selectedIndex + 1)">
                 <yu-icon name="right"></yu-icon>
             </span>
         </div>
@@ -69,7 +69,7 @@ export default {
     },
     mounted() {
         this.updateChildren()
-        this.playAutomatically()
+        this.autoPlay && this.playAutomatically()
         this.childrenLength = this.names.length
         this.lastSelectedIndex = this.selectedIndex
     },
