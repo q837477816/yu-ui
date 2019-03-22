@@ -1,16 +1,9 @@
 <template>
     <div class="demo-wrapper">
-        <yu-slides :selected.sync="selected">
-            <yu-slides-item name="name1">
-                <div class="box">1</div>
-            </yu-slides-item>
-            <yu-slides-item name="name2">
-                <div class="box">2</div>
-            </yu-slides-item>
-            <yu-slides-item name="name3">
-                <div class="box">3</div>
-            </yu-slides-item>
-        </yu-slides>
+        <yu-layout style="color: #000; margin-bottom:50px;">
+            <yu-header style="height: 50px; background: #B3C0D1;">header</yu-header>
+            <yu-content style="height: 100px; background: #E9EEF3;">content</yu-content>
+        </yu-layout>
     </div>
 </template>
 
@@ -46,15 +39,7 @@ body{
 .demo-wrapper {
     padding: 20px;
 }
-.box {
-    width: 100%;
-    height: 300px;
-    background-color: #ddd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-}
+
 </style>
 
 

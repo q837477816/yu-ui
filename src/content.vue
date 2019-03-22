@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="yu-content">
         <slot></slot>
     </div>
 </template>
@@ -12,7 +12,7 @@ export default {
 
 
 <style lang="scss" scoped>
-.content {
+.yu-content {
     flex-grow: 1;
 }
 </style>

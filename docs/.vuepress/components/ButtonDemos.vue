@@ -23,7 +23,7 @@ export default {
                 <yu-button icon="settings">默认按钮</yu-button>
                 <yu-button :loading="true">默认按钮</yu-button>
                 <yu-button disabled>默认按钮</yu-button>
-            `
+            `.replace(/^ {16}/gm, '').trim()
         }
     }
     
