@@ -1,9 +1,10 @@
 <template>
     <div class="demo-wrapper">
-        <yu-layout style="color: #000; margin-bottom:50px;">
-            <yu-header style="height: 50px; background: #B3C0D1;">header</yu-header>
-            <yu-content style="height: 100px; background: #E9EEF3;">content</yu-content>
-        </yu-layout>
+        <yu-nav :selected.sync="selected" multiple>
+            <yu-nav-item name="home">首页</yu-nav-item>
+            <yu-nav-item name="about">关于</yu-nav-item>
+            <yu-nav-item name="hire">招聘</yu-nav-item>
+        </yu-nav>
     </div>
 </template>
 
@@ -13,7 +14,7 @@ export default {
 
     data() {
         return {
-            selected: undefined
+            selected: ['home']
         }
     },
 

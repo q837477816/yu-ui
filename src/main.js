@@ -26,6 +26,9 @@ import CollapseItem from './collapse/collapse-item'
 import Cascader from './cascader/cascader'
 import Slides from './slides/slides'
 import SlidesItem from './slides/slides-item'
+import Nav from './nav/nav'
+import NavItem from './nav/nav-item'
+import SubNav from './nav/sub-nav'
 
 Vue.component('yu-button', Button)
 Vue.component('yu-icon', Icon)
@@ -51,6 +54,9 @@ Vue.component('yu-collapse-item', CollapseItem)
 Vue.component('yu-cascader', Cascader)
 Vue.component('yu-slides', Slides)
 Vue.component('yu-slides-item', SlidesItem)
+Vue.component('yu-nav', Nav)
+Vue.component('yu-nav-item', NavItem)
+Vue.component('yu-sub-nav', SubNav)
 
 new Vue({
     render: h => h(demo)
