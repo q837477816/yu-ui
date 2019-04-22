@@ -2,7 +2,12 @@
     <div class="demo-wrapper">
         <yu-nav :selected.sync="selected" multiple>
             <yu-nav-item name="home">首页</yu-nav-item>
-            <yu-nav-item name="about">关于</yu-nav-item>
+            <yu-sub-nav>
+                <template slot="title">关于</template>
+                <yu-nav-item name="about1">关于1</yu-nav-item>
+                <yu-nav-item name="about2">关于2</yu-nav-item>
+                <yu-nav-item name="about3">关于3</yu-nav-item>
+            </yu-sub-nav>
             <yu-nav-item name="hire">招聘</yu-nav-item>
         </yu-nav>
     </div>
@@ -14,7 +19,7 @@ export default {
 
     data() {
         return {
-            selected: ['home']
+            selected: ['home', 'about2']
         }
     },
 

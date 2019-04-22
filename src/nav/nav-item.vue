@@ -8,6 +8,7 @@
 <script>
 export default {
     name: 'YuNavItem',
+    inject: ['root'],
     props: {
         name: {
             type: String,
@@ -18,6 +19,9 @@ export default {
         return {
             selected: false
         }
+    },
+    created() {
+        this.root.addItem(this)
     },
     methods: {
         onClick() {

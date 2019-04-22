@@ -7,6 +7,11 @@
 <script>
 export default {
     name: 'YuNav',
+    provide() {
+        return {
+            root: this
+        }
+    },
     props: {
         multiple: {
             type: Boolean,
@@ -17,9 +22,9 @@ export default {
             default: () => []
         }
     },
-    computed: {
-        items() {
-            return this.$children.filter(vm => vm.$options.name === 'YuNavItem')
+    data() {
+        return {
+            items: []
         }
     },
     mounted() {
@@ -31,6 +36,9 @@ export default {
         this.updateChildren()
     },
     methods: {
+        addItem(vm) {
+            this.items.push(vm)
+        },
         updateChildren() {
             this.items.forEach(vm => {
                 if (this.selected.includes(vm.name)) {
