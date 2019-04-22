@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Icon from './icon'
+import Icon from '../icon'
 export default {
     name: 'YuButton',
     components: {

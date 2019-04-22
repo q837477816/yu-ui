@@ -19,7 +19,7 @@
 
 <script>
 import CascaderItems from './cascader-items'
-import ClickOutside from './click-outside.js'
+import ClickOutside from '../click-outside.js'
 export default {
     name: 'YuCascader',
     components: {
@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'var';
+@import '../styles/var';
 .cascader {
     display: inline-block;
     position: relative;

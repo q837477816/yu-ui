@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import YuLayout from '../../../src/layout'
-import YuHeader from '../../../src/header'
-import YuSider from '../../../src/sider'
-import YuContent from '../../../src/content'
-import YuFooter from '../../../src/footer'
+import YuLayout from '../../../src/layout/layout'
+import YuHeader from '../../../src/layout/header'
+import YuSider from '../../../src/layout/sider'
+import YuContent from '../../../src/layout/content'
+import YuFooter from '../../../src/layout/footer'
 export default {
     name: 'LayoutDemos',
     components: {

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import Icon from './icon'
+import Icon from '../icon'
 export default {
     name: 'YuCascaderItems',
     components: { Icon },
@@ -92,7 +92,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'var';
+@import '../styles/var';
 .cascader-items {
     display: flex;
     justify-content: flex-start;

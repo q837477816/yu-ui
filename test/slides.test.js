@@ -3,8 +3,8 @@ import sinonChai from 'sinon-chai'
 chai.use(sinonChai)
 import {mount} from '@vue/test-utils'
 import Vue from 'vue'
-import Slides from '../src/slides'
-import SlidesItem from '../src/slides-item'
+import Slides from '../src/slides/slides'
+import SlidesItem from '../src/slides/slides-item'
 Vue.component('yu-slides-item', SlidesItem)
 
 

@@ -1,6 +1,6 @@
 import {expect} from 'chai'
 import {mount} from '@vue/test-utils'
-import Col from '../src/col'
+import Col from '../src/grid/col'
 
 describe('Button.vue', () => {
     it('存在.', () => {
