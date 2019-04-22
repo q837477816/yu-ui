@@ -44,7 +44,7 @@ export default {
             this.$refs.popover.addEventListener('mouseleave', this.close)
         }
     },
-    destroyed() {
+    beforeDestroy() {
         this.$refs.popover.removeEventListener('click', this.onClick)
         this.$refs.popover.removeEventListener('mouseenter', this.open)
         this.$refs.popover.removeEventListener('mouseleave', this.close)
