@@ -21,6 +21,7 @@
             </yu-sub-nav>
             <yu-nav-item name="hire">招聘</yu-nav-item>
         </yu-nav>
+        <p>nav组件下面的文字</p>
     </div>
 </template>
 

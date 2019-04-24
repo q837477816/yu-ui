@@ -32,10 +32,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/_var.scss";
 .yu-nav-item {
     padding: 0.5em 1em;
+    position: relative;
     &.selected {
-        background-color: red;
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-bottom: 2px solid $blue;
+            width: 100%;
+        }
+    }
+}
+.yu-sub-nav .yu-nav-item {
+    
+    &.selected {
+        background: $grey;
+        color: $color;
+        &::after {
+            display: none;
+        }
     }
 }
 </style>

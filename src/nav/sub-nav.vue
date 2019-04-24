@@ -26,6 +26,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/_var.scss";
 .yu-sub-nav {
     position: relative;
     > span {
@@ -33,11 +34,17 @@ export default {
         display: block;
     }
     &-popover {
+        background-color: #fff;
         position: absolute;
         top: 100%;
         left: 0;
-        border: 1px solid black;
+        margin-top: 4px;
         white-space: nowrap;
+        box-shadow: 0 0 3px fade_out(black, 0.8);
+        border-radius: $border-radius;
+        color: $light-color;
+        font-size: $font-size;
+        min-width: 8em;
     }
 }
 .yu-sub-nav .yu-sub-nav .yu-sub-nav-popover {
