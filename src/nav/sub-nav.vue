@@ -1,9 +1,9 @@
 <template>
     <div class="yu-sub-nav">
-        <span>
+        <span @click="onClick">
             <slot name="title"></slot>
         </span>
-        <div class="yu-sub-nav-popover">
+        <div class="yu-sub-nav-popover" v-show="open">
             <slot></slot>
         </div>
     </div>
@@ -11,14 +11,27 @@
 
 <script>
 export default {
-    name: 'YuSubNav'
+    name: 'YuSubNav',
+    data() {
+        return {
+            open: false
+        }
+    },
+    methods: {
+        onClick() {
+            this.open = !this.open
+        }
+    }
 }
 </script>
 
 <style lang="scss" scoped>
 .yu-sub-nav {
     position: relative;
-    padding: 0.5em 1em;
+    > span {
+        padding: 0.5em 1em;
+        display: block;
+    }
     &-popover {
         position: absolute;
         top: 100%;
@@ -26,5 +39,10 @@ export default {
         border: 1px solid black;
         white-space: nowrap;
     }
+}
+.yu-sub-nav .yu-sub-nav .yu-sub-nav-popover {
+    top: 0;
+    left: 100%;
+    margin-left: 8px;
 }
 </style>
