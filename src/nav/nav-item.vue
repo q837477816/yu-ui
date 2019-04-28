@@ -36,7 +36,7 @@ export default {
 <style lang="scss" scoped>
 @import "../styles/_var.scss";
 .yu-nav-item {
-    padding: 0.5em 1em;
+    padding: 10px 20px;
     position: relative;
     &.selected {
         &::after {

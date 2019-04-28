@@ -1,7 +1,10 @@
 <template>
     <div class="yu-sub-nav" :class="{active}" v-click-outside="close">
-        <span @click="onClick">
+        <span class="yu-sub-nav-label" @click="onClick">
             <slot name="title"></slot>
+            <span class="yu-sub-nav-icon" :class="{open}">
+                <yu-icon name="right"></yu-icon>
+            </span>
         </span>
         <div class="yu-sub-nav-popover" v-show="open">
             <slot></slot>
@@ -11,10 +14,14 @@
 
 <script>
 import ClickOutside from '../click-outside.js';
+import YuIcon from '../icon.vue'
 export default {
     name: 'YuSubNav',
     directives: {
         ClickOutside
+    },
+    components: {
+        YuIcon
     },
     inject: ['root'],
     props: {
@@ -67,10 +74,11 @@ export default {
             width: 100%;
         }
     }
-    > span {
-        padding: 0.5em 1em;
+    &-label {
+        padding: 10px 20px;
         display: block;
     }
+    &-icon { display: none; }
     &-popover {
         background-color: #fff;
         position: absolute;
@@ -85,9 +93,30 @@ export default {
         min-width: 8em;
     }
 }
-.yu-sub-nav .yu-sub-nav .yu-sub-nav-popover {
-    top: 0;
-    left: 100%;
-    margin-left: 8px;
+.yu-sub-nav .yu-sub-nav {
+    &.active {
+        &::after {
+            display: none;
+        }
+    }
+    .yu-sub-nav-popover {
+        top: 0;
+        left: 100%;
+        margin-left: 8px;
+    }
+    .yu-sub-nav-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .yu-sub-nav-icon {
+        display: inline-flex;
+        margin-left: 0.5em;
+        svg { fill: $light-color; }
+        transition: transform 200ms;
+        &.open {
+            transform: rotate(180deg);
+        }
+    } 
 }
 </style>
