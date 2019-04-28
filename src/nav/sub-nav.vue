@@ -1,5 +1,5 @@
 <template>
-    <div class="yu-sub-nav">
+    <div class="yu-sub-nav" :class="{active}" v-click-outside="close">
         <span @click="onClick">
             <slot name="title"></slot>
         </span>
@@ -10,17 +10,44 @@
 </template>
 
 <script>
+import ClickOutside from '../click-outside.js';
 export default {
     name: 'YuSubNav',
+    directives: {
+        ClickOutside
+    },
+    inject: ['root'],
+    props: {
+        name: {
+            type: String,
+            required: true
+        }
+    },
+    computed: {
+        active() {
+            return this.root.namePath.includes(this.name)
+        }
+    },
     data() {
         return {
-            open: false
+            open: false,
         }
     },
     methods: {
         onClick() {
             this.open = !this.open
-        }
+        },
+        close() {
+            this.open = false
+        },
+        updateNamePath() {
+            this.root.namePath.unshift(this.name)
+            if (this.$parent.updateNamePath) {
+                this.$parent.updateNamePath()
+            } else {
+                // this.root.namePath = []
+            }
+        },
     }
 }
 </script>
@@ -29,6 +56,17 @@ export default {
 @import "../styles/_var.scss";
 .yu-sub-nav {
     position: relative;
+    &.active {
+        position: relative;
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-bottom: 2px solid $blue;
+            width: 100%;
+        }
+    }
     > span {
         padding: 0.5em 1em;
         display: block;
