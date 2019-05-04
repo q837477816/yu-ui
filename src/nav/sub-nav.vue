@@ -1,8 +1,8 @@
 <template>
-    <div :class="['yu-sub-nav', {active}]" v-click-outside="close">
+    <div :class="['yu-sub-nav', {active, vertical}]" v-click-outside="close">
         <span class="yu-sub-nav-label" @click="onClick">
             <slot name="title"></slot>
-            <span class="yu-sub-nav-icon" :class="{open}">
+            <span class="yu-sub-nav-icon" :class="{open, vertical}">
                 <yu-icon name="right"></yu-icon>
             </span>
         </span>
@@ -95,21 +95,19 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/_var.scss";
-.x-enter-active, .x-leave-active {
-}
-.x-enter, .x-leave-to {
-}
 .yu-sub-nav {
     position: relative;
-    &.active {
-        position: relative;
-        &::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            border-bottom: 2px solid $blue;
-            width: 100%;
+    &:not(.vertical) {
+        &.active {
+            position: relative;
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                border-bottom: 2px solid $blue;
+                width: 100%;
+            }
         }
     }
     &-label {
@@ -159,7 +157,13 @@ export default {
         display: inline-flex;
         margin-left: 0.5em;
         svg { fill: $light-color; }
-        transition: transform 1s;
+        transition: transform 250ms;
+        &.vertical {
+            transform: rotate(90deg);
+            &.open {
+                transform: rotate(270deg);
+            }
+        }
         &.open {
             transform: rotate(180deg);
         }

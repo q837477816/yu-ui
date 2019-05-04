@@ -1,5 +1,5 @@
 <template>
-    <div class="yu-nav-item" :class="{selected}" @click="onClick">
+    <div class="yu-nav-item" :class="{selected, vertical}" @click="onClick">
         <slot></slot>
     </div>
     
@@ -38,19 +38,25 @@ export default {
 .yu-nav-item {
     padding: 10px 20px;
     position: relative;
-    &.selected {
-        &::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            border-bottom: 2px solid $blue;
-            width: 100%;
+    &:not(.vertical) {
+        &.selected {
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                border-bottom: 2px solid $blue;
+                width: 100%;
+            }
+        }
+    }
+    &.vertical {
+        &.selected {
+            color: $blue;
         }
     }
 }
-.yu-sub-nav .yu-nav-item {
-    
+.yu-sub-nav .yu-nav-item:not(.vertical) {
     &.selected {
         background: $grey;
         color: $color;
