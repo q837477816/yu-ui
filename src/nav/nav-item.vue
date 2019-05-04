@@ -8,7 +8,7 @@
 <script>
 export default {
     name: 'YuNavItem',
-    inject: ['root'],
+    inject: ['root', 'vertical'],
     props: {
         name: {
             type: String,

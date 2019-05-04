@@ -1,5 +1,5 @@
 <template>
-    <div class="yu-nav">
+    <div :class="['yu-nav', {vertical}]">
         <slot></slot>
     </div>
 </template>
@@ -9,7 +9,8 @@ export default {
     name: 'YuNav',
     provide() {
         return {
-            root: this
+            root: this,
+            vertical: this.vertical
         }
     },
     props: {
@@ -20,6 +21,10 @@ export default {
         selected: {
             type: Array,
             default: () => []
+        },
+        vertical: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -77,6 +82,10 @@ export default {
     color: $color;
     cursor: default;
     user-select: none;
+    &.vertical {
+        flex-direction: column;
+        border: 1px solid $grey;
+    }
 }
 </style>
 

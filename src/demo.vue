@@ -1,6 +1,6 @@
 <template>
     <div class="demo-wrapper">
-        <yu-nav :selected.sync="selected">
+        <yu-nav :selected.sync="selected" vertical style="width: 200px">
             <yu-nav-item name="home">首页</yu-nav-item>
             <yu-sub-nav name="about">
                 <template slot="title">关于</template>
@@ -30,7 +30,7 @@ export default {
 
     data() {
         return {
-            selected: ['home']
+            selected: ['culture']
         }
     },
 

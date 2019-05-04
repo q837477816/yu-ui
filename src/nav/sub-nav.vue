@@ -1,14 +1,16 @@
 <template>
-    <div class="yu-sub-nav" :class="{active}" v-click-outside="close">
+    <div :class="['yu-sub-nav', {active}]" v-click-outside="close">
         <span class="yu-sub-nav-label" @click="onClick">
             <slot name="title"></slot>
             <span class="yu-sub-nav-icon" :class="{open}">
                 <yu-icon name="right"></yu-icon>
             </span>
         </span>
-        <div class="yu-sub-nav-popover" v-show="open">
-            <slot></slot>
-        </div>
+        <transition name="x" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
+            <div :class="['yu-sub-nav-popover', {vertical}]" v-show="open">
+                <slot></slot>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -23,7 +25,7 @@ export default {
     components: {
         YuIcon
     },
-    inject: ['root'],
+    inject: ['root', 'vertical'],
     props: {
         name: {
             type: String,
@@ -55,12 +57,41 @@ export default {
                 // this.root.namePath = []
             }
         },
+        enter(el, done) {
+            el.style.height = 'auto'
+            let {height} = el.getBoundingClientRect()
+            el.style.height = 0
+            el.getBoundingClientRect()
+            el.style.height = `${height}px`
+            el.addEventListener('transitionend', () => {
+                done()
+            })
+        },
+        afterEnter(el) {
+            el.style.height = 'auto'
+        },
+        leave(el, done) {
+            let {height} = el.getBoundingClientRect()
+            el.style.height = `${height}px`
+            el.getBoundingClientRect()
+            el.style.height = 0
+            el.addEventListener('transitionend', () => {
+                done()
+            })
+        },
+        afterLeave(el) {
+            el.style.height = 'auto'
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "../styles/_var.scss";
+.x-enter-active, .x-leave-active {
+}
+.x-enter, .x-leave-to {
+}
 .yu-sub-nav {
     position: relative;
     &.active {
@@ -91,6 +122,14 @@ export default {
         color: $light-color;
         font-size: $font-size;
         min-width: 8em;
+        &.vertical {
+            position: static;
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+            transition: height 250ms;
+            overflow: hidden;
+        }
     }
 }
 .yu-sub-nav .yu-sub-nav {
@@ -113,7 +152,7 @@ export default {
         display: inline-flex;
         margin-left: 0.5em;
         svg { fill: $light-color; }
-        transition: transform 200ms;
+        transition: transform 1s;
         &.open {
             transform: rotate(180deg);
         }
