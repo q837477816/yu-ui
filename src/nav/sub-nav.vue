@@ -6,11 +6,18 @@
                 <yu-icon name="right"></yu-icon>
             </span>
         </span>
-        <transition name="x" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
-            <div :class="['yu-sub-nav-popover', {vertical}]" v-show="open">
+        <template v-if="vertical">
+            <transition name="x" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
+                <div :class="['yu-sub-nav-popover', {vertical}]" v-show="open">
+                    <slot></slot>
+                </div>
+            </transition>
+        </template>
+        <template v-else>
+            <div class="yu-sub-nav-popover" v-show="open">
                 <slot></slot>
             </div>
-        </transition>
+        </template>
     </div>
 </template>
 
@@ -122,12 +129,12 @@ export default {
         color: $light-color;
         font-size: $font-size;
         min-width: 8em;
+        transition: height 250ms;
         &.vertical {
             position: static;
             border-radius: 0;
             border: none;
             box-shadow: none;
-            transition: height 250ms;
             overflow: hidden;
         }
     }
