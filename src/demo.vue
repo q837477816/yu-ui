@@ -20,7 +20,7 @@
             </yu-sub-nav>
             <yu-nav-item name="hire">招聘</yu-nav-item>
         </yu-nav>
-        <p>nav组件下面的文字</p>
+        <p>当前选中的值为 {{selected}}</p>
     </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
 
     data() {
         return {
-            selected: ['culture']
+            selected: 'culture'
         }
     },
 
