@@ -1,6 +1,6 @@
 <template>
     <div class="demo-wrapper">
-        <yu-nav :selected.sync="selected" vertical style="width: 200px">
+        <yu-nav :selected.sync="selected" >
             <yu-nav-item name="home">首页</yu-nav-item>
             <yu-sub-nav name="about">
                 <template slot="title">关于</template>
