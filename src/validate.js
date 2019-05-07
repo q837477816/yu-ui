@@ -1,30 +1,60 @@
-export default function validate(data, rules) {
-    let errors = {}
-    rules.forEach(rule => {
-        let value = data[rule.key]
-        if (rule.required) {
-            if (!value && value !== 0) {
-                errors[rule.key] = {required: '必填'}
-                return
+class Validator {
+    constructor() {
+
+    }
+    static add(name, fn) {
+        Validator.prototype[name] = fn
+    }
+    validate(data, rules) {
+        let errors = {}
+        rules.forEach(rule => {
+            let value = data[rule.key]
+            if (rule.required) {
+                let error = this.required(value)
+                if (error) {
+                    ensureObject(errors, rule.key)
+                    errors[rule.key].required = error
+                    return
+                }
             }
+            let validators = Object.keys(rule).filter(key => !['key', 'required'].includes(key))
+            validators.forEach(validator => {
+                if (this[validator]) {
+                    let error = this[validator](value, rule[validator])
+                    if (error) {
+                        ensureObject(errors, rule.key)
+                        errors[rule.key][validator] = error
+                    }
+                } else {
+                    throw `不存在校验器：${validator}`
+                }
+            })
+        })
+        return errors
+    }
+    required(value) {
+        if (!value && value !== 0) {
+            return '必填'
         }
-        if (rule.pattern) {
-            if (rule.pattern === 'email') {
-                rule.pattern = /^.+@.+$/
-            }
-            if (rule.pattern.test(value) === false) {
-                ensureObject(errors, rule.key)
-                errors[rule.key].pattern = '格式不正确'
-            }
+    }
+    pattern(value, pattern) {
+        if (pattern === 'email') {
+            pattern = /^.+@.+$/
         }
-        if (rule.minLength) {
-            if (value.length < rule.minLength) {
-                ensureObject(errors, rule.key)
-                errors[rule.key].minLength = '长度有误'
-            }
+        if (!pattern.test(value)) {
+            return '格式不正确'
         }
-    })
-    return errors
+    }
+    minLength(value, minLength) {
+        if (value.length < minLength) {
+            return '太短'
+        }
+    }
+    maxLength(value, maxLength) {
+        if (value.length > maxLength) {
+            return '太长'
+        }
+    }
 }
 
 function ensureObject(obj, key) {
@@ -32,3 +62,5 @@ function ensureObject(obj, key) {
         obj[key] = {}
     }
 }
+
+export default Validator
