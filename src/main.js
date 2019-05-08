@@ -29,6 +29,7 @@ import SlidesItem from './slides/slides-item'
 import Nav from './nav/nav'
 import NavItem from './nav/nav-item'
 import SubNav from './nav/sub-nav'
+import Pager from './pager'
 
 Vue.component('yu-button', Button)
 Vue.component('yu-icon', Icon)
@@ -57,6 +58,7 @@ Vue.component('yu-slides-item', SlidesItem)
 Vue.component('yu-nav', Nav)
 Vue.component('yu-nav-item', NavItem)
 Vue.component('yu-sub-nav', SubNav)
+Vue.component('yu-pager', Pager)
 
 new Vue({
     render: h => h(demo)
