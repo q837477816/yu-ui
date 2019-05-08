@@ -1,8 +1,8 @@
 <template>
     <div class="demo-wrapper">
         <yu-pager 
-        :total-page="10"
-        :current-page="3"
+        :total-page="20"
+        :current-page="1"
         ></yu-pager>
     </div>
 </template>

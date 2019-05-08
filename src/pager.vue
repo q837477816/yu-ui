@@ -1,21 +1,29 @@
 <template>
     <div class="yu-pager">
+        <span :class="['yu-pager-nav', 'prev', {disabled: currentPage === 1}]">
+            <yu-icon name="left"></yu-icon>
+        </span>
         <span 
             v-for="page in pages"
             :key="page"
             :class="[
                 'yu-pager-item', 
                 {active: page === currentPage},
-                {separator: page === '...'}
+                {dots: page === '...'}
             ]">
             {{page}}
+        </span>
+        <span :class="['yu-pager-nav', 'next', {disabled: currentPage === totalPage}]">
+            <yu-icon name="right"></yu-icon>
         </span>
     </div>
 </template>
 
 <script>
+import YuIcon from './icon'
 export default {
     name: 'YuPager',
+    components: { YuIcon },
     props: {
         totalPage: {
             type: Number,
@@ -31,12 +39,23 @@ export default {
         }
     },
     data() {
-        let pages = [1, this.currentPage - 2, this.currentPage - 1, this.currentPage, this.currentPage + 1, this.currentPage + 2, this.totalPage].filter(item => item > 0 && item <= this.totalPage).sort((a, b) => a - b).reduce((prev, next) => {
-            if (!prev.includes(next)) {
-                prev.push(next)
-            }
-            return prev
-        }, [])
+        let pages = [
+            1,
+            this.currentPage - 2, 
+            this.currentPage - 1, 
+            this.currentPage, 
+            this.currentPage + 1, 
+            this.currentPage + 2, 
+            this.totalPage
+            ]
+            .filter(item => item > 0 && item <= this.totalPage)
+            .sort((a, b) => a - b)
+            .reduce((prev, next) => {
+                if (!prev.includes(next)) {
+                    prev.push(next)
+                }
+                return prev
+            }, [])
         pages = pages.reduce((prev, next, index, array) => {
             prev.push(next)
             if (array[index + 1] !== undefined && array[index + 1] - next > 1) {
@@ -54,6 +73,12 @@ export default {
 <style lang="scss" scoped>
 @import "./styles/var";
 .yu-pager {
+    $width: 20px;
+    $height: 20px;
+    $font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &-item {
         border: 1px solid #e1e1e1;
         border-radius: $border-radius;
@@ -61,11 +86,12 @@ export default {
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        height: 20px;
-        min-width: 20px;
+        height: $height;
+        min-width: $width;
         margin: 0 4px;
+        font-size: $font-size;
         cursor: pointer;
-        &.separator {
+        &.dots {
             border: none;
         }
         &.active, &:hover {
@@ -73,6 +99,23 @@ export default {
         }
         &.active {
             cursor: default;
+        }
+    }
+    &-nav {
+        margin: 0 4px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        height: $height;
+        width: $width;
+        background-color: $grey;
+        border-radius: $border-radius;
+        font-size: $font-size;
+        &.disabled {
+            cursor: not-allowed;
+            svg {
+                fill: darken($grey, 30%);
+            }
         }
     }
 }
