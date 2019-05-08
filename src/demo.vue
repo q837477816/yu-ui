@@ -1,8 +1,9 @@
 <template>
     <div class="demo-wrapper">
         <yu-pager 
-        :total-page="20"
-        :current-page="1"
+        :total-page="1"
+        :current-page.sync="currentPage"
+        :hide-if-one-page="false"
         ></yu-pager>
     </div>
 </template>
@@ -13,7 +14,7 @@ export default {
 
     data() {
         return {
-            
+            currentPage: 1
         }
     },
 

@@ -1,19 +1,25 @@
 <template>
-    <div class="yu-pager">
-        <span :class="['yu-pager-nav', 'prev', {disabled: currentPage === 1}]">
+    <div :class="['yu-pager', {hide}]">
+        <span 
+            :class="['yu-pager-nav', 
+                    'prev', 
+                    {disabled: currentPage === 1}]"
+            @click="onClickPage(currentPage - 1)">
             <yu-icon name="left"></yu-icon>
         </span>
         <span 
             v-for="page in pages"
-            :key="page"
-            :class="[
-                'yu-pager-item', 
-                {active: page === currentPage},
-                {dots: page === '...'}
-            ]">
+            :class="['yu-pager-item', 
+                    {active: page === currentPage},
+                    {dots: page === '...'}]"
+            @click="onClickPage(page)">
             {{page}}
         </span>
-        <span :class="['yu-pager-nav', 'next', {disabled: currentPage === totalPage}]">
+        <span 
+            :class="['yu-pager-nav',
+                    'next', 
+                    {disabled: currentPage === totalPage}]"
+            @click="onClickPage(currentPage + 1)">
             <yu-icon name="right"></yu-icon>
         </span>
     </div>
@@ -38,33 +44,42 @@ export default {
             default: true
         }
     },
-    data() {
-        let pages = [
-            1,
-            this.currentPage - 2, 
-            this.currentPage - 1, 
-            this.currentPage, 
-            this.currentPage + 1, 
-            this.currentPage + 2, 
-            this.totalPage
-            ]
-            .filter(item => item > 0 && item <= this.totalPage)
-            .sort((a, b) => a - b)
-            .reduce((prev, next) => {
-                if (!prev.includes(next)) {
+    computed: {
+        pages() {
+            return [
+                1,
+                this.currentPage - 2, 
+                this.currentPage - 1, 
+                this.currentPage, 
+                this.currentPage + 1, 
+                this.currentPage + 2, 
+                this.totalPage
+                ]
+                .filter(item => item > 0 && item <= this.totalPage)
+                .sort((a, b) => a - b)
+                .reduce((prev, next) => {
+                    if (!prev.includes(next)) {
+                        prev.push(next)
+                    }
+                    return prev
+                }, [])
+                .reduce((prev, next, index, array) => {
                     prev.push(next)
-                }
-                return prev
-            }, [])
-        pages = pages.reduce((prev, next, index, array) => {
-            prev.push(next)
-            if (array[index + 1] !== undefined && array[index + 1] - next > 1) {
-                prev.push('...')
+                    if (array[index + 1] !== undefined && array[index + 1] - next > 1) {
+                        prev.push('...')
+                    }
+                    return prev
+                }, [])
+        },
+        hide() {
+            return this.hideIfOnePage && this.totalPage <= 1
+        }
+    },
+    methods: {
+        onClickPage(page) {
+            if (typeof page === 'number' && page >= 1 && page <= this.totalPage) {
+                this.$emit('update:currentPage', page)
             }
-            return prev
-        }, [])
-        return {
-            pages
         }
     }
 }
@@ -77,8 +92,12 @@ export default {
     $height: 20px;
     $font-size: 12px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    user-select: none;
+    &.hide {
+        display: none;
+    }
     &-item {
         border: 1px solid #e1e1e1;
         border-radius: $border-radius;
@@ -111,10 +130,11 @@ export default {
         background-color: $grey;
         border-radius: $border-radius;
         font-size: $font-size;
+        cursor: pointer;
         &.disabled {
             cursor: not-allowed;
             svg {
-                fill: darken($grey, 30%);
+                fill: darken($grey, 20%);
             }
         }
     }
