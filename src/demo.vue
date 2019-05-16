@@ -1,10 +1,17 @@
 <template>
     <div class="demo-wrapper">
-        <yu-pager 
-        :total-page="1"
-        :current-page.sync="currentPage"
-        :hide-if-one-page="false"
-        ></yu-pager>
+        <p style="margin-bottom: 10px;">只能上传 300kb 以内的 png、jpeg 文件</p>
+        <yu-uploader
+            accept="image/*"
+            action="http://127.0.0.1:3001/upload"
+            name="file"
+            :parse-response="parseResponse"
+            :file-list.sync="fileList">
+            <template>
+                <yu-button icon="upload">上传</yu-button>
+            </template>
+            
+        </yu-uploader>
     </div>
 </template>
 
@@ -14,15 +21,19 @@ export default {
 
     data() {
         return {
-            currentPage: 1
+            fileList: []
         }
     },
 
-    created() {
+    mounted() {
+        
     },
 
     methods: {
-        
+        parseResponse(response) {
+            let obj = JSON.parse(response)
+            return `http://127.0.0.1:3001/preview/${obj.id}`
+        }
     }
 
 }
