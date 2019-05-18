@@ -36,6 +36,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    @import '../styles/_var.scss';
     $font-size: 14px;
     $button-height: 32px;
     $border-radius: 4px;
@@ -43,14 +44,6 @@ export default {
     $button-bg: white;
     $border-color-hover: #666;
     $button-active-bg: #eee;
-    @keyframes spin{
-        0%{
-            transform: rotate(0deg);
-        }
-        100%{
-            transform: rotate(360deg);
-        }
-    }
     .yu-button{
         display: inline-flex;
         justify-content: center;
@@ -91,7 +84,7 @@ export default {
         .loading{
             width: 32px;
             height: 32px;
-            animation: spin 1s infinite linear;
+            @include spin;
         }
     }
 </style>
