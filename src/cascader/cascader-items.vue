@@ -5,7 +5,7 @@
                 <span class="name">{{item.name}}</span>
                 <span class="icons">
                     <template v-if="item.name === loadingItem.name">
-                        <icon class="icon loading" name="loading"></icon>
+                        <yu-icon class="icon loading" name="loading"></yu-icon>
                     </template>
                     <template v-else>
                         <icon class="next" v-if="rightArrowVisible(item)" name="right"></icon>
@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import Icon from '../icon'
+import YuIcon from '../icon'
 export default {
     name: 'YuCascaderItems',
-    components: { Icon },
+    components: { YuIcon },
     props: {
         items: {
             type: Array

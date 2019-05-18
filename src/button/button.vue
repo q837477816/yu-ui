@@ -89,6 +89,8 @@ export default {
             }
         }
         .loading{
+            width: 32px;
+            height: 32px;
             animation: spin 1s infinite linear;
         }
     }
