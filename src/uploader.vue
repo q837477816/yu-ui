@@ -7,25 +7,26 @@
         <ol class="yu-uploader-fileList">
             <li v-for="file in fileList" :key="file.fileId">
                 <template v-if="file.status === 'uploading'">
-                    uploading...
+                    <yu-icon name="loading" class="spin"></yu-icon>
                 </template>
-                <template v-if="file.type.includes('image')">
+                <template v-else-if="file.type.includes('image')">
                     <img :src="file.url" width="32" height="32" alt="">
-                    <yu-button @click="onRemoveFile(file)">x</yu-button>
                 </template>
                 <template v-else>
                     <div class="default-img"></div>
                 </template>
                 <span :class="['name', file.status]">{{file.name}}</span>
-                <span>{{file.type}}</span>
+                <button class="remove" @click="onRemoveFile(file)">x</button>
             </li>
         </ol>
     </div>
 </template>
 
 <script>
+import YuIcon from './icon'
 export default {
     name: 'YuUploader',
+    components: { YuIcon },
     props: {
         name: {
             type: String,
@@ -135,6 +136,7 @@ export default {
                 margin-right: 8px;
             }
             .name {
+                margin-right: auto;
                 &.uploadSuccess {
                     color: green;
                 }
@@ -142,6 +144,14 @@ export default {
                     color: red;
                 }
             }
+            .remove{
+                width: 32px;
+                height: 32px;;
+            }
+            .spin {
+                @include spin;
+            }
+            
         }
     }
 }
