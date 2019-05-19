@@ -16,7 +16,7 @@
                     <div class="default-img"></div>
                 </template>
                 <span :class="['name', file.status]">{{file.name}}</span>
-                <button class="remove" @click="onRemoveFile(file)">x</button>
+                <yu-button class="remove" @click="onRemoveFile(file)">x</yu-button>
             </li>
         </ol>
     </div>
@@ -24,9 +24,10 @@
 
 <script>
 import YuIcon from './icon'
+import YuButton from './button/button'
 export default {
     name: 'YuUploader',
-    components: { YuIcon },
+    components: { YuIcon, YuButton },
     props: {
         name: {
             type: String,
@@ -47,11 +48,13 @@ export default {
         fileList: {
             type: Array,
             default: () => []
+        },
+        size: {
+            type: Number
         }
     },
     data() {
         return {
-            url: 'about:blank'
         }
     },
     methods: {
@@ -66,26 +69,37 @@ export default {
             // generate a unique fileId
             const fileId = Date.now() 
 
-            this.beforeUploadFile(rawFile, fileId)
-            let formData = new FormData()
-            formData.append(this.name, rawFile)
-            this.uploadFile(formData, (response) => {
-                this.url = this.parseResponse(response)
-                this.afterUploadFile(fileId, this.url)
-            }, () => {
-                this.uploadError(fileId)
-            })
+            const valid = this.beforeUploadFile(rawFile, fileId)
+            if (valid) {
+                let formData = new FormData()
+                formData.append(this.name, rawFile)
+                this.uploadFile(formData, (response) => {
+                    const url = this.parseResponse(response)
+                    this.afterUploadFile(fileId, url)
+                }, (xhr) => {
+                    this.uploadError(fileId, xhr)
+                })
+            }
             
         },
         beforeUploadFile(rawFile, fileId) {
             const {name, size, type} = rawFile
-            this.$emit('update:fileList', [...this.fileList, {fileId, name, type, size, status: 'uploading'}])
+            if (size > this.size) {
+                this.$emit('upload-error', '文件大小有误')
+                return false
+            } else {
+                this.$emit('update:fileList', [...this.fileList, {fileId, name, type, size, status: 'uploading'}])
+                return true
+            }
         },
         uploadFile(formData, successCallback, failCallback) {
             let xhr = new XMLHttpRequest()
             xhr.open(this.method, this.action)
             xhr.onload = () => {
-                Math.random() > 0.5 ? successCallback(xhr.response) : failCallback()
+                successCallback(xhr.response)
+            }
+            xhr.onerror = () => {
+                failCallback(xhr)
             }
             xhr.send(formData)
             this.$refs.input.value = null
@@ -97,11 +111,13 @@ export default {
             file.status = 'uploadSuccess'
             this.$emit('update:fileList', fileListCopy)
         },
-        uploadError(fileId) {
+        uploadError(fileId, xhr) {
             let fileListCopy = JSON.parse(JSON.stringify(this.fileList))
             let file = fileListCopy.filter(file => file.fileId === fileId)[0]
             file.status = 'uploadFail'
             this.$emit('update:fileList', fileListCopy)
+            let error = xhr.status === 0 ? '网络无法连接' : ''
+            this.$emit('upload-error', error)
         },
         onRemoveFile(file) {
             const answer = window.confirm('确定要删除吗')
