@@ -1,6 +1,6 @@
 <template>
     <div class="yu-uploader">
-        <input type="file" ref="input" style="display: none;" @change="onFileChange">
+        <input type="file" ref="input" style="display: none;" :accept="accept" :multiple="multiple" @change="onFileChange">
         <div @click="onClickUpload" ref="trigger">
             <slot></slot>
         </div>
@@ -41,6 +41,10 @@ export default {
             type: String,
             required: true
         },
+        accept: {
+            type: String,
+            default: '*'
+        },
         parseResponse: {
             type: Function,
             required: true
@@ -51,6 +55,10 @@ export default {
         },
         size: {
             type: Number
+        },
+        multiple: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -59,8 +67,13 @@ export default {
     },
     methods: {
         onFileChange(e) {
-            let rawFile = e.target.files[0]
-            this.createFormData(rawFile)
+            let rawFiles = e.target.files
+            console.log(rawFiles)
+            for (let i = 0; i < rawFiles.length; i++) {
+                const rawFile = rawFiles[i]
+                this.createFormData(rawFile)
+            }
+            this.$refs.input.value = null
         },
         onClickUpload() {
             this.$refs.input.click()
@@ -88,7 +101,8 @@ export default {
                 this.$emit('upload-error', '文件大小有误')
                 return false
             } else {
-                this.$emit('update:fileList', [...this.fileList, {fileId, name, type, size, status: 'uploading'}])
+                // this.$emit('update:fileList', [...this.fileList, {fileId, name, type, size, status: 'uploading'}])
+                this.$emit('addFile', {fileId, name, type, size, status: 'uploading'})
                 return true
             }
         },
@@ -102,7 +116,6 @@ export default {
                 failCallback(xhr)
             }
             xhr.send(formData)
-            this.$refs.input.value = null
         },
         afterUploadFile(fileId, url) {
             let fileListCopy = JSON.parse(JSON.stringify(this.fileList))

@@ -9,6 +9,8 @@
             :parse-response="parseResponse"
             :file-list.sync="fileList"
             :size="1 * 1024 * 1024"
+            multiple
+            @addFile="addFile"
             @upload-error="onError">
             <template>
                 <yu-button icon="upload">上传</yu-button>
@@ -36,6 +38,10 @@ export default {
         parseResponse(response) {
             let obj = JSON.parse(response)
             return `http://127.0.0.1:3001/preview/${obj.id}`
+        },
+        addFile(file) {
+            console.log('addFile', file)
+            this.fileList.push(file)
         },
         onError(error) {
             window.alert(error)
