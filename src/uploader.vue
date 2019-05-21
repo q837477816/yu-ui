@@ -68,43 +68,51 @@ export default {
     methods: {
         onFileChange(e) {
             let rawFiles = e.target.files
-            console.log(rawFiles)
-            for (let i = 0; i < rawFiles.length; i++) {
-                const rawFile = rawFiles[i]
-                this.createFormData(rawFile)
+            const fileIds = this.generateFileIds(rawFiles.length)
+            const valid = this.beforeUploadFiles(rawFiles, fileIds)
+            if (valid) {
+                for (let i = 0; i < rawFiles.length; i++) {
+                    const rawFile = rawFiles[i]
+                    const fileId = fileIds[i]
+                    this.createFormData(rawFile, fileId)
+                }
             }
             this.$refs.input.value = null
         },
         onClickUpload() {
             this.$refs.input.click()
         },
-        createFormData(rawFile) {
-            // generate a unique fileId
-            const fileId = Date.now() 
-
-            const valid = this.beforeUploadFile(rawFile, fileId)
-            if (valid) {
-                let formData = new FormData()
-                formData.append(this.name, rawFile)
-                this.uploadFile(formData, (response) => {
-                    const url = this.parseResponse(response)
-                    this.afterUploadFile(fileId, url)
-                }, (xhr) => {
-                    this.uploadError(fileId, xhr)
-                })
-            }
-            
+        createFormData(rawFile, fileId) {
+            let formData = new FormData()
+            formData.append(this.name, rawFile)
+            this.uploadFile(formData, (response) => {
+                const url = this.parseResponse(response)
+                this.afterUploadFile(fileId, url)
+            }, (xhr) => {
+                this.uploadError(fileId, xhr)
+            })
         },
-        beforeUploadFile(rawFile, fileId) {
-            const {name, size, type} = rawFile
-            if (size > this.size) {
-                this.$emit('upload-error', '文件大小有误')
+        beforeUploadFiles(rawFiles, fileIds) {
+            for (let i = 0; i < rawFiles.length; i++) {
+                const {size, type} = rawFiles[i]
+                if (size > this.size) {
+                    this.$emit('upload-error', '文件大小有误')
                 return false
-            } else {
-                // this.$emit('update:fileList', [...this.fileList, {fileId, name, type, size, status: 'uploading'}])
-                this.$emit('addFile', {fileId, name, type, size, status: 'uploading'})
-                return true
+                }
             }
+            const newFiles = Array.from(rawFiles).map((rawFile, index) => {
+                const {name, size, type} = rawFile
+                return {
+                    fileId: fileIds[index],
+                    name,
+                    type,
+                    size,
+                    status: 'uploading'
+                }
+            })
+            this.$emit('update:fileList', [...this.fileList, ...newFiles])
+            return true
+            
         },
         uploadFile(formData, successCallback, failCallback) {
             let xhr = new XMLHttpRequest()
@@ -140,6 +148,14 @@ export default {
                 copy.splice(index, 1)
                 this.$emit('update:fileList', copy)
             }
+        },
+        generateFileIds(num) {
+            let id = Date.now()
+            let ids = []
+            for (let i = 0; i < num; i++) {
+                ids.push(id++)
+            }
+            return ids
         }
     }
 }
