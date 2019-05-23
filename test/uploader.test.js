@@ -10,11 +10,11 @@ describe('Uploader.vue', (done) => {
         expect(Uploader).to.be.exist
     })
     it('可以上传一个文件', (done) => {
-        ajax.post = (url, options) => {
+        const stub = sinon.stub(ajax, 'post').callsFake((url, options) => {
             setTimeout(() => {
-                options.success(JSON.stringify({id: '123456789'}))
-            }, 1000)
-        }
+                options.success(JSON.stringify({id: '111'}))
+            }, 100)
+        })
         const wrapper = mount(Uploader, {
             propsData: {
                 name: 'file',
@@ -35,7 +35,8 @@ describe('Uploader.vue', (done) => {
                 },
                 'uploaded': () => {
                     expect(wrapper.find('use').exists()).to.be.false
-                    expect(wrapper.props().fileList[0].url).to.eq('/preview/123456789')
+                    expect(wrapper.props().fileList[0].url).to.eq('/preview/111')
+                    stub.restore()
                     done()
                 }
             }
@@ -51,6 +52,5 @@ describe('Uploader.vue', (done) => {
         inputWrapper.trigger('change')
         let use = wrapper.find('use').element
         expect(use.getAttribute('xlink:href')).to.eq('#i-loading')
-        
     })
 })
