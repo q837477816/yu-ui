@@ -25,6 +25,7 @@
 <script>
 import YuIcon from './icon'
 import YuButton from './button/button'
+import ajax from './ajax'
 export default {
     name: 'YuUploader',
     components: { YuIcon, YuButton },
@@ -61,13 +62,9 @@ export default {
             default: false
         }
     },
-    data() {
-        return {
-        }
-    },
     methods: {
-        onFileChange(e) {
-            let rawFiles = e.target.files
+        onFileChange() {
+            let rawFiles = this.$refs.input.files
             const fileIds = this.generateFileIds(rawFiles.length)
             const valid = this.beforeUploadFiles(rawFiles, fileIds)
             if (valid) {
@@ -115,15 +112,11 @@ export default {
             
         },
         uploadFile(formData, successCallback, failCallback) {
-            let xhr = new XMLHttpRequest()
-            xhr.open(this.method, this.action)
-            xhr.onload = () => {
-                successCallback(xhr.response)
-            }
-            xhr.onerror = () => {
-                failCallback(xhr)
-            }
-            xhr.send(formData)
+            ajax[this.method.toLowerCase()](this.action, {
+                data: formData,
+                success: successCallback,
+                fail: failCallback,
+            })
         },
         afterUploadFile(fileId, url) {
             let fileListCopy = JSON.parse(JSON.stringify(this.fileList))
@@ -131,6 +124,7 @@ export default {
             file.url = url
             file.status = 'uploadSuccess'
             this.$emit('update:fileList', fileListCopy)
+            this.$emit('uploaded')
         },
         uploadError(fileId, xhr) {
             let fileListCopy = JSON.parse(JSON.stringify(this.fileList))
