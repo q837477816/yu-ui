@@ -1,21 +1,27 @@
 <template>
     <div class="demo-wrapper">
-        {{fileList}}
-        <p style="margin-bottom: 10px;">只能上传 300kb 以内的 png、jpeg 文件</p>
-        <yu-uploader
-            accept="image/*"
-            action="http://127.0.0.1:3001/upload"
-            name="file"
-            :parse-response="parseResponse"
-            :file-list.sync="fileList"
-            :size="1 * 1024 * 1024"
-            multiple
-            @upload-error="onError">
-            <template>
-                <yu-button icon="upload">上传</yu-button>
-            </template>
-            
-        </yu-uploader>
+        <yu-table
+            :data="tableData"
+            :columns="columns"
+            :striped="false"
+            indexVisible
+            border
+            compact
+        ></yu-table>
+        <yu-table
+            style="margin-top: 20px;"
+            :data="tableData"
+            :selectedItems.sync="selectedItems"
+            :columns="columns"
+            indexVisible
+            border
+        ></yu-table>
+        <p>当前选中了：{{selectedItems}}</p>
+        <yu-pager 
+            style="margin-top: 20px;"
+            :total-page="10"
+            :current-page.sync="currentPage"
+        ></yu-pager>
     </div>
 </template>
 
@@ -25,7 +31,20 @@ export default {
 
     data() {
         return {
-            fileList: []
+            currentPage: 1,
+            columns: [
+                {text: '姓名', field: 'name'},
+                {text: '分数', field: 'score'},
+            ],
+            tableData: [
+                {id: 1, name: '德邦', score: 100},
+                {id: 2, name: '盖伦', score: 100},
+                {id: 3, name: '皇子', score: 100},
+                {id: 4, name: '露露', score: 100},
+                {id: 5, name: '凤女', score: 100},
+                {id: 6, name: '锐雯', score: 100},
+            ],
+            selectedItems: []
         }
     },
 
@@ -34,12 +53,15 @@ export default {
     },
 
     methods: {
-        parseResponse(response) {
-            let obj = JSON.parse(response)
-            return `http://127.0.0.1:3001/preview/${obj.id}`
-        },
-        onError(error) {
-            window.alert(error)
+        changeItem(row) {
+            const {checked, item, index} = row
+            if (checked) {
+                this.selectedItems.push(item)
+            } else {
+                let index = this.selectedItems.indexOf(item)
+                this.selectedItems.splice(index, 1)
+            }
+
         }
     }
 
