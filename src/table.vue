@@ -46,6 +46,9 @@
                 </tr>
             </tbody>
         </table>
+        <div class="yu-table-loading" v-if="loading">
+            <yu-icon name="loading"></yu-icon>
+        </div>
     </div>
 </template>
 
@@ -93,6 +96,10 @@ export default {
         striped: {
             type: Boolean,
             default: true
+        },
+        loading: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -216,6 +223,25 @@ $grey: darken($grey, 10%);
             &:last-child {
                 top: -1px;
             }
+        }
+    }
+    &-wrapper {
+        position: relative;
+    }
+    &-loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.8);
+        svg {
+            width: 50px;
+            height: 50px;
+            @include loading;
         }
     }
     

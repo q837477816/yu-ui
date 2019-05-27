@@ -8,6 +8,7 @@
             border
             compact
         ></yu-table>
+
         <yu-table
             style="margin-top: 20px;"
             :data="tableData2"
@@ -18,6 +19,7 @@
             border
         ></yu-table>
         <p>当前选中了：{{selectedItems}}</p>
+
         <yu-table
             style="margin-top: 20px;"
             :data="tableData3"
@@ -28,6 +30,17 @@
             border
         ></yu-table>
         <p>当前排序信息为：{{sortInfo}}</p>
+
+        <yu-table
+            style="margin-top: 20px;"
+            :data="tableData3"
+            :columns="columns"
+            :loading="loading"
+            indexVisible
+            border
+        ></yu-table>
+        <yu-button @click="loading = !loading">切换loading状态</yu-button>
+
         <yu-pager 
             style="margin-top: 20px;"
             :total-page="10"
@@ -73,7 +86,8 @@ export default {
             ],
             selectedItems: [],
             orderBy: ['score'],
-            sortInfo: {}
+            sortInfo: {},
+            loading: false
         }
     },
 
