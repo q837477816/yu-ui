@@ -121,7 +121,7 @@ export default {
                     transform: scale(0.6);
                 }
                 .loading {
-                    @include spin;
+                    @include loading;
                 }
             }
         }

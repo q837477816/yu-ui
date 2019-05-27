@@ -84,7 +84,7 @@ export default {
         .loading{
             width: 32px;
             height: 32px;
-            @include spin;
+            @include loading;
         }
     }
 </style>

@@ -188,7 +188,7 @@ export default {
                 height: 32px;;
             }
             .spin {
-                @include spin;
+                @include loading;
             }
             
         }

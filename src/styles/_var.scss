@@ -19,6 +19,6 @@ $small-font-size: 12px;
         transform: rotate(360deg);
     }
 }
-@mixin spin {
+@mixin loading {
     animation: spin 2s infinite linear;
 }
