@@ -23,7 +23,7 @@
             :current-page.sync="currentPage"
         ></yu-pager>
     </div>
-</template>
+</template>·
 
 <script>
 export default {

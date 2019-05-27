@@ -10,13 +10,13 @@
                         @change="onChangeAllItems">
                     </th>
                     <th v-if="indexVisible">#</th>
-                    <th v-for="column in columns">
+                    <th v-for="column in columns" :key="column.field">
                         {{column.text}}
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in data">
+                <tr v-for="(item, index) in data" :key="item.id">
                     <th>
                         <input 
                         type="checkbox"
@@ -25,7 +25,7 @@
                     </th>
                     <td v-if="indexVisible">{{index + 1}}</td>
                     <template v-for="column in columns">
-                        <td>{{item[column.field]}}</td>
+                        <td :key="column.field">{{item[column.field]}}</td>
                     </template>
                 </tr>
             </tbody>
@@ -81,7 +81,7 @@ export default {
             if (checked) {
                 copy.push(item)
             } else {
-                copy.splice(copy.indexOf(item), 1)
+                copy = copy.filter(i => i.id !== item.id)
             }
             this.$emit('update:selectedItems', copy)
         },
