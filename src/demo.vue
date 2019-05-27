@@ -14,9 +14,20 @@
             :selectedItems.sync="selectedItems"
             :columns="columns"
             indexVisible
+            selection
             border
         ></yu-table>
         <p>当前选中了：{{selectedItems}}</p>
+        <yu-table
+            style="margin-top: 20px;"
+            :data="tableData"
+            :columns="columns"
+            :orderBy="orderBy"
+            @changeOrderBy="changeOrderBy"
+            indexVisible
+            border
+        ></yu-table>
+        <p>当前排序信息为：{{sortInfo}}</p>
         <yu-pager 
             style="margin-top: 20px;"
             :total-page="10"
@@ -38,13 +49,15 @@ export default {
             ],
             tableData: [
                 {id: 1, name: '德邦', score: 100},
-                {id: 2, name: '盖伦', score: 100},
-                {id: 3, name: '皇子', score: 100},
-                {id: 4, name: '露露', score: 100},
-                {id: 5, name: '凤女', score: 100},
-                {id: 6, name: '锐雯', score: 100},
+                {id: 2, name: '盖伦', score: 90},
+                {id: 3, name: '皇子', score: 80},
+                {id: 4, name: '露露', score: 70},
+                {id: 5, name: '凤女', score: 65},
+                {id: 6, name: '锐雯', score: 60},
             ],
-            selectedItems: []
+            selectedItems: [],
+            orderBy: ['score'],
+            sortInfo: {}
         }
     },
 
@@ -53,15 +66,8 @@ export default {
     },
 
     methods: {
-        changeItem(row) {
-            const {checked, item, index} = row
-            if (checked) {
-                this.selectedItems.push(item)
-            } else {
-                let index = this.selectedItems.indexOf(item)
-                this.selectedItems.splice(index, 1)
-            }
-
+        changeOrderBy(obj) {
+            this.sortInfo = obj
         }
     }
 
