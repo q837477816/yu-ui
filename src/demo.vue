@@ -1,7 +1,7 @@
 <template>
     <div class="demo-wrapper">
         <yu-table
-            :data="tableData"
+            :data="tableData1"
             :columns="columns"
             :striped="false"
             indexVisible
@@ -10,7 +10,7 @@
         ></yu-table>
         <yu-table
             style="margin-top: 20px;"
-            :data="tableData"
+            :data="tableData2"
             :selectedItems.sync="selectedItems"
             :columns="columns"
             indexVisible
@@ -20,7 +20,7 @@
         <p>当前选中了：{{selectedItems}}</p>
         <yu-table
             style="margin-top: 20px;"
-            :data="tableData"
+            :data="tableData3"
             :columns="columns"
             :orderBy="orderBy"
             @changeOrderBy="changeOrderBy"
@@ -47,7 +47,23 @@ export default {
                 {text: '姓名', field: 'name'},
                 {text: '分数', field: 'score'},
             ],
-            tableData: [
+            tableData1: [
+                {id: 1, name: '德邦', score: 100},
+                {id: 2, name: '盖伦', score: 90},
+                {id: 3, name: '皇子', score: 80},
+                {id: 4, name: '露露', score: 70},
+                {id: 5, name: '凤女', score: 65},
+                {id: 6, name: '锐雯', score: 60},
+            ],
+            tableData2: [
+                {id: 1, name: '德邦', score: 100},
+                {id: 2, name: '盖伦', score: 90},
+                {id: 3, name: '皇子', score: 80},
+                {id: 4, name: '露露', score: 70},
+                {id: 5, name: '凤女', score: 65},
+                {id: 6, name: '锐雯', score: 60},
+            ],
+            tableData3: [
                 {id: 1, name: '德邦', score: 100},
                 {id: 2, name: '盖伦', score: 90},
                 {id: 3, name: '皇子', score: 80},
@@ -68,6 +84,15 @@ export default {
     methods: {
         changeOrderBy(obj) {
             this.sortInfo = obj
+            const {field, value} = obj
+            this.tableData = this.tableData3.sort((a, b) => {
+                if (value > 0) {
+                    return a[field] - b[field]
+                }
+                if (value < 0) {
+                    return b[field] - a[field]
+                }
+            })
         }
     }
 

@@ -97,8 +97,8 @@ export default {
     },
     data() {
         let orderByHash = {}
-        this.orderBy.forEach(filed => {
-            orderByHash[filed] = 0
+        this.orderBy.forEach(field => {
+            orderByHash[field] = 0
         })
         return {
             orderByHash
@@ -140,13 +140,13 @@ export default {
         itemSelected(item) {
             return this.selectedItems.filter(i => i.id === item.id).length
         },
-        changeOrderByHash(filed) {
-            if (this.orderByHash[filed] === 1) {
-                this.orderByHash[filed] = -1
+        changeOrderByHash(field) {
+            if (this.orderByHash[field] === 1) {
+                this.orderByHash[field] = -1
             } else {
-                this.orderByHash[filed]++
+                this.orderByHash[field]++
             }
-            this.$emit('changeOrderBy', {filed, value: this.orderByHash[filed]})
+            this.$emit('changeOrderBy', {field, value: this.orderByHash[field]})
         }
     }
 }
