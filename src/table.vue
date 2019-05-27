@@ -6,7 +6,8 @@
                     <th>
                         <input 
                         ref="allCheck"
-                        type="checkbox" 
+                        type="checkbox"
+                        :checked="allItemsSelected"
                         @change="onChangeAllItems">
                     </th>
                     <th v-if="indexVisible">#</th>
@@ -67,6 +68,19 @@ export default {
         striped: {
             type: Boolean,
             default: true
+        }
+    },
+    computed: {
+        allItemsSelected() {
+            if (this.selectedItems.length !== this.data.length) return false
+            const allIds = this.data.map(item => item.id).sort()
+            const selectedIds = this.selectedItems.map(item => item.id).sort()
+            for (let i = 0; i < allIds.length; i++) {
+                if (allIds[i] !== selectedIds[i]) {
+                    return false
+                }
+            }
+            return true
         }
     },
     watch: {
