@@ -1,51 +1,53 @@
 <template>
-    <div class="yu-table-wrapper">
-        <table :class="['yu-table', {border, compact, striped}]">
-            <thead>
-                <tr>
-                    <th v-if="selection">
-                        <input 
-                        ref="allCheck"
-                        type="checkbox"
-                        :checked="allItemsSelected"
-                        @change="onChangeAllItems">
-                    </th>
-                    <th v-if="indexVisible">#</th>
-                    <th v-for="column in columns" :key="column.field">
-                        <div class="yu-table-header">
-                            {{column.text}}
-                            <span 
-                                class="yu-table-sort" 
-                                v-if="orderBy.includes(column.field)"
-                                @click="changeOrderByHash(column.field)">
-                                <yu-icon 
-                                    name="asc"
-                                    :class="{active: orderByHash[column.field] === 1}"
-                                ></yu-icon>
-                                <yu-icon 
-                                    name="desc"
-                                    :class="{active: orderByHash[column.field] === -1}"
-                                ></yu-icon>
-                            </span>
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in data" :key="item.id">
-                    <th v-if="selection">
-                        <input 
-                        type="checkbox"
-                        :checked="itemSelected(item)"
-                        @change="onChangeItem(item, index, $event)">
-                    </th>
-                    <td v-if="indexVisible">{{index + 1}}</td>
-                    <template v-for="column in columns">
-                        <td :key="column.field">{{item[column.field]}}</td>
-                    </template>
-                </tr>
-            </tbody>
-        </table>
+    <div class="yu-table-wrapper" ref="wrapper">
+        <div :style="{height, overflow: 'auto'}">
+            <table :class="['yu-table', {border, compact, striped}]" ref="table">
+                <thead>
+                    <tr>
+                        <th v-if="selection">
+                            <input 
+                            ref="allCheck"
+                            type="checkbox"
+                            :checked="allItemsSelected"
+                            @change="onChangeAllItems">
+                        </th>
+                        <th v-if="indexVisible">#</th>
+                        <th v-for="column in columns" :key="column.field">
+                            <div class="yu-table-header">
+                                {{column.text}}
+                                <span 
+                                    class="yu-table-sort" 
+                                    v-if="orderBy.includes(column.field)"
+                                    @click="changeOrderByHash(column.field)">
+                                    <yu-icon 
+                                        name="asc"
+                                        :class="{active: orderByHash[column.field] === 1}"
+                                    ></yu-icon>
+                                    <yu-icon 
+                                        name="desc"
+                                        :class="{active: orderByHash[column.field] === -1}"
+                                    ></yu-icon>
+                                </span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in data" :key="item.id">
+                        <th v-if="selection">
+                            <input 
+                            type="checkbox"
+                            :checked="itemSelected(item)"
+                            @change="onChangeItem(item, index, $event)">
+                        </th>
+                        <td v-if="indexVisible">{{index + 1}}</td>
+                        <template v-for="column in columns">
+                            <td :key="column.field">{{item[column.field]}}</td>
+                        </template>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="yu-table-loading" v-if="loading">
             <yu-icon name="loading"></yu-icon>
         </div>
@@ -93,6 +95,9 @@ export default {
             type: Boolean,
             default: false
         },
+        height: {
+            type: String
+        },
         striped: {
             type: Boolean,
             default: true
@@ -108,7 +113,8 @@ export default {
             orderByHash[field] = 0
         })
         return {
-            orderByHash
+            orderByHash,
+            tableCopy: null
         }
     },
     computed: {
@@ -129,7 +135,38 @@ export default {
             this.$refs.allCheck.indeterminate = newSelectedItems.length > 0 && newSelectedItems.length < this.data.length
         }
     },
+    mounted() {
+        let tableCopy = this.$refs.table.cloneNode(true)
+        this.tableCopy = tableCopy
+        tableCopy.classList.add('yu-table-copy')
+        this.$refs.wrapper.appendChild(tableCopy)
+        this.updateHeaderWidth()
+        window.addEventListener('resize', this.updateHeaderWidth)
+
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.updateHeaderWidth)
+        this.tableCopy.remove()
+    },
     methods: {
+        updateHeaderWidth() {
+            let tableHeader = Array.from(this.$refs.table.children).filter(node => node.tagName.toLowerCase() === 'thead')[0]
+            let tableHeaderCopy
+            Array.from(this.tableCopy.children).forEach(node => {
+                if (node.tagName.toLowerCase() !== 'thead') {
+                    node.remove()
+                } else {
+                    tableHeaderCopy = node
+                }
+            })
+            const thNodes = Array.from(tableHeader.children[0].children)
+            thNodes.forEach((th, index) => {
+                if (index !== thNodes.length - 1) {
+                    const {width} = th.getBoundingClientRect()
+                    tableHeaderCopy.children[0].children[index].style.width = `${width}px`
+                }
+            })
+        },
         onChangeItem(item, index, e) {
             const checked = e.target.checked
             let copy = JSON.parse(JSON.stringify(this.selectedItems))
@@ -243,6 +280,13 @@ $grey: darken($grey, 10%);
             height: 50px;
             @include loading;
         }
+    }
+    &-copy {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: #fff;
     }
     
 }
