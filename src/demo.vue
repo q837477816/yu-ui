@@ -3,13 +3,13 @@
         <yu-table
             :data="tableData1"
             :columns="columns"
-            :striped="false"
+            striped
             indexVisible
             border
             compact
         ></yu-table>
 
-        <yu-table
+        <!-- <yu-table
             style="margin-top: 20px;"
             :data="tableData2"
             :selectedItems.sync="selectedItems"
@@ -45,6 +45,7 @@
         <yu-table
             :data="tableData4"
             :columns="columns"
+            :orderBy="orderBy"
             height="400px"
             selection
             border
@@ -54,7 +55,8 @@
             style="margin-top: 20px;"
             :total-page="10"
             :current-page.sync="currentPage"
-        ></yu-pager>
+        ></yu-pager> -->
+
     </div>
 </template>·
 
@@ -66,8 +68,8 @@ export default {
         return {
             currentPage: 1,
             columns: [
-                {text: '姓名', field: 'name'},
-                {text: '分数', field: 'score'},
+                {label: '姓名', field: 'name', width: '100px'},
+                {label: '分数', field: 'score', width: '100px'},
             ],
             tableData1: [
                 {id: 1, name: '德邦', score: 100},

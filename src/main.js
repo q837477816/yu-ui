@@ -31,7 +31,7 @@ import NavItem from './nav/nav-item'
 import SubNav from './nav/sub-nav'
 import Pager from './pager'
 import Uploader from './uploader'
-import Table from './table'
+import Table from './table2'
 
 Vue.component('yu-button', Button)
 Vue.component('yu-icon', Icon)
