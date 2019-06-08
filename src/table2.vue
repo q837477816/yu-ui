@@ -3,10 +3,12 @@
         <div class="yu-table-head">
             <table :class="{compact, border}">
                 <colgroup>
+                    <col name="index" width="50px" v-if="indexVisible">
                     <col v-for="column in columns" :width="column.width">
                 </colgroup>
                 <thead>
                     <tr>
+                        <th :align="indexAlign" v-if="indexVisible">#</td>
                         <th v-for="column in columns">
                             {{column.label}}
                         </th>
@@ -17,10 +19,12 @@
         <div class="yu-table-body">
             <table :class="{striped, compact, border}">
                 <colgroup>
+                    <col name="index" width="50px" v-if="indexVisible">
                     <col v-for="column in columns" :width="column.width">
                 </colgroup>
                 <tbody>
-                    <tr v-for="item in data">
+                    <tr v-for="item, index in data">
+                        <td :align="indexAlign" v-if="indexVisible">{{index + 1}}</td>
                         <td v-for="column in columns">
                             {{item[column.field]}}
                         </td>
@@ -80,6 +84,11 @@ export default {
         loading: {
             type: Boolean,
             default: false
+        }
+    },
+    computed: {
+        indexAlign() {
+            return this.border ? 'center' : 'left'
         }
     }
 }
