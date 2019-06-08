@@ -1,7 +1,7 @@
 <template>
     <div class="yu-table-wrapper">
-        <div class="yu-table-header">
-            <table :class="{compact}">
+        <div class="yu-table-head">
+            <table :class="{compact, border}">
                 <colgroup>
                     <col v-for="column in columns" :width="column.width">
                 </colgroup>
@@ -14,16 +14,18 @@
                 </thead>
             </table>
         </div>
-        <div class="yu-table-body" :class="{striped}">
-            <table :class="{compact}">
+        <div class="yu-table-body">
+            <table :class="{striped, compact, border}">
                 <colgroup>
                     <col v-for="column in columns" :width="column.width">
                 </colgroup>
-                <tr v-for="item in data">
-                    <td v-for="column in columns">
-                        {{item[column.field]}}
-                    </td>
-                </tr>
+                <tbody>
+                    <tr v-for="item in data">
+                        <td v-for="column in columns">
+                            {{item[column.field]}}
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -90,36 +92,42 @@ $grey: darken($grey, 10%);
     table {
         // width: 100%;
         border-collapse: collapse;
-    }
-    tr {
-        border-bottom: 1px solid $grey;
-        text-align: left;
-        th, td {
-            padding: 4px;
-        }
-    }
-    .yu-table-body {
-        tr:hover {
-            background-color: #f5f7fa;
-        }
-        &.striped {
+        thead, tbody {
             tr {
-                &:nth-child(odd) {
-                    background-color: lighten($grey, 10%);
+                border-bottom: 1px solid $grey;
+                text-align: left;
+                th, td {
+                    padding: 4px;
                 }
-                &:nth-child(even) {
-                    background-color: #fff;
-                }
-                &:hover {
-                    background-color: #f5f7fa;
-                }
-                
             }
         }
-    }
-    .compact {
-        th, td {
-            padding: 8px;
+        tbody > tr {
+            &:hover {
+                background-color: #f5f7fa;
+            }
+        }
+        &.striped > tbody > tr {
+            &:nth-child(odd) {
+                background-color: lighten($grey, 10%);
+            }
+            &:nth-child(even) {
+                background-color: #fff;
+            }
+            &:hover {
+                background-color: #f5f7fa;
+            }
+        }
+        &.border {
+            th {
+                border: 1px solid $grey;
+            }
+            td {
+                border-left: 1px solid $grey;
+                border-right: 1px solid $grey;
+            }
+        }
+        &.compact {
+            th, td { padding: 8px; }
         }
     }
 }
