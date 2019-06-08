@@ -73,7 +73,7 @@ export default {
         },
         striped: {
             type: Boolean,
-            default: true
+            default: false
         },
         loading: {
             type: Boolean,
@@ -99,6 +99,9 @@ $grey: darken($grey, 10%);
         }
     }
     .yu-table-body {
+        tr:hover {
+            background-color: #f5f7fa;
+        }
         &.striped {
             tr {
                 &:nth-child(odd) {
@@ -107,12 +110,11 @@ $grey: darken($grey, 10%);
                 &:nth-child(even) {
                     background-color: #fff;
                 }
+                &:hover {
+                    background-color: #f5f7fa;
+                }
                 
             }
-        }
-        // TODO：hover样式不展示问题
-        tr:hover {
-            background-color: lighten($grey, 10%);
         }
     }
 }
