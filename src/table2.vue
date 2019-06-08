@@ -1,7 +1,7 @@
 <template>
     <div class="yu-table-wrapper">
         <div class="yu-table-header">
-            <table>
+            <table :class="{compact}">
                 <colgroup>
                     <col v-for="column in columns" :width="column.width">
                 </colgroup>
@@ -15,7 +15,7 @@
             </table>
         </div>
         <div class="yu-table-body" :class="{striped}">
-            <table>
+            <table :class="{compact}">
                 <colgroup>
                     <col v-for="column in columns" :width="column.width">
                 </colgroup>
@@ -115,6 +115,11 @@ $grey: darken($grey, 10%);
                 }
                 
             }
+        }
+    }
+    .compact {
+        th, td {
+            padding: 8px;
         }
     }
 }
