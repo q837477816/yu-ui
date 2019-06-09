@@ -1,10 +1,10 @@
 <template>
     <div class="demo-wrapper">
-        当前排序信息：{{sortInfo}}
+        <yu-button @click="loading = !loading">切换loading状态</yu-button>
         <yu-table
             :data="tableData1"
             :columns="columns"
-            @changeOrderBy="changeOrderBy"
+            :loading="loading"
             compact
         ></yu-table>
     </div>

@@ -1,72 +1,78 @@
 <template>
-    <div class="yu-table-wrapper">
-        <div class="yu-table-head">
-            <table :class="{compact, border}">
-                <colgroup>
-                    <col name="selection" width="50px" v-if="selection">
-                    <col name="index" width="50px" v-if="indexVisible">
-                    <col v-for="column in columns" :width="column.width">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th :align="indexAlign" v-if="selection">
-                            <input 
-                            ref="allCheck"
-                            type="checkbox"
-                            :checked="allItemsSelected"
-                            @change="onChangeAllItems">
-                        </th>
-                        <th :align="indexAlign" v-if="indexVisible">#</th>
-                        <th v-for="column in columns">
-                            <div class="yu-table-head-label">
-                                {{column.label}}
-                                <span 
-                                    class="yu-table-head-sort" 
-                                    v-if="column.sort"
-                                    @click="changeOrderByHash(column.field)">
-                                    <yu-icon 
-                                        name="asc"
-                                        :class="{active: orderByHash[column.field] === 1}"
-                                    ></yu-icon>
-                                    <yu-icon 
-                                        name="desc"
-                                        :class="{active: orderByHash[column.field] === -1}"
-                                    ></yu-icon>
-                            </span>
+    <div class="yu-table-outer-wrapper">
+        <div class="yu-table-inner-wrapper">
+            <div class="yu-table-head">
+                <table :class="{compact, border}">
+                    <colgroup>
+                        <col name="selection" width="50px" v-if="selection">
+                        <col name="index" width="50px" v-if="indexVisible">
+                        <col v-for="column in columns" :width="column.width">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th :align="indexAlign" v-if="selection">
+                                <input 
+                                ref="allCheck"
+                                type="checkbox"
+                                :checked="allItemsSelected"
+                                @change="onChangeAllItems">
+                            </th>
+                            <th :align="indexAlign" v-if="indexVisible">#</th>
+                            <th v-for="column in columns">
+                                <div class="yu-table-head-label">
+                                    {{column.label}}
+                                    <span 
+                                        class="yu-table-head-sort" 
+                                        v-if="column.sort"
+                                        @click="changeOrderByHash(column.field)">
+                                        <yu-icon 
+                                            name="asc"
+                                            :class="{active: orderByHash[column.field] === 1}"
+                                        ></yu-icon>
+                                        <yu-icon 
+                                            name="desc"
+                                            :class="{active: orderByHash[column.field] === -1}"
+                                        ></yu-icon>
+                                </span>
 
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
-            </table>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="yu-table-body">
+                <table :class="{striped, compact, border}">
+                    <colgroup>
+                        <col name="selection" width="50px" v-if="selection">
+                        <col name="index" width="50px" v-if="indexVisible">
+                        <col v-for="column in columns" :width="column.width">
+                    </colgroup>
+                    <tbody>
+                        <tr v-for="item, index in data">
+                            <td :align="indexAlign" v-if="selection">
+                                <input 
+                                type="checkbox"
+                                :checked="itemSelected(item)"
+                                @change="onChangeItem(item, index, $event)">
+                            </td>
+                            <td :align="indexAlign" v-if="indexVisible">{{index + 1}}</td>
+                            <td v-for="column in columns">
+                                {{item[column.field]}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="yu-table-body">
-            <table :class="{striped, compact, border}">
-                <colgroup>
-                    <col name="selection" width="50px" v-if="selection">
-                    <col name="index" width="50px" v-if="indexVisible">
-                    <col v-for="column in columns" :width="column.width">
-                </colgroup>
-                <tbody>
-                    <tr v-for="item, index in data">
-                        <td :align="indexAlign" v-if="selection">
-                            <input 
-                            type="checkbox"
-                            :checked="itemSelected(item)"
-                            @change="onChangeItem(item, index, $event)">
-                        </td>
-                        <td :align="indexAlign" v-if="indexVisible">{{index + 1}}</td>
-                        <td v-for="column in columns">
-                            {{item[column.field]}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="yu-table-loading" v-if="loading">
+            <yu-icon name="loading"></yu-icon>
         </div>
     </div>
 </template>
 
 <script>
+import YuIcon from './icon'
 export default {
     name: 'YuTable',
     props: {
@@ -184,71 +190,90 @@ export default {
 <style lang="scss" scoped>
 @import './styles/_var';
 $grey: darken($grey, 10%);
-.yu-table-wrapper {
-    table {
-        // width: 100%;
-        border-collapse: collapse;
-        thead, tbody {
-            tr {
-                border-bottom: 1px solid $grey;
-                text-align: left;
-                th, td {
-                    padding: 4px;
-                }
-            }
-        }
-        tbody > tr {
-            &:hover {
-                background-color: #f5f7fa;
-            }
-        }
-        &.striped > tbody > tr {
-            &:nth-child(odd) {
-                background-color: lighten($grey, 10%);
-            }
-            &:nth-child(even) {
-                background-color: #fff;
-            }
-            &:hover {
-                background-color: #f5f7fa;
-            }
-        }
-        &.border {
-            th {
-                border: 1px solid $grey;
-            }
-            td {
-                border-left: 1px solid $grey;
-                border-right: 1px solid $grey;
-            }
-        }
-        &.compact {
-            th, td { padding: 8px; }
-        }
-        .yu-table-head-label {
-            display: flex;
-            align-items: center;
-            .yu-table-head-sort {
-                display: inline-flex;
-                flex-direction: column;
-                margin: 0 4px;
-                cursor: pointer;
-                svg {
-                    width: 10px;
-                    height: 10px;
-                    fill: $grey;
-                    position: relative;
-                    &.active {
-                        fill: red;
-                    }
-                    &:first-child {
-                        bottom: -1px;
-                    }
-                    &:last-child {
-                        top: -1px;
+.yu-table-outer-wrapper {
+    position: relative;
+    .yu-table-inner-wrapper {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            thead, tbody {
+                tr {
+                    border-bottom: 1px solid $grey;
+                    text-align: left;
+                    th, td {
+                        padding: 4px;
                     }
                 }
             }
+            tbody > tr {
+                &:hover {
+                    background-color: #f5f7fa;
+                }
+            }
+            &.striped > tbody > tr {
+                &:nth-child(odd) {
+                    background-color: lighten($grey, 10%);
+                }
+                &:nth-child(even) {
+                    background-color: #fff;
+                }
+                &:hover {
+                    background-color: #f5f7fa;
+                }
+            }
+            &.border {
+                th {
+                    border: 1px solid $grey;
+                }
+                td {
+                    border-left: 1px solid $grey;
+                    border-right: 1px solid $grey;
+                }
+            }
+            &.compact {
+                th, td { padding: 8px; }
+            }
+            .yu-table-head-label {
+                display: flex;
+                align-items: center;
+                .yu-table-head-sort {
+                    display: inline-flex;
+                    flex-direction: column;
+                    margin: 0 4px;
+                    cursor: pointer;
+                    svg {
+                        width: 10px;
+                        height: 10px;
+                        fill: $grey;
+                        position: relative;
+                        &.active {
+                            fill: red;
+                        }
+                        &:first-child {
+                            bottom: -1px;
+                        }
+                        &:last-child {
+                            top: -1px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .yu-table-loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.8);
+        svg {
+            width: 50px;
+            height: 50px;
+            @include loading;
         }
     }
 }
