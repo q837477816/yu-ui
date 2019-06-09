@@ -18,7 +18,23 @@
                         </th>
                         <th :align="indexAlign" v-if="indexVisible">#</th>
                         <th v-for="column in columns">
-                            {{column.label}}
+                            <div class="yu-table-head-label">
+                                {{column.label}}
+                                <span 
+                                    class="yu-table-head-sort" 
+                                    v-if="column.sort"
+                                    @click="changeOrderByHash(column.field)">
+                                    <yu-icon 
+                                        name="asc"
+                                        :class="{active: orderByHash[column.field] === 1}"
+                                    ></yu-icon>
+                                    <yu-icon 
+                                        name="desc"
+                                        :class="{active: orderByHash[column.field] === -1}"
+                                    ></yu-icon>
+                            </span>
+
+                            </div>
                         </th>
                     </tr>
                 </thead>
@@ -69,10 +85,6 @@ export default {
             type: Array,
             default: () => []
         },
-        orderBy: {
-            type: Array,
-            default: () => []
-        },
         selection: {
             type: Boolean,
             default: false
@@ -101,6 +113,17 @@ export default {
             default: false
         }
     },
+    data() {
+        let orderByHash = {}
+        this.columns.forEach(column => {
+            if (column.sort) {
+                orderByHash[column.field] = 0
+            }
+        })
+        return {
+            orderByHash
+        }
+    },
     computed: {
         indexAlign() {
             return this.border ? 'center' : 'left'
@@ -119,11 +142,11 @@ export default {
     },
     watch: {
         selectedItems(newSelectedItems) {
-            this.setIndeterminate()
+            this.selection && this.setIndeterminate()
         },
     },
     mounted() {
-        this.setIndeterminate()
+        this.selection && this.setIndeterminate()
     },
     methods: {
         itemSelected(item) {
@@ -145,6 +168,14 @@ export default {
         },
         setIndeterminate() {
             this.$refs.allCheck.indeterminate = this.selectedItems.length > 0 && this.selectedItems.length < this.data.length
+        },
+        changeOrderByHash(field) {
+            if (this.orderByHash[field] === 1) {
+                this.orderByHash[field] = -1
+            } else {
+                this.orderByHash[field]++
+            }
+            this.$emit('changeOrderBy', {field, value: this.orderByHash[field]})
         }
     }
 }
@@ -193,6 +224,31 @@ $grey: darken($grey, 10%);
         }
         &.compact {
             th, td { padding: 8px; }
+        }
+        .yu-table-head-label {
+            display: flex;
+            align-items: center;
+            .yu-table-head-sort {
+                display: inline-flex;
+                flex-direction: column;
+                margin: 0 4px;
+                cursor: pointer;
+                svg {
+                    width: 10px;
+                    height: 10px;
+                    fill: $grey;
+                    position: relative;
+                    &.active {
+                        fill: red;
+                    }
+                    &:first-child {
+                        bottom: -1px;
+                    }
+                    &:last-child {
+                        top: -1px;
+                    }
+                }
+            }
         }
     }
 }
