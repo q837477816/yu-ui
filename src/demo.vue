@@ -1,12 +1,12 @@
 <template>
     <div class="demo-wrapper">
+        当前选中：{{selectedItems}}
         <yu-table
             :data="tableData1"
             :columns="columns"
-            striped
-            indexVisible
-            border
+            :selectedItems.sync="selectedItems"
             compact
+            selection
         ></yu-table>
 
         <!-- <yu-table
@@ -116,7 +116,10 @@ export default {
                 {id: 19, name: '锐雯', score: 60},
                 {id: 20, name: '德邦', score: 100},
             ],
-            selectedItems: [],
+            selectedItems: [
+                {id: 1, name: '德邦', score: 100},
+                {id: 2, name: '盖伦', score: 90}
+            ],
             orderBy: ['score'],
             sortInfo: {},
             loading: false

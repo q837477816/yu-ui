@@ -3,12 +3,20 @@
         <div class="yu-table-head">
             <table :class="{compact, border}">
                 <colgroup>
+                    <col name="selection" width="50px" v-if="selection">
                     <col name="index" width="50px" v-if="indexVisible">
                     <col v-for="column in columns" :width="column.width">
                 </colgroup>
                 <thead>
                     <tr>
-                        <th :align="indexAlign" v-if="indexVisible">#</td>
+                        <th :align="indexAlign" v-if="selection">
+                            <input 
+                            ref="allCheck"
+                            type="checkbox"
+                            :checked="allItemsSelected"
+                            @change="onChangeAllItems">
+                        </th>
+                        <th :align="indexAlign" v-if="indexVisible">#</th>
                         <th v-for="column in columns">
                             {{column.label}}
                         </th>
@@ -19,11 +27,18 @@
         <div class="yu-table-body">
             <table :class="{striped, compact, border}">
                 <colgroup>
+                    <col name="selection" width="50px" v-if="selection">
                     <col name="index" width="50px" v-if="indexVisible">
                     <col v-for="column in columns" :width="column.width">
                 </colgroup>
                 <tbody>
                     <tr v-for="item, index in data">
+                        <td :align="indexAlign" v-if="selection">
+                            <input 
+                            type="checkbox"
+                            :checked="itemSelected(item)"
+                            @change="onChangeItem(item, index, $event)">
+                        </td>
                         <td :align="indexAlign" v-if="indexVisible">{{index + 1}}</td>
                         <td v-for="column in columns">
                             {{item[column.field]}}
@@ -89,6 +104,47 @@ export default {
     computed: {
         indexAlign() {
             return this.border ? 'center' : 'left'
+        },
+        allItemsSelected() {
+            if (this.selectedItems.length !== this.data.length) return false
+            const allIds = this.data.map(item => item.id).sort()
+            const selectedIds = this.selectedItems.map(item => item.id).sort()
+            for (let i = 0; i < allIds.length; i++) {
+                if (allIds[i] !== selectedIds[i]) {
+                    return false
+                }
+            }
+            return true
+        }
+    },
+    watch: {
+        selectedItems(newSelectedItems) {
+            this.setIndeterminate()
+        },
+    },
+    mounted() {
+        this.setIndeterminate()
+    },
+    methods: {
+        itemSelected(item) {
+            return this.selectedItems.filter(i => i.id === item.id).length
+        },
+        onChangeAllItems(e) {
+            const checked = e.target.checked
+            this.$emit('update:selectedItems', checked ? this.data : [])           
+        },
+        onChangeItem(item, index, e) {
+            const checked = e.target.checked
+            let copy = JSON.parse(JSON.stringify(this.selectedItems))
+            if (checked) {
+                copy.push(item)
+            } else {
+                copy = copy.filter(i => i.id !== item.id)
+            }
+            this.$emit('update:selectedItems', copy)
+        },
+        setIndeterminate() {
+            this.$refs.allCheck.indeterminate = this.selectedItems.length > 0 && this.selectedItems.length < this.data.length
         }
     }
 }
