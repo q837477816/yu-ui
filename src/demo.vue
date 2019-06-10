@@ -5,8 +5,9 @@
             :data="tableData1"
             :columns="columns"
             :loading="loading"
+            :height="150"
             indexVisible
-            compact
+            border
         ></yu-table>
     </div>
 </template>·

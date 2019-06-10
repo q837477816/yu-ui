@@ -41,7 +41,7 @@
                     </thead>
                 </table>
             </div>
-            <div class="yu-table-body">
+            <div class="yu-table-body" :style="computedStyle">
                 <table :class="{striped, compact, border}">
                     <colgroup>
                         <col name="selection" width="50px" v-if="selection">
@@ -108,7 +108,7 @@ export default {
             default: false
         },
         height: {
-            type: String
+            type: [String, Number]
         },
         striped: {
             type: Boolean,
@@ -144,6 +144,13 @@ export default {
                 }
             }
             return true
+        },
+        computedStyle() {
+            if (this.height) {
+                const headHeight = this.compact ? 36 : 28;
+                const bodyHeight = Number.parseFloat(this.height) - headHeight
+                return {height: bodyHeight + 'px'}
+            }
         }
     },
     watch: {
@@ -193,6 +200,9 @@ $grey: darken($grey, 10%);
 .yu-table-outer-wrapper {
     position: relative;
     .yu-table-inner-wrapper {
+        .yu-table-body {
+            overflow: auto;
+        }
         table {
             table-layout: fixed;
             width: 100%;
@@ -259,6 +269,15 @@ $grey: darken($grey, 10%);
                     }
                 }
             }
+        }
+        // 固定表头时模拟底部边框
+        &::after {
+            content: "";
+            display: block;
+            height: 0px;
+            position: relative;
+            top: -1px;
+            border-bottom: 1px solid $grey;
         }
     }
     .yu-table-loading {
