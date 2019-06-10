@@ -194,6 +194,7 @@ $grey: darken($grey, 10%);
     position: relative;
     .yu-table-inner-wrapper {
         table {
+            table-layout: fixed;
             width: 100%;
             border-collapse: collapse;
             thead, tbody {

@@ -5,6 +5,7 @@
             :data="tableData1"
             :columns="columns"
             :loading="loading"
+            indexVisible
             compact
         ></yu-table>
     </div>
@@ -19,7 +20,7 @@ export default {
             currentPage: 1,
             columns: [
                 {label: '姓名', field: 'name', width: '100px'},
-                {label: '分数', field: 'score', width: '100px', sort: true},
+                {label: '分数', field: 'score', sort: true},
             ],
             tableData1: [
                 {id: 1, name: '德邦', score: 100},
