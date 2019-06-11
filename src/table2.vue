@@ -4,12 +4,14 @@
             <div class="yu-table-head">
                 <table :class="{compact, border}">
                     <colgroup>
+                        <col name="expend" width="50px" v-if="expendFiled">
                         <col name="selection" width="50px" v-if="selection">
                         <col name="index" width="50px" v-if="indexVisible">
                         <col v-for="column in columns" :width="column.width">
                     </colgroup>
                     <thead>
                         <tr>
+                            <th colspan="1"></th>
                             <th :align="indexAlign" v-if="selection">
                                 <input 
                                 ref="allCheck"
@@ -44,23 +46,36 @@
             <div class="yu-table-body" :style="computedStyle">
                 <table :class="{striped, compact, border}">
                     <colgroup>
+                        <col name="expend" width="50px" v-if="expendFiled">
                         <col name="selection" width="50px" v-if="selection">
                         <col name="index" width="50px" v-if="indexVisible">
                         <col v-for="column in columns" :width="column.width">
                     </colgroup>
                     <tbody>
-                        <tr v-for="item, index in data">
-                            <td :align="indexAlign" v-if="selection">
-                                <input 
-                                type="checkbox"
-                                :checked="itemSelected(item)"
-                                @change="onChangeItem(item, index, $event)">
-                            </td>
-                            <td :align="indexAlign" v-if="indexVisible">{{index + 1}}</td>
-                            <td v-for="column in columns">
-                                {{item[column.field]}}
-                            </td>
-                        </tr>
+                        <template v-for="item, index in data">
+                            <tr>
+                                <td :align="indexAlign" v-if="expendFiled">
+                                    <yu-icon 
+                                        :class="['yu-table-expend-icon', {expend: expendItems.includes(item)}]"
+                                        name="right"
+                                        @click="changeRowExpendStatus(item)"
+                                    ></yu-icon>
+                                </td>
+                                <td :align="indexAlign" v-if="selection">
+                                    <input 
+                                    type="checkbox"
+                                    :checked="itemSelected(item)"
+                                    @change="onChangeItem(item, index, $event)">
+                                </td>
+                                <td :align="indexAlign" v-if="indexVisible">{{index + 1}}</td>
+                                <td v-for="column in columns">
+                                    {{item[column.field]}}
+                                </td>
+                            </tr>
+                            <tr v-if="expendItems.includes(item)">
+                                <td :colspan="4">{{item[expendFiled] || '暂无数据'}}</td>
+                            </tr>
+                        </template>
                     </tbody>
                 </table>
             </div>
@@ -117,6 +132,9 @@ export default {
         loading: {
             type: Boolean,
             default: false
+        },
+        expendFiled: {
+            type: String,
         }
     },
     data() {
@@ -127,7 +145,8 @@ export default {
             }
         })
         return {
-            orderByHash
+            orderByHash,
+            expendItems: []
         }
     },
     computed: {
@@ -189,6 +208,14 @@ export default {
                 this.orderByHash[field]++
             }
             this.$emit('changeOrderBy', {field, value: this.orderByHash[field]})
+        },
+        changeRowExpendStatus(item) {
+            const idx = this.expendItems.indexOf(item)
+            if (idx >= 0) {
+                this.expendItems.splice(idx, 1)
+            } else {
+                this.expendItems.push(item)
+            }
         }
     }
 }
@@ -294,6 +321,15 @@ $grey: darken($grey, 10%);
             width: 50px;
             height: 50px;
             @include loading;
+        }
+    }
+    .yu-table-expend-icon {
+        width: 10px;
+        height: 10px;
+        cursor: pointer;
+        &.expend {
+            transform: rotate(90deg);
+            transition: transform 250ms;
         }
     }
 }

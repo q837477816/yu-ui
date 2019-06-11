@@ -1,11 +1,11 @@
 <template>
     <div class="demo-wrapper">
-        <yu-button @click="loading = !loading">切换loading状态</yu-button>
+        <p style="margin-bottom: 20px;">可展开</p>
         <yu-table
             :data="tableData1"
             :columns="columns"
             :loading="loading"
-            :height="150"
+            expendFiled="description"
             indexVisible
             border
         ></yu-table>
@@ -24,8 +24,8 @@ export default {
                 {label: '分数', field: 'score', sort: true},
             ],
             tableData1: [
-                {id: 1, name: '德邦', score: 100},
-                {id: 2, name: '盖伦', score: 90},
+                {id: 1, name: '德邦', score: 100, description: '我是赵信'},
+                {id: 2, name: '盖伦', score: 90, description: '我是德玛'},
                 {id: 3, name: '皇子', score: 80},
                 {id: 4, name: '露露', score: 70},
                 {id: 5, name: '凤女', score: 65},
