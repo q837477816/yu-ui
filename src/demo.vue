@@ -5,11 +5,13 @@
             :data="tableData1"
             :columns="columns"
             :loading="loading"
-            expendFiled="description"
             indexVisible
-            selection
-            border
-        ></yu-table>
+            border>
+            <template slot-scope="scope">
+                <yu-button @click="edit(scope.row)">编辑</yu-button>
+                <yu-button @click="view(scope.row)">查看</yu-button>
+            </template>
+        </yu-table>
     </div>
 </template>·
 
@@ -58,6 +60,12 @@ export default {
                     return b[field] - a[field]
                 }
             })
+        },
+        edit(item) {
+            console.log('edit', item)
+        },
+        view(item) {
+            console.log('view', item)
         }
     }
 

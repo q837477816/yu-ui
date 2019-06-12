@@ -8,6 +8,7 @@
                         <col name="selection" width="50px" v-if="selection">
                         <col name="index" width="50px" v-if="indexVisible">
                         <col v-for="column in columns" :width="column.width">
+                        <col name="operation" width="150px"  v-if="$scopedSlots.default">
                     </colgroup>
                     <thead>
                         <tr>
@@ -35,10 +36,10 @@
                                             name="desc"
                                             :class="{active: orderByHash[column.field] === -1}"
                                         ></yu-icon>
-                                </span>
-
+                                    </span>
                                 </div>
                             </th>
+                            <th v-if="$scopedSlots.default">操作</th>
                         </tr>
                     </thead>
                 </table>
@@ -50,6 +51,7 @@
                         <col name="selection" width="50px" v-if="selection">
                         <col name="index" width="50px" v-if="indexVisible">
                         <col v-for="column in columns" :width="column.width">
+                        <col name="operation" width="150px"  v-if="$scopedSlots.default">
                     </colgroup>
                     <tbody>
                         <template v-for="item, index in data">
@@ -70,6 +72,9 @@
                                 <td :align="indexAlign" v-if="indexVisible">{{index + 1}}</td>
                                 <td v-for="column in columns">
                                     {{item[column.field]}}
+                                </td>
+                                <td v-if="$scopedSlots.default">
+                                    <slot :row="item"></slot>
                                 </td>
                             </tr>
                             <tr v-if="expendFiled && expendItems.includes(item)">
