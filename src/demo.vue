@@ -7,6 +7,7 @@
             :loading="loading"
             expendFiled="description"
             indexVisible
+            selection
             border
         ></yu-table>
     </div>

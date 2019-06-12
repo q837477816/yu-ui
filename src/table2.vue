@@ -11,7 +11,7 @@
                     </colgroup>
                     <thead>
                         <tr>
-                            <th colspan="1"></th>
+                            <th colspan="1" v-if="expendFiled"></th>
                             <th :align="indexAlign" v-if="selection">
                                 <input 
                                 ref="allCheck"
@@ -72,8 +72,8 @@
                                     {{item[column.field]}}
                                 </td>
                             </tr>
-                            <tr v-if="expendItems.includes(item)">
-                                <td :colspan="4">{{item[expendFiled] || '暂无数据'}}</td>
+                            <tr v-if="expendFiled && expendItems.includes(item)">
+                                <td :colspan="expendedCellColSpan">{{item[expendFiled] || '暂无数据'}}</td>
                             </tr>
                         </template>
                     </tbody>
@@ -170,6 +170,16 @@ export default {
                 const bodyHeight = Number.parseFloat(this.height) - headHeight
                 return {height: bodyHeight + 'px'}
             }
+        },
+        expendedCellColSpan() {
+            let span = 1
+            if (this.selection) {
+                span += 1
+            }
+            if (this.indexVisible) {
+                span += 1
+            }
+            return span + this.columns.length
         }
     },
     watch: {
