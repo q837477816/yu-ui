@@ -10,6 +10,7 @@
             <template slot-scope="scope">
                 <yu-button @click="edit(scope.row)">编辑</yu-button>
                 <yu-button @click="view(scope.row)">查看</yu-button>
+                <yu-button>删除</yu-button>
             </template>
         </yu-table>
     </div>

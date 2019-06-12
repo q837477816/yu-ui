@@ -8,7 +8,7 @@
                         <col name="selection" width="50px" v-if="selection">
                         <col name="index" width="50px" v-if="indexVisible">
                         <col v-for="column in columns" :width="column.width">
-                        <col name="operation" width="150px"  v-if="$scopedSlots.default">
+                        <col name="action" v-if="$scopedSlots.default">
                     </colgroup>
                     <thead>
                         <tr>
@@ -51,7 +51,7 @@
                         <col name="selection" width="50px" v-if="selection">
                         <col name="index" width="50px" v-if="indexVisible">
                         <col v-for="column in columns" :width="column.width">
-                        <col name="operation" width="150px"  v-if="$scopedSlots.default">
+                        <col name="action" v-if="$scopedSlots.default">
                     </colgroup>
                     <tbody>
                         <template v-for="item, index in data">
@@ -74,7 +74,9 @@
                                     {{item[column.field]}}
                                 </td>
                                 <td v-if="$scopedSlots.default">
-                                    <slot :row="item"></slot>
+                                    <div class="action">
+                                        <slot :row="item"></slot>
+                                    </div>
                                 </td>
                             </tr>
                             <tr v-if="expendFiled && expendItems.includes(item)">
@@ -194,6 +196,7 @@ export default {
     },
     mounted() {
         this.selection && this.setIndeterminate()
+        this.$scopedSlots && this.setActionColsWidth()
     },
     methods: {
         itemSelected(item) {
@@ -231,6 +234,20 @@ export default {
             } else {
                 this.expendItems.push(item)
             }
+        },
+        setActionColsWidth() {
+            let actionDiv = this.$el.querySelector('.action')
+            let td = actionDiv.parentNode
+            const {width} = actionDiv.getBoundingClientRect()
+            const styles = getComputedStyle(td)
+            const [paddingLeft, paddingRight, borderLeft, borderRight] = ['padding-left', 'padding-right', 'border-left-width', 'border-right-width'].map(property => {
+                return Number.parseFloat(styles.getPropertyValue(property))
+            })
+            const actionColWidth = width + paddingLeft + paddingRight + borderLeft + borderRight + 'px'
+            const cols = this.$el.querySelectorAll('col[name="action"]')
+            Array.from(cols).forEach(col => {
+                col.setAttribute('width', actionColWidth)
+            })
         }
     }
 }
@@ -346,6 +363,9 @@ $grey: darken($grey, 10%);
             transform: rotate(90deg);
             transition: transform 250ms;
         }
+    }
+    .action {
+        display: inline-block;
     }
 }
 </style>
