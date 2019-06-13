@@ -32,6 +32,7 @@ import SubNav from './nav/sub-nav'
 import Pager from './pager'
 import Uploader from './uploader'
 import Table from './table2'
+import Sticky from './sticky'
 
 Vue.component('yu-button', Button)
 Vue.component('yu-icon', Icon)
@@ -63,6 +64,7 @@ Vue.component('yu-sub-nav', SubNav)
 Vue.component('yu-pager', Pager)
 Vue.component('yu-uploader', Uploader)
 Vue.component('yu-table', Table)
+Vue.component('yu-sticky', Sticky)
 
 new Vue({
     render: h => h(demo)
