@@ -33,6 +33,7 @@ import Pager from './pager'
 import Uploader from './uploader'
 import Table from './table/table'
 import Sticky from './sticky'
+import Scroll from './scroll'
 
 Vue.component('yu-button', Button)
 Vue.component('yu-icon', Icon)
@@ -65,6 +66,7 @@ Vue.component('yu-pager', Pager)
 Vue.component('yu-uploader', Uploader)
 Vue.component('yu-table', Table)
 Vue.component('yu-sticky', Sticky)
+Vue.component('yu-scroll', Scroll)
 
 new Vue({
     render: h => h(demo)
