@@ -69,7 +69,20 @@
                                 <td :align="indexAlign" v-if="indexVisible">{{rowIndex + 1}}</td>
                                 <td v-for="col in columns">
                                     <template v-if="'render' in col">
-                                        <Render :row="row" :column="col" :index="rowIndex" :render="col.render"></Render>
+                                        <Render 
+                                            :row="row" 
+                                            :column="col" 
+                                            :index="rowIndex" 
+                                            :render="col.render">
+                                        </Render>
+                                    </template>
+                                    <template v-else-if="'slot' in col">
+                                        <slot
+                                            :row="row" 
+                                            :column="col" 
+                                            :index="rowIndex" 
+                                            :name="col.slot">
+                                        </slot>
                                     </template>
                                     <template v-else>{{row[col.field]}}</template>
                                 </td>

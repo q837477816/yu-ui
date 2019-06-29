@@ -3,8 +3,39 @@
     <yu-table
       :columns="columns"
       :data="data"
-      indexVisible
-    ></yu-table>
+      indexVisible>
+
+      <template slot-scope="{row, index}" slot="name">
+        <input type="text" v-model="editName" v-if="editIndex === index" />
+        <span v-else>{{ row.name }}</span>
+      </template>
+
+      <template slot-scope="{ row, index }" slot="age">
+        <input type="text" v-model="editAge" v-if="editIndex === index" />
+        <span v-else>{{ row.age }}</span>
+      </template>
+
+      <template slot-scope="{ row, index }" slot="birthday">
+        <input type="text" v-model="editBirthday" v-if="editIndex === index" />
+        <span v-else>{{ getBirthday(row.birthday) }}</span>
+      </template>
+
+      <template slot-scope="{ row, index }" slot="address">
+        <input type="text" v-model="editAddress" v-if="editIndex === index" />
+        <span v-else>{{ row.address }}</span>
+      </template>
+
+      <template slot-scope="{ row, index }" slot="action">
+        <div v-if="editIndex === index">
+          <yu-button @click="handleSave(index)">保存</yu-button>
+          <yu-button @click="editIndex = -1">取消</yu-button>
+        </div>
+        <div v-else>
+          <yu-button @click="handleEdit(row, index)">操作</yu-button>
+        </div>
+      </template>
+
+    </yu-table>
   </div>
 </template>
 
@@ -16,92 +47,23 @@ export default {
       columns: [
         {
           label: "姓名",
-          field: "name",
-          render: (h, { row, index }) => {
-            let edit;
-
-            if (this.editIndex === index) {
-              edit = [h('input', {
-                domProps: {
-                  value: row.name
-                },
-                on: {
-                  input: (event) => {
-                    this.editName = event.target.value;
-                  }
-                }
-              })];
-            } else {
-              edit = row.name;
-            }
-
-            return h('div', [
-              edit
-            ]);
-          }
+          slot: "name",
         },
         {
           label: "年龄",
-          field: "age"
+          slot: "age"
         },
         {
           label: "出生日期",
-          field: "birthday",
-          render: (h, { row, column, index }) => {
-            const date = new Date(parseInt(row.birthday));
-            const year = date.getFullYear();
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            const birthday = `${year}-${month}-${day}`;
-
-            return h("span", birthday);
-          }
+          slot: "birthday",
         },
         {
           label: "地址",
-          field: "address"
+          slot: "address"
         },
         {
           label: "操作",
-          render: (h, {row, index}) => {
-            if (this.editIndex === index) {
-              return [
-                h('yu-button', {
-                  on: {
-                    click: () => {
-                      this.data[index].name = this.editName;
-                      this.data[index].age = this.editAge;
-                      this.data[index].birthday = this.editBirthday;
-                      this.data[index].address = this.editAddress;
-                      this.editIndex = -1;
-                    }
-                  }
-                }, '保存'),
-                h('yu-button', {
-                  style: {
-                    marginLeft: '6px'
-                  },
-                  on: {
-                    click: () => {
-                      this.editIndex = -1;
-                    }
-                  }
-                }, '取消')
-              ]
-            } else {
-              return h('yu-button', {
-                on: {
-                  click: () => {
-                    this.editName = row.name;
-                    this.editAge = row.age;
-                    this.editAddress = row.address;
-                    this.editBirthday = row.birthday;
-                    this.editIndex = index;
-                  }
-                }
-              }, '修改');
-            }
-          }
+          slot: "action"
         }
       ],
       data: [
@@ -140,7 +102,30 @@ export default {
 
   mounted() {},
 
-  methods: {}
+  methods: {
+    handleEdit (row, index) {
+      this.editName = row.name;
+      this.editAge = row.age;
+      this.editAddress = row.address;
+      this.editBirthday = row.birthday;
+      this.editIndex = index;
+    },
+    handleSave (index) {
+      this.data[index].name = this.editName;
+      this.data[index].age = this.editAge;
+      this.data[index].birthday = this.editBirthday;
+      this.data[index].address = this.editAddress;
+      this.editIndex = -1;
+    },
+    getBirthday (birthday) {
+      const date = new Date(parseInt(birthday));
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+
+      return `${year}-${month}-${day}`;
+    }
+  }
 };
 </script>
 
