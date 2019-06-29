@@ -1,179 +1,165 @@
 <template>
-    <div class="demo-wrapper" style="display: flex; justify-content: center;">
-        <div style="width: 600px; border: 1px solid black;">
-            <p>段落1</p>
-            <p>段落2</p>
-            <p>段落3</p>
-            <p>段落4</p>
-            <p>段落5</p>
-            <p>段落6</p>
-            <p>段落7</p>
-            <p>段落8</p>
-            <p>段落9</p>
-            <p>段落10</p>
-            <p>段落11</p>
-            <p>段落12</p>
-            <p>段落13</p>
-            <p>段落14</p>
-            <p>段落15</p>
-            <p>段落16</p>
-            <p>段落17</p>
-            <p>段落18</p>
-            <p>段落19</p>
-            <p>段落20</p>
-            <p>段落21</p>
-            <p>段落22</p>
-            <p>段落23</p>
-            <p>段落24</p>
-            <p>段落25</p>
-            <p>段落26</p>
-            <p>段落27</p>
-            <p>段落28</p>
-            <p>段落29</p>
-            <p>段落30</p>
-            <p>段落31</p>
-            <p>段落32</p>
-            <yu-sticky :distance="150">
-                <!-- <div style="border: 1px solid red;">我是内容</div> -->
-                <img src="http://pic8.nipic.com/20100713/3553382_151526677480_2.jpg" alt="">
-            </yu-sticky>
-            <p>段落1</p>
-            <p>段落2</p>
-            <p>段落3</p>
-            <p>段落4</p>
-            <p>段落5</p>
-            <p>段落6</p>
-            <p>段落7</p>
-            <p>段落8</p>
-            <p>段落9</p>
-            <p>段落10</p>
-            <p>段落11</p>
-            <p>段落12</p>
-            <p>段落13</p>
-            <p>段落14</p>
-            <p>段落15</p>
-            <p>段落16</p>
-            <p>段落17</p>
-            <p>段落18</p>
-            <p>段落19</p>
-            <p>段落20</p>
-            <p>段落21</p>
-            <p>段落22</p>
-            <p>段落23</p>
-            <p>段落24</p>
-            <p>段落25</p>
-            <p>段落26</p>
-            <p>段落27</p>
-            <p>段落28</p>
-            <p>段落29</p>
-            <p>段落30</p>
-            <p>段落31</p>
-            <p>段落32</p>
-            <p>段落33</p>
-            <p>段落34</p>
-            <p>段落35</p>
-            <p>段落36</p>
-            <p>段落37</p>
-            <p>段落38</p>
-            <p>段落39</p>
-            <p>段落40</p>
-            <p>段落41</p>
-            <p>段落42</p>
-            <p>段落43</p>
-            <p>段落44</p>
-            <p>段落45</p>
-            <p>段落46</p>
-            <p>段落47</p>
-            <p>段落48</p>
-            <p>段落49</p>
-            <p>段落50</p>
-            <p>段落51</p>
-            <p>段落52</p>
-            <p>段落53</p>
-            <p>段落54</p>
-            <p>段落55</p>
-            <p>段落56</p>
-            <p>段落57</p>
-            <p>段落58</p>
-            <p>段落59</p>
-            <p>段落60</p>
-            <p>段落61</p>
-            <p>段落62</p>
-            <p>段落63</p>
-            <p>段落64</p>
-            <p>段落65</p>
-            <p>段落66</p>
-            <p>段落67</p>
-            <p>段落68</p>
-            <p>段落69</p>
-            <p>段落70</p>
-            <p>段落71</p>
-            <p>段落72</p>
-            <p>段落73</p>
-            <p>段落74</p>
-            <p>段落75</p>
-            <p>段落76</p>
-            <p>段落77</p>
-            <p>段落78</p>
-            <p>段落79</p>
-            <p>段落80</p>
-            <p>段落81</p>
-            <p>段落82</p>
-            <p>段落83</p>
-            <p>段落84</p>
-            <p>段落85</p>
-            <p>段落86</p>
-            <p>段落87</p>
-            <p>段落88</p>
-            <p>段落89</p>
-            <p>段落90</p>
-            <p>段落91</p>
-            <p>段落92</p>
-            <p>段落93</p>
-            <p>段落94</p>
-            <p>段落95</p>
-            <p>段落96</p>
-            <p>段落97</p>
-            <p>段落98</p>
-            <p>段落99</p>
-            <p>段落100</p>
-
-        </div>
-    </div>
+  <div class="demo-wrapper" style="display: flex; justify-content: center;">
+    <yu-table
+      :columns="columns"
+      :data="data"
+      indexVisible
+    ></yu-table>
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'demo',
+  name: "demo",
+  data() {
+    return {
+      columns: [
+        {
+          label: "姓名",
+          field: "name",
+          render: (h, { row, index }) => {
+            let edit;
 
-    data() {
-        return {
+            if (this.editIndex === index) {
+              edit = [h('input', {
+                domProps: {
+                  value: row.name
+                },
+                on: {
+                  input: (event) => {
+                    this.editName = event.target.value;
+                  }
+                }
+              })];
+            } else {
+              edit = row.name;
+            }
+
+            return h('div', [
+              edit
+            ]);
+          }
+        },
+        {
+          label: "年龄",
+          field: "age"
+        },
+        {
+          label: "出生日期",
+          field: "birthday",
+          render: (h, { row, column, index }) => {
+            const date = new Date(parseInt(row.birthday));
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const birthday = `${year}-${month}-${day}`;
+
+            return h("span", birthday);
+          }
+        },
+        {
+          label: "地址",
+          field: "address"
+        },
+        {
+          label: "操作",
+          render: (h, {row, index}) => {
+            if (this.editIndex === index) {
+              return [
+                h('yu-button', {
+                  on: {
+                    click: () => {
+                      this.data[index].name = this.editName;
+                      this.data[index].age = this.editAge;
+                      this.data[index].birthday = this.editBirthday;
+                      this.data[index].address = this.editAddress;
+                      this.editIndex = -1;
+                    }
+                  }
+                }, '保存'),
+                h('yu-button', {
+                  style: {
+                    marginLeft: '6px'
+                  },
+                  on: {
+                    click: () => {
+                      this.editIndex = -1;
+                    }
+                  }
+                }, '取消')
+              ]
+            } else {
+              return h('yu-button', {
+                on: {
+                  click: () => {
+                    this.editName = row.name;
+                    this.editAge = row.age;
+                    this.editAddress = row.address;
+                    this.editBirthday = row.birthday;
+                    this.editIndex = index;
+                  }
+                }
+              }, '修改');
+            }
+          }
         }
-    },
+      ],
+      data: [
+        {
+          name: "王小明",
+          age: 18,
+          birthday: "919526400000",
+          address: "北京市朝阳区芍药居"
+        },
+        {
+          name: "张小刚",
+          age: 25,
+          birthday: "696096000000",
+          address: "北京市海淀区西二旗"
+        },
+        {
+          name: "李小红",
+          age: 30,
+          birthday: "563472000000",
+          address: "上海市浦东新区世纪大道"
+        },
+        {
+          name: "周小伟",
+          age: 26,
+          birthday: "687024000000",
+          address: "深圳市南山区深南大道"
+        }
+      ],
+      editName: '',  // 第一列输入框
+      editAge: '',  // 第二列输入框
+      editBirthday: '',  // 第三列输入框
+      editAddress: '',  // 第四列输入框
+      editIndex: -1,  // 当前聚焦的输入框的行数
+    };
+  },
 
-    mounted() {
-        
-    },
+  mounted() {},
 
-    methods: {
-    }
-
-}
+  methods: {}
+};
 </script>
 
 <style>
-*{margin: 0; padding: 0; box-sizing: border-box;}
-
-:root{
-    --font-size: 14px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-body{
-    font-size: var(--font-size)
+
+:root {
+  --font-size: 14px;
+}
+body {
+  font-size: var(--font-size);
 }
 .demo-wrapper {
-    /* padding: 20px; */
+  padding: 20px;
 }
-
 </style>
 
 

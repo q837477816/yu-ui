@@ -7,8 +7,7 @@
                         <col name="expend" width="50px" v-if="expendFiled">
                         <col name="selection" width="50px" v-if="selection">
                         <col name="index" width="50px" v-if="indexVisible">
-                        <col v-for="column in columns" :width="column.width">
-                        <col name="action" v-if="$scopedSlots.default">
+                        <col v-for="col in columns" :width="col.width">
                     </colgroup>
                     <thead>
                         <tr>
@@ -21,25 +20,24 @@
                                 @change="onChangeAllItems">
                             </th>
                             <th :align="indexAlign" v-if="indexVisible">#</th>
-                            <th v-for="column in columns">
+                            <th v-for="col in columns">
                                 <div class="yu-table-head-label">
-                                    {{column.label}}
+                                    {{col.label}}
                                     <span 
                                         class="yu-table-head-sort" 
-                                        v-if="column.sort"
-                                        @click="changeOrderByHash(column.field)">
+                                        v-if="col.sort"
+                                        @click="changeOrderByHash(col.field)">
                                         <yu-icon 
                                             name="asc"
-                                            :class="{active: orderByHash[column.field] === 1}"
+                                            :class="{active: orderByHash[col.field] === 1}"
                                         ></yu-icon>
                                         <yu-icon 
                                             name="desc"
-                                            :class="{active: orderByHash[column.field] === -1}"
+                                            :class="{active: orderByHash[col.field] === -1}"
                                         ></yu-icon>
                                     </span>
                                 </div>
                             </th>
-                            <th v-if="$scopedSlots.default">操作</th>
                         </tr>
                     </thead>
                 </table>
@@ -50,37 +48,34 @@
                         <col name="expend" width="50px" v-if="expendFiled">
                         <col name="selection" width="50px" v-if="selection">
                         <col name="index" width="50px" v-if="indexVisible">
-                        <col v-for="column in columns" :width="column.width">
-                        <col name="action" v-if="$scopedSlots.default">
+                        <col v-for="col in columns" :width="col.width">
                     </colgroup>
                     <tbody>
-                        <template v-for="item, index in data">
+                        <template v-for="(row, rowIndex) in data">
                             <tr>
                                 <td :align="indexAlign" v-if="expendFiled">
                                     <yu-icon 
-                                        :class="['yu-table-expend-icon', {expend: expendItems.includes(item)}]"
+                                        :class="['yu-table-expend-icon', {expend: expendItems.includes(row)}]"
                                         name="right"
-                                        @click="changeRowExpendStatus(item)"
+                                        @click="changeRowExpendStatus(row)"
                                     ></yu-icon>
                                 </td>
                                 <td :align="indexAlign" v-if="selection">
                                     <input 
                                     type="checkbox"
-                                    :checked="itemSelected(item)"
-                                    @change="onChangeItem(item, index, $event)">
+                                    :checked="itemSelected(row)"
+                                    @change="onChangeItem(row, rowIndex, $event)">
                                 </td>
-                                <td :align="indexAlign" v-if="indexVisible">{{index + 1}}</td>
-                                <td v-for="column in columns">
-                                    {{item[column.field]}}
-                                </td>
-                                <td v-if="$scopedSlots.default">
-                                    <div class="action">
-                                        <slot :row="item"></slot>
-                                    </div>
+                                <td :align="indexAlign" v-if="indexVisible">{{rowIndex + 1}}</td>
+                                <td v-for="col in columns">
+                                    <template v-if="'render' in col">
+                                        <Render :row="row" :column="col" :index="rowIndex" :render="col.render"></Render>
+                                    </template>
+                                    <template v-else>{{row[col.field]}}</template>
                                 </td>
                             </tr>
-                            <tr v-if="expendFiled && expendItems.includes(item)">
-                                <td :colspan="expendedCellColSpan">{{item[expendFiled] || '暂无数据'}}</td>
+                            <tr v-if="expendFiled && expendItems.includes(row)">
+                                <td :colspan="expendedCellColSpan">{{row[expendFiled] || '暂无数据'}}</td>
                             </tr>
                         </template>
                     </tbody>
@@ -94,9 +89,11 @@
 </template>
 
 <script>
-import YuIcon from './icon'
+import YuIcon from '../icon'
+import Render from './render'
 export default {
     name: 'YuTable',
+    components: { Render },
     props: {
         columns: {
             type: Array,
@@ -105,9 +102,6 @@ export default {
         data: {
             type: Array,
             required: true,
-            validator: (arr) => { // todo: data每项都要有唯一的id
-                return arr.every(item => item.id !== undefined)
-            }
         },
         selectedItems: {
             type: Array,
@@ -146,9 +140,9 @@ export default {
     },
     data() {
         let orderByHash = {}
-        this.columns.forEach(column => {
-            if (column.sort) {
-                orderByHash[column.field] = 0
+        this.columns.forEach(col => {
+            if (col.sort) {
+                orderByHash[col.field] = 0
             }
         })
         return {
@@ -196,7 +190,6 @@ export default {
     },
     mounted() {
         this.selection && this.setIndeterminate()
-        this.$scopedSlots && this.setActionColsWidth()
     },
     methods: {
         itemSelected(item) {
@@ -235,26 +228,12 @@ export default {
                 this.expendItems.push(item)
             }
         },
-        setActionColsWidth() {
-            let actionDiv = this.$el.querySelector('.action')
-            let td = actionDiv.parentNode
-            const {width} = actionDiv.getBoundingClientRect()
-            const styles = getComputedStyle(td)
-            const [paddingLeft, paddingRight, borderLeft, borderRight] = ['padding-left', 'padding-right', 'border-left-width', 'border-right-width'].map(property => {
-                return Number.parseFloat(styles.getPropertyValue(property))
-            })
-            const actionColWidth = width + paddingLeft + paddingRight + borderLeft + borderRight + 'px'
-            const cols = this.$el.querySelectorAll('col[name="action"]')
-            Array.from(cols).forEach(col => {
-                col.setAttribute('width', actionColWidth)
-            })
-        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-@import './styles/_var';
+@import '../styles/_var';
 $grey: darken($grey, 10%);
 .yu-table-outer-wrapper {
     position: relative;
