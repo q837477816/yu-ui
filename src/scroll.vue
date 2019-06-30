@@ -8,7 +8,11 @@
             <slot></slot>
         </div>
         <div class="yu-scroll-track" v-show="scrollBarVisible">
-            <div class="yu-scroll-bar-wrapper" ref="barWrapper">
+            <div 
+                class="yu-scroll-bar-wrapper" 
+                ref="barWrapper"
+                @mousedown="onMouseDownScrollBar"
+                @selectstart="onSelectStartScrollBar">
                 <div class="yu-scroll-bar"></div>
             </div>
         </div>
@@ -20,10 +24,21 @@ export default {
     name: 'YuScroll',
     data() {
         return {
-            scrollBarVisible: false
+            scrollBarVisible: false,
+            inScrolling: false,
+            startPosition: null,
+            endPosition: null,
+            translateX: 0,
+            translateY: 0
         }
     },
+    beforeDestroy() {
+        document.removeEventListener('mousemove', this.onMouseMoveScrollBar)
+        document.removeEventListener('mouseup', this.onMouseUpScrollBar)
+    },
     mounted() {
+        document.addEventListener('mousemove', this.onMouseMoveScrollBar)
+        document.addEventListener('mouseup', this.onMouseUpScrollBar)
         const parent = this.$refs.parent
         const child = this.$refs.child
         let translateY = 0
@@ -68,8 +83,36 @@ export default {
             this.scrollBarVisible = true
         },
         onMouseLeave() {
-            this.scrollBarVisible = false
+            if (!this.inScrolling) {
+                this.scrollBarVisible = false
+            }
+        },
+        onMouseDownScrollBar(e) {
+            this.inScrolling = true
+            const {screenX: x, screenY: y} = e
+            this.startPosition = {x, y}
+        },
+        onMouseMoveScrollBar(e) {
+            if (this.inScrolling) {
+                const {screenX: x, screenY: y} = e
+                this.endPosition = {x, y}
+                const delta = {
+                    x: this.endPosition.x - this.startPosition.x,
+                    y: this.endPosition.y - this.startPosition.y
+                }
+                this.translateX = Number.parseFloat(this.translateX) + delta.x
+                this.translateY = Number.parseFloat(this.translateY) + delta.y
+                this.startPosition = this.endPosition
+                this.$refs.barWrapper.style.transform = `translate(0, ${this.translateY}px)`
+            }
+        },
+        onMouseUpScrollBar(e) {
+            this.inScrolling = false
+        },
+        onSelectStartScrollBar(e) {
+            e.preventDefault()
         }
+        
     }
 }
 </script>
