@@ -1,6 +1,13 @@
 <template>
-  <div class="yu-scroll-wrapper" ref="parent" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
-    <div class="yu-scroll" ref="child">
+  <div 
+    class="yu-scroll-wrapper" 
+    ref="parent" 
+    @mouseenter="onMouseEnter" 
+    @mouseleave="onMouseLeave">
+    <div 
+      class="yu-scroll" 
+      ref="child" 
+      :style="{transform: `translateY(${contentTranslateY}px)`}">
       <slot></slot>
     </div>
     <div class="yu-scroll-track" v-show="scrollBarVisible">
@@ -8,8 +15,7 @@
         class="yu-scroll-bar-wrapper"
         ref="barWrapper"
         @mousedown="onMouseDownScrollBar"
-        @selectstart="onSelectStartScrollBar"
-      >
+        @selectstart="onSelectStartScrollBar">
         <div class="yu-scroll-bar"></div>
       </div>
     </div>
@@ -21,16 +27,22 @@ export default {
   name: "YuScroll",
   data() {
     return {
+      contentTranslateY: 0,
       scrollBarVisible: false,
       inScrolling: false,
       startPosition: null,
       endPosition: null,
-      translateX: 0,
-      translateY: 0,
+      scrollBarTranslateY: 0,
       barHeight: 0,
       parentHeight: 0,
       childHeight: 0
     };
+  },
+  watch: {
+    scrollBarTranslateY(newValue) { // 滚动条动的时候让内容也滚动
+      // contentTranslateY / childHeight = scrollBarTranslateY / parentHeight
+      this.contentTranslateY = -(newValue / this.parentHeight * this.childHeight)
+    }
   },
   beforeDestroy() {
     document.removeEventListener("mousemove", this.onMouseMoveScrollBar);
@@ -41,7 +53,6 @@ export default {
     document.addEventListener("mouseup", this.onMouseUpScrollBar);
     const parent = this.$refs.parent;
     const child = this.$refs.child;
-    let translateY = 0;
     let { height: childHeight } = child.getBoundingClientRect();
     let { height: parentHeight } = parent.getBoundingClientRect();
     let {
@@ -62,32 +73,33 @@ export default {
       (borderTopWidth + borderBottomWidth + paddingTop + paddingBottom);
     parent.addEventListener("wheel", e => {
       if (e.deltaY > 20) {
-        translateY -= 20 * 3;
+        this.contentTranslateY -= 20 * 3;
       } else if (e.deltaY < -20) {
-        translateY -= -20 * 3;
+        this.contentTranslateY -= -20 * 3;
       } else {
-        translateY -= e.deltaY * 3;
+        this.contentTranslateY -= e.deltaY * 3;
       }
-      if (translateY > 0) {
-        translateY = 0;
-      } else if (translateY < -maxHeight) {
-        translateY = -maxHeight;
+      if (this.contentTranslateY > 0) {
+        this.contentTranslateY = 0;
+      } else if (this.contentTranslateY < -maxHeight) {
+        this.contentTranslateY = -maxHeight;
       } else {
         e.preventDefault(); // 在中间滚动时，保持页面不抖动
       }
-      child.style.transform = `translateY(${translateY}px)`;
-      this.updateScollBarHeight(parentHeight, childHeight, translateY);
+      // child.style.transform = `translateY(${this.contentTranslateY}px)`;
+      this.updateScollBar(parentHeight, childHeight, this.contentTranslateY);
     });
-    this.updateScollBarHeight(parentHeight, childHeight, translateY);
+    this.updateScollBar(parentHeight, childHeight, this.contentTranslateY);
   },
   methods: {
-    updateScollBarHeight(parentHeight, childHeight, translateY) {
+    updateScollBar(parentHeight, childHeight, contentTranslateY) {
       // this.barHeight / parentHeight = parentHeight / childHeight
       this.barHeight = (parentHeight / childHeight) * parentHeight;
       let barWrapper = this.$refs.barWrapper;
       barWrapper.style.height = `${this.barHeight}px`;
-      let y = (parentHeight * translateY) / childHeight;
+      let y = (parentHeight * contentTranslateY) / childHeight;
       barWrapper.style.transform = `translateY(${-y}px)`;
+      this.scrollBarTranslateY = -y
     },
     onMouseEnter() {
       this.scrollBarVisible = true;
@@ -111,15 +123,14 @@ export default {
           x: this.endPosition.x - this.startPosition.x,
           y: this.endPosition.y - this.startPosition.y
         };
-        this.translateX = Number.parseFloat(this.translateX) + delta.x;
-        this.translateY = Number.parseFloat(this.translateY) + delta.y;
-        if (this.translateY < 0) {
-          this.translateY = 0;
-        } else if (this.translateY > maxScrollHeight) {
-          this.translateY = maxScrollHeight;
+        this.scrollBarTranslateY = Number.parseFloat(this.scrollBarTranslateY) + delta.y;
+        if (this.scrollBarTranslateY < 0) {
+          this.scrollBarTranslateY = 0;
+        } else if (this.scrollBarTranslateY > maxScrollHeight) {
+          this.scrollBarTranslateY = maxScrollHeight;
         }
         this.startPosition = this.endPosition;
-        this.$refs.barWrapper.style.transform = `translate(0, ${this.translateY}px)`;
+        this.$refs.barWrapper.style.transform = `translate(0, ${this.scrollBarTranslateY}px)`;
       }
     },
     onMouseUpScrollBar(e) {
