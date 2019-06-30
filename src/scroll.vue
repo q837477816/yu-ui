@@ -2,6 +2,7 @@
   <div 
     class="yu-scroll-wrapper" 
     ref="parent" 
+    @wheel="onWheel"
     @mouseenter="onMouseEnter" 
     @mouseleave="onMouseLeave">
     <div 
@@ -27,16 +28,22 @@ export default {
   name: "YuScroll",
   data() {
     return {
+      maxHeight: 0,
+      barHeight: 0,
+      parentHeight: 0,
+      childHeight: 0,
       contentTranslateY: 0,
+      scrollBarTranslateY: 0,
       scrollBarVisible: false,
       inScrolling: false,
       startPosition: null,
-      endPosition: null,
-      scrollBarTranslateY: 0,
-      barHeight: 0,
-      parentHeight: 0,
-      childHeight: 0
+      endPosition: null
     };
+  },
+  computed: {
+    maxScrollHeight() {
+      return this.parentHeight - this.barHeight
+    }
   },
   watch: {
     scrollBarTranslateY(newValue) { // 滚动条动的时候让内容也滚动
@@ -49,29 +56,37 @@ export default {
     document.removeEventListener("mouseup", this.onMouseUpScrollBar);
   },
   mounted() {
-    document.addEventListener("mousemove", this.onMouseMoveScrollBar);
-    document.addEventListener("mouseup", this.onMouseUpScrollBar);
-    const parent = this.$refs.parent;
-    const child = this.$refs.child;
-    let { height: childHeight } = child.getBoundingClientRect();
-    let { height: parentHeight } = parent.getBoundingClientRect();
-    let {
-      borderTopWidth,
-      borderBottomWidth,
-      paddingTop,
-      paddingBottom
-    } = window.getComputedStyle(parent);
-    this.parentHeight = parentHeight;
-    this.childHeight = childHeight;
-    borderTopWidth = Number.parseFloat(borderTopWidth);
-    borderBottomWidth = Number.parseFloat(borderBottomWidth);
-    paddingTop = Number.parseFloat(paddingTop);
-    paddingBottom = Number.parseFloat(paddingBottom);
-    let maxHeight =
-      childHeight -
-      parentHeight +
-      (borderTopWidth + borderBottomWidth + paddingTop + paddingBottom);
-    parent.addEventListener("wheel", e => {
+    this.initListeners()
+    this.parentHeight = this.$refs.parent.getBoundingClientRect().height;
+    this.childHeight = this.$refs.child.getBoundingClientRect().height;
+    this.maxHeight = this.calculateContentTranslateYMax();
+    this.updateScollBar();
+  },
+  methods: {
+    initListeners() {
+      document.addEventListener("mousemove", this.onMouseMoveScrollBar);
+      document.addEventListener("mouseup", this.onMouseUpScrollBar);
+    },
+    calculateContentTranslateYMax() {
+      let {
+        borderTopWidth,
+        borderBottomWidth,
+        paddingTop,
+        paddingBottom
+      } = window.getComputedStyle(this.$refs.parent);
+      borderTopWidth = Number.parseFloat(borderTopWidth);
+      borderBottomWidth = Number.parseFloat(borderBottomWidth);
+      paddingTop = Number.parseFloat(paddingTop);
+      paddingBottom = Number.parseFloat(paddingBottom);
+      let maxHeight =
+        this.childHeight -
+        this.parentHeight +
+        (borderTopWidth + borderBottomWidth + paddingTop + paddingBottom);
+      return maxHeight
+    },
+    onWheel(e) {
+      this.scrollBarVisible = true
+      // 根据滚轮滚动距离，按照一定系数计算一个内容的滚动距离
       if (e.deltaY > 20) {
         this.contentTranslateY -= 20 * 3;
       } else if (e.deltaY < -20) {
@@ -79,25 +94,22 @@ export default {
       } else {
         this.contentTranslateY -= e.deltaY * 3;
       }
+      // 对内容的滚动距离进行限制
       if (this.contentTranslateY > 0) {
         this.contentTranslateY = 0;
-      } else if (this.contentTranslateY < -maxHeight) {
-        this.contentTranslateY = -maxHeight;
+      } else if (this.contentTranslateY < -this.maxHeight) {
+        this.contentTranslateY = -this.maxHeight;
       } else {
         e.preventDefault(); // 在中间滚动时，保持页面不抖动
       }
-      // child.style.transform = `translateY(${this.contentTranslateY}px)`;
-      this.updateScollBar(parentHeight, childHeight, this.contentTranslateY);
-    });
-    this.updateScollBar(parentHeight, childHeight, this.contentTranslateY);
-  },
-  methods: {
-    updateScollBar(parentHeight, childHeight, contentTranslateY) {
+      this.updateScollBar();
+    },
+    updateScollBar() {
       // this.barHeight / parentHeight = parentHeight / childHeight
-      this.barHeight = (parentHeight / childHeight) * parentHeight;
+      this.barHeight = (this.parentHeight / this.childHeight) * this.parentHeight;
       let barWrapper = this.$refs.barWrapper;
       barWrapper.style.height = `${this.barHeight}px`;
-      let y = (parentHeight * contentTranslateY) / childHeight;
+      let y = (this.parentHeight * this.contentTranslateY) / this.childHeight;
       barWrapper.style.transform = `translateY(${-y}px)`;
       this.scrollBarTranslateY = -y
     },
@@ -116,18 +128,17 @@ export default {
     },
     onMouseMoveScrollBar(e) {
       if (this.inScrolling) {
-        const maxScrollHeight = this.parentHeight - this.barHeight;
-        const { screenX: x, screenY: y } = e;
-        this.endPosition = { x, y };
+        this.endPosition = { x: e.screenX, y: e.screenY };
         const delta = {
           x: this.endPosition.x - this.startPosition.x,
           y: this.endPosition.y - this.startPosition.y
         };
         this.scrollBarTranslateY = Number.parseFloat(this.scrollBarTranslateY) + delta.y;
+        // 对 scrollBarTranslateY 进行限制
         if (this.scrollBarTranslateY < 0) {
           this.scrollBarTranslateY = 0;
-        } else if (this.scrollBarTranslateY > maxScrollHeight) {
-          this.scrollBarTranslateY = maxScrollHeight;
+        } else if (this.scrollBarTranslateY > this.maxScrollHeight) {
+          this.scrollBarTranslateY = this.maxScrollHeight;
         }
         this.startPosition = this.endPosition;
         this.$refs.barWrapper.style.transform = `translate(0, ${this.scrollBarTranslateY}px)`;
