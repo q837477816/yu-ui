@@ -34,6 +34,7 @@ import Uploader from './uploader'
 import Table from './table/table'
 import Sticky from './sticky'
 import Scroll from './scroll'
+import DatePicker from './date-picker/date-picker'
 
 Vue.component('yu-button', Button)
 Vue.component('yu-icon', Icon)
@@ -67,6 +68,7 @@ Vue.component('yu-uploader', Uploader)
 Vue.component('yu-table', Table)
 Vue.component('yu-sticky', Sticky)
 Vue.component('yu-scroll', Scroll)
+Vue.component('yu-date-picker', DatePicker)
 
 new Vue({
     render: h => h(demo)
