@@ -18,7 +18,7 @@ describe('Button.vue', () => {
             }
         })
         wrapper.find('button').trigger('click')
-        let classes = wrapper.find('.content-wrapper').classes()
+        let classes = wrapper.find('.yu-popover-content-wrapper').classes()
         expect(classes).to.include('position-bottom')
     })
 
@@ -32,8 +32,8 @@ describe('Button.vue', () => {
                 trigger: 'hover'
             }
         })
-        expect(wrapper.find('.content-wrapper').element).to.not.exist
-        wrapper.find('.popover').trigger('mouseenter')
-        expect(wrapper.find('.content-wrapper').element).to.exist
+        expect(wrapper.find('.yu-popover-content-wrapper').element).to.not.exist
+        wrapper.find('.yu-popover').trigger('mouseenter')
+        expect(wrapper.find('.yu-popover-content-wrapper').element).to.exist
     })
 })

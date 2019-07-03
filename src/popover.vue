@@ -1,8 +1,8 @@
 <template>
-    <div class="popover" ref="popover">
+    <div class="yu-popover" ref="popover">
         <div 
             ref="contentWrapper" 
-            :class="['content-wrapper', `position-${position}`]" 
+            :class="['yu-popover-content-wrapper', `position-${position}`, customClass]" 
             v-if="visible">
             <slot name="content" :close="close"></slot>
         </div>
@@ -29,6 +29,12 @@ export default {
             validator(value) {
                 return ['click', 'hover'].includes(value)
             }
+        },
+        customClass: {
+            type: String
+        },
+        container: {
+            type: Element
         }
     },
     data() {
@@ -52,7 +58,8 @@ export default {
     methods: {
         positionContent() {
             const {contentWrapper, triggerWrapper} = this.$refs
-            document.body.appendChild(contentWrapper)
+            const container = this.container || document.body
+            container.appendChild(contentWrapper)
             const {width, height, top, left} = triggerWrapper.getBoundingClientRect()
             const {height: height2} = contentWrapper.getBoundingClientRect()
             const positions = {
@@ -112,12 +119,12 @@ export default {
 <style lang="scss" scoped>
     $border-color: #333;
     $border-radius: 4px;
-    .popover {
+    .yu-popover {
         display: inline-block;
         vertical-align: top;
         position: relative;
     }
-    .content-wrapper {
+    .yu-popover-content-wrapper {
         position: absolute;
         border: 1px solid $border-color;
         border-radius:  $border-radius;
