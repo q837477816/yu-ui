@@ -1,28 +1,36 @@
 <template>
-    <div>
-        <yu-popover position="bottom">
+    <div class="yu-date-picker" ref="wrapper">
+        <yu-popover position="bottom" custom-class="xxx" :container="popoverContainer">
             <yu-input type="text"/>
             <template slot="content">
                 <div class="yu-date-picker-pop">
                     <div class="yu-date-picker-nav">
-                        <span><yu-icon name="settings"/></span>
-                        <span><yu-icon name="settings"/></span>
-                        <span @click="onClickYear">2012年</span>
-                        <span @click="onClickMonth">8月</span>
-                        <span><yu-icon name="settings"/></span>
-                        <span><yu-icon name="settings"/></span>
+                        <span class="yu-date-picker-prev-year yu-date-picker-nav-item"><yu-icon name="back"/></span>
+                        <span class="yu-date-picker-prev-month yu-date-picker-nav-item"><yu-icon name="left"/></span>
+                        <span class="yu-date-picker-yearAndMonth">
+                            <span @click="onClickYear">2012年</span>
+                            <span @click="onClickMonth">8月</span>
+                        </span>
+                        <span class="yu-date-picker-next-month yu-date-picker-nav-item"><yu-icon name="right"/></span>
+                        <span class="yu-date-picker-next-year yu-date-picker-nav-item"><yu-icon name="next"/></span>
                     </div>
                     <div class="yu-date-picker-panels">
                         <div v-if="mode === 'years'" class="yu-date-picker-content">年</div>
                         <div v-else-if="mode === 'months'" class="yu-date-picker-content">月</div>
                         <div v-else class="yu-date-picker-content">
                             <div class="yu-date-picker-weekdays">
-                                <span v-for="weekday in weekdays">
+                                <span class="yu-date-picker-weekday" v-for="weekday in weekdays" :key="weekday">
                                     {{weekday}}
                                 </span>
                             </div>
-                            <div class="yu-date-picker-row" v-for="i in 6">
-                                <span class="yu-date-picker-col" v-for="day in getWeek(i, visibleDays)">
+                            <div 
+                            class="yu-date-picker-row" 
+                            v-for="i in 6"
+                            :key="i">
+                                <span 
+                                    class="yu-date-picker-cell" 
+                                    v-for="day in getWeek(i, visibleDays)"
+                                    :key="day">
                                     {{day.getDate()}}
                                 </span>
                             </div>
@@ -51,34 +59,25 @@ export default {
         return {
             mode: 'days',
             value: new Date(),
-            weekdays: ['一', '二', '三', '四', '五', '六', '日']
+            weekdays: ['一', '二', '三', '四', '五', '六', '日'],
+            popoverContainer: null
         }
     },
     computed: {
         visibleDays() {
             let date = this.value
             let first = getFirstDayOfMonth(date)
-            let last = getLastDayOfMonth(date)
             let array = []
-            let [year, month, day] = getYearMonthDay(date)
-            for (let i = first.getDate(); i <= last.getDate(); i++) {
-                array.push(new Date(year, month, i))
+            let weekdayOfFirst = first.getDay() === 0 ? 7 : first.getDay() // 1-7代表周一到周天
+            let x = first - (weekdayOfFirst - 1) * 1000 * 3600 * 24
+            for (let i = 0; i < 42; i++) {
+                array.push(new Date(x + i * 1000 * 3600 * 24))
             }
-            let n = first.getDay() === 0 ? 7 : first.getDay() // 1-7代表周一到周天
-            let prefix = [], suffix = []
-            let prefixNum = n - 1
-            for (let i = 0; i < prefixNum; i++) {
-                prefix.unshift(new Date(year, month, -i))
-            } 
-            let suffixNum = 42 - array.length - suffix.length
-            for (let i = 0; i < suffixNum; i++) {
-                suffix.push(new Date(year, month + 1, i))
-            }
-            return [...prefix, ...array, ...suffix]
+            return array;
         }
     },
     mounted() {
-        
+        this.popoverContainer = this.$refs.wrapper
     },
     methods: {
         onClickYear() {
@@ -101,7 +100,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.yu-date-picker {
+    &-nav {
+        display: flex;
+    }
+    &-yearAndMonth {
+        margin: auto;
+    }
+    &-nav-item, &-weekday, &-cell {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+/deep/.xxx {
+    padding: 0;
+}
 </style>
 
 
