@@ -28,7 +28,8 @@
                                 v-for="i in 6"
                                 :key="i">
                                 <span 
-                                    class="yu-date-picker-cell" 
+                                    class="yu-date-picker-cell"
+                                    :class="{currentMonth: isCurrentMonth(day)}"
                                     v-for="day in getWeek(i, visibleDays)"
                                     :key="day.getTime()"
                                     @click="onClickCell(day)">
@@ -107,7 +108,14 @@ export default {
             return week
         },
         onClickCell(date) {
-            this.$emit('input', date)
+            if (this.isCurrentMonth(date)) {
+                this.$emit('input', date)
+            }
+        },
+        isCurrentMonth(date) {
+            let [year1, month1] = getYearMonthDay(date)
+            let [year2, month2] = getYearMonthDay(this.value)
+            return year1 === year2 && month1 === month2
         }
     }
 }
@@ -127,6 +135,12 @@ export default {
         display: inline-flex;
         justify-content: center;
         align-items: center;
+    }
+    &-cell {
+        color: #ddd;
+        &.currentMonth {
+            color: #333;
+        }
     }
 }
 /deep/.xxx {
