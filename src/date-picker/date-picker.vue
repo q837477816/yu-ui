@@ -1,7 +1,7 @@
 <template>
     <div class="yu-date-picker" ref="wrapper">
         <yu-popover position="bottom" custom-class="xxx" :container="popoverContainer">
-            <yu-input type="text"/>
+            <yu-input type="text" :value="formattedValue"/>
             <template slot="content">
                 <div class="yu-date-picker-pop">
                     <div class="yu-date-picker-nav">
@@ -24,13 +24,14 @@
                                 </span>
                             </div>
                             <div 
-                            class="yu-date-picker-row" 
-                            v-for="i in 6"
-                            :key="i">
+                                class="yu-date-picker-row" 
+                                v-for="i in 6"
+                                :key="i">
                                 <span 
                                     class="yu-date-picker-cell" 
                                     v-for="day in getWeek(i, visibleDays)"
-                                    :key="day">
+                                    :key="day.getTime()"
+                                    @click="onClickCell(day)">
                                     {{day.getDate()}}
                                 </span>
                             </div>
@@ -55,10 +56,16 @@ import { getYearMonthDay, getFirstDayOfMonth, getLastDayOfMonth } from '../utils
 export default {
     name: 'YuDatePicker',
     components: { YuPopover, YuInput, YuIcon, YuButton },
+    props: {
+        value: {
+            type: Date,
+            default: () => new Date()
+        }
+    },
     data() {
         return {
             mode: 'days',
-            value: new Date(),
+            // value: new Date(),
             weekdays: ['一', '二', '三', '四', '五', '六', '日'],
             popoverContainer: null
         }
@@ -74,6 +81,10 @@ export default {
                 array.push(new Date(x + i * 1000 * 3600 * 24))
             }
             return array;
+        },
+        formattedValue() {
+            const [year, month, day] = getYearMonthDay(this.value)
+            return `${year}-${month + 1}-${day}`
         }
     },
     mounted() {
@@ -94,6 +105,9 @@ export default {
                 week.push(days[i])
             }
             return week
+        },
+        onClickCell(date) {
+            this.$emit('input', date)
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
   	<div class="demo-wrapper">
-		<yu-date-picker></yu-date-picker>
+		<yu-date-picker :value="d" @input="d = $event"></yu-date-picker>
 		<p>other content</p>
   	</div>
 </template>
@@ -9,7 +9,7 @@
 export default {
 	  data() {
     	return {
-      
+			d: new Date()
     	};
   	},
 };
