@@ -27,9 +27,27 @@ const getLastDayOfMonth = (date) => {
     return new Date(year, month + 1, 0)
 }
 
+const addYear = (date, n) => {
+    const [year] = getYearMonthDay(date)
+    const newYear = year + n
+    let copyDate = new Date(date)
+    copyDate.setFullYear(newYear)
+    return copyDate
+}
+
+const addMonth = (date, n) => {
+    const [year, month, day] = getYearMonthDay(date)
+    const newMonth = month + n
+    let copyDate = new Date(date)
+    copyDate.setMonth(newMonth)
+    return copyDate
+}
+
 export {
     getScrollBarWidth,
     getYearMonthDay,
     getFirstDayOfMonth,
-    getLastDayOfMonth
+    getLastDayOfMonth,
+    addYear,
+    addMonth
 }

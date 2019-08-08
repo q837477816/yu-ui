@@ -5,14 +5,19 @@
             <template slot="content">
                 <div class="yu-date-picker-pop">
                     <div class="yu-date-picker-nav">
-                        <span class="yu-date-picker-prev-year yu-date-picker-nav-item"><yu-icon name="back"/></span>
-                        <span class="yu-date-picker-prev-month yu-date-picker-nav-item"><yu-icon name="left"/></span>
+                        <span class="yu-date-picker-prev-year yu-date-picker-nav-item" @click="onClickPrevYear">
+                            <yu-icon name="back"/></span>
+                        <span class="yu-date-picker-prev-month yu-date-picker-nav-item" @click="onClickPrevMonth">
+                            <yu-icon name="left"/></span>
                         <span class="yu-date-picker-yearAndMonth">
-                            <span @click="onClickYear">2012年</span>
-                            <span @click="onClickMonth">8月</span>
+                            <span @click="onClickYear">{{display.year}}</span>
+                            <span @click="onClickMonth">{{display.month + 1}}</span>
                         </span>
-                        <span class="yu-date-picker-next-month yu-date-picker-nav-item"><yu-icon name="right"/></span>
-                        <span class="yu-date-picker-next-year yu-date-picker-nav-item"><yu-icon name="next"/></span>
+                        <span class="yu-date-picker-next-month yu-date-picker-nav-item" @click="onClickNextMonth">
+                            <yu-icon name="right"/></span>
+                        <span class="yu-date-picker-next-year yu-date-picker-nav-item" @click="onClickNextYear">
+                            <yu-icon name="next"/>
+                        </span>
                     </div>
                     <div class="yu-date-picker-panels">
                         <div v-if="mode === 'years'" class="yu-date-picker-content">年</div>
@@ -52,7 +57,7 @@ import YuPopover from '../popover'
 import YuInput from '../input'
 import YuIcon from '../icon'
 import YuButton from '../button/button'
-import { getYearMonthDay, getFirstDayOfMonth, getLastDayOfMonth } from '../utils'
+import { getYearMonthDay, getFirstDayOfMonth, getLastDayOfMonth, addYear, addMonth } from '../utils'
 
 export default {
     name: 'YuDatePicker',
@@ -64,16 +69,17 @@ export default {
         }
     },
     data() {
+        let [year, month] = getYearMonthDay(this.value)
         return {
             mode: 'days',
-            // value: new Date(),
             weekdays: ['一', '二', '三', '四', '五', '六', '日'],
-            popoverContainer: null
+            popoverContainer: null,
+            display: {year, month}
         }
     },
     computed: {
         visibleDays() {
-            let date = this.value
+            let date = new Date(this.display.year, this.display.month, 1)
             let first = getFirstDayOfMonth(date)
             let array = []
             let weekdayOfFirst = first.getDay() === 0 ? 7 : first.getDay() // 1-7代表周一到周天
@@ -105,7 +111,7 @@ export default {
             for (let i = start; i < end; i++) {
                 week.push(days[i])
             }
-            return week
+            return week 
         },
         onClickCell(date) {
             if (this.isCurrentMonth(date)) {
@@ -113,9 +119,33 @@ export default {
             }
         },
         isCurrentMonth(date) {
+            const {year, month} = this.display
             let [year1, month1] = getYearMonthDay(date)
-            let [year2, month2] = getYearMonthDay(this.value)
-            return year1 === year2 && month1 === month2
+            return year1 === year && month1 === month
+        },
+        onClickPrevYear() {
+            const oldDate = new Date(this.display.year, this.display.month)
+            const newDate = addYear(oldDate, -1)
+            const [year, month] = getYearMonthDay(newDate)
+            this.display = {year, month}
+        },
+        onClickNextYear() {
+            const oldDate = new Date(this.display.year, this.display.month)
+            const newDate = addYear(oldDate, 1)
+            const [year, month] = getYearMonthDay(newDate)
+            this.display = {year, month}
+        },
+        onClickPrevMonth() {
+            const oldDate = new Date(this.display.year, this.display.month)
+            const newDate = addMonth(oldDate, -1)
+            const [year, month] = getYearMonthDay(newDate)
+            this.display = {year, month}
+        },
+        onClickNextMonth() {
+            const oldDate = new Date(this.display.year, this.display.month)
+            const newDate = addMonth(oldDate, 1)
+            const [year, month] = getYearMonthDay(newDate)
+            this.display = {year, month}
         }
     }
 }
