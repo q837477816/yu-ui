@@ -47,7 +47,7 @@
                                     :key="i">
                                     <span 
                                         class="yu-date-picker-cell"
-                                        :class="{currentMonth: isCurrentMonth(day)}"
+                                        :class="{currentMonth: isCurrentMonth(day), selected: isSelected(day)}"
                                         v-for="day in getWeek(i, visibleDays)"
                                         :key="day.getTime()"
                                         @click="onClickCell(day)">
@@ -153,6 +153,11 @@ export default {
             let [year1, month1] = getYearMonthDay(date)
             return year1 === year && month1 === month
         },
+        isSelected(date) {
+            const [year, month, day] = getYearMonthDay(date)
+            const [year1, month1, day1] = getYearMonthDay(this.value)
+            return year === year1 && month === month1 && day === day1
+        },
         onClickPrevYear() {
             const oldDate = new Date(this.display.year, this.display.month)
             const newDate = addYear(oldDate, -1)
@@ -204,6 +209,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~_var.scss";
 $cell-width: 32px;
 $cell-height: 32px;
 .yu-date-picker {
@@ -224,8 +230,19 @@ $cell-height: 32px;
     }
     &-cell {
         color: #ddd;
+        cursor: not-allowed;
+        border-radius: $border-radius;
         &.currentMonth {
             color: #333;
+            &:hover {
+                cursor: pointer;
+                background-color: $blue;
+                color: #fff;
+            }
+        }
+        &.selected {
+            border: 1px solid $blue;
+            box-sizing: border-box;
         }
     }
     &-selectYearAndMonth {
