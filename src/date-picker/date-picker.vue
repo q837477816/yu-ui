@@ -1,14 +1,25 @@
 <template>
     <div class="yu-date-picker" ref="wrapper">
-        <yu-popover position="bottom" custom-class="xxx" :container="popoverContainer">
+        <yu-popover 
+            ref="popover"
+            position="bottom" 
+            custom-class="xxx" 
+            :container="popoverContainer"
+            @open="onPopoverOpen">
             <yu-input type="text" :value="formattedValue"/>
             <template slot="content">
                 <div class="yu-date-picker-pop" @selectstart.prevent>
                     <div class="yu-date-picker-nav">
-                        <span class="yu-date-picker-prev-year yu-date-picker-nav-item" @click="onClickPrevYear">
-                            <yu-icon name="back"/></span>
-                        <span class="yu-date-picker-prev-month yu-date-picker-nav-item" @click="onClickPrevMonth">
-                            <yu-icon name="left"/></span>
+                        <span 
+                            class="yu-date-picker-prev-year yu-date-picker-nav-item"
+                            @click="onClickPrevYear">
+                            <yu-icon name="back"/>
+                        </span>
+                        <span 
+                            class="yu-date-picker-prev-month yu-date-picker-nav-item" 
+                            @click="onClickPrevMonth">
+                            <yu-icon name="left"/>
+                        </span>
                         <span class="yu-date-picker-yearAndMonth" @click="onClickMonth">
                             <span>
                                 {{display.year}}年
@@ -17,9 +28,14 @@
                                 {{display.month + 1}}月
                             </span>
                         </span>
-                        <span class="yu-date-picker-next-month yu-date-picker-nav-item" @click="onClickNextMonth">
-                            <yu-icon name="right"/></span>
-                        <span class="yu-date-picker-next-year yu-date-picker-nav-item" @click="onClickNextYear">
+                        <span 
+                            class="yu-date-picker-next-month yu-date-picker-nav-item" 
+                            @click="onClickNextMonth">
+                            <yu-icon name="right"/>
+                        </span>
+                        <span 
+                            class="yu-date-picker-next-year yu-date-picker-nav-item" 
+                            @click="onClickNextYear">
                             <yu-icon name="next"/>
                         </span>
                     </div>
@@ -119,8 +135,10 @@ export default {
         },
         formattedValue() {
             if (!this.value) return ''
-            const [year, month, day] = getYearMonthDay(this.value)
-            return `${year}-${month + 1}-${day}`
+            let [year, month, day] = getYearMonthDay(this.value)
+            month = (month + 1 < 10 ? '0' : '') + month
+            day = (day < 10 ? '0' : '') + day
+            return `${year}-${month}-${day}`
         },
         selectableYears() {
             const years = []
@@ -130,6 +148,13 @@ export default {
                 years.push(i)
             }
             return years
+        },
+        preYearNavDisabled() {
+            const preYearDate = new Date(this.display.year - 1, this.display.month)
+            console.log(preYearDate)
+            console.log(this.range[0])
+            console.log(preYearDate < this.range[0])
+            return preYearDate < this.range[0]
         }
     },
     mounted() {
@@ -151,6 +176,7 @@ export default {
         onClickCell(date) {
             if (this.isCurrentMonth(date)) {
                 this.$emit('input', date)
+                this.$refs.popover.close()
             }
         },
         isCurrentMonth(date) {
@@ -223,6 +249,10 @@ export default {
         },
         onClickClear() {
             this.$emit('input', undefined)
+            this.$refs.popover.close()
+        },
+        onPopoverOpen() {
+            this.mode = 'day'
         }
     }
 }
@@ -240,6 +270,7 @@ $cell-height: 32px;
         width: calc(#{$cell-width} * 3);
         margin: auto;
         text-align: center;
+        cursor: pointer;
     }
     &-nav-item, &-weekday, &-cell {
         width: $cell-width;
@@ -247,6 +278,9 @@ $cell-height: 32px;
         display: inline-flex;
         justify-content: center;
         align-items: center;
+    }
+    &-nav-item {
+        cursor: pointer;
     }
     &-cell {
         color: #ddd;
