@@ -6,7 +6,11 @@
             custom-class="xxx" 
             :container="popoverContainer"
             @open="onPopoverOpen">
-            <yu-input type="text" :value="formattedValue"/>
+            <yu-input 
+                type="text" 
+                :value="formattedValue" 
+                @input="onInput"
+                @change="onChange"/>
             <template slot="content">
                 <div class="yu-date-picker-pop" @selectstart.prevent>
                     <div class="yu-date-picker-nav">
@@ -152,7 +156,7 @@ export default {
         formattedValue() {
             if (!this.value) return ''
             let [year, month, day] = getYearMonthDay(this.value)
-            month = (month + 1 < 10 ? '0' : '') + month
+            month = (month + 1 < 10 ? '0' : '') + (month + 1)
             day = (day < 10 ? '0' : '') + day
             return `${year}-${month}-${day}`
         },
@@ -286,6 +290,24 @@ export default {
         },
         onPopoverOpen() {
             this.mode = 'day'
+        },
+        onInput(value) {
+            const regex = /^([1-9]\d{3})-(0[1-9]|1[12])-(0[1-9]|[12][0-9]|3[01])$/
+            const result = value.match(regex)
+            if (result) {
+                const year = Number.parseInt(result[1])
+                const month = Number.parseInt(result[2]) - 1
+                const day = Number.parseInt(result[3])
+                this.display = {year, month}
+                this.$emit('input', new Date(year, month, day))
+            }
+        },
+        onChange(value, e) {
+            const regex = /^([1-9]\d{3})-(0[1-9]|1[12])-(0[1-9]|[12][0-9]|3[01])$/
+            const result = value.match(regex)
+            if (!result) {
+                e.target.value = this.formattedValue
+            }
         }
     }
 }
