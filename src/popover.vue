@@ -92,6 +92,7 @@ export default {
 
         open() {
             this.visible = true
+            this.$emit('open')
             this.$nextTick(() => {
                 this.positionContent()
                 document.addEventListener('click', this.onClickDocument)
@@ -100,6 +101,7 @@ export default {
 
         close() {
             this.visible = false
+            this.$emit('close')
             document.removeEventListener('click', this.onClickDocument)
         },
 
