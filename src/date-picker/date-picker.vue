@@ -47,7 +47,11 @@
                                     :key="i">
                                     <span 
                                         class="yu-date-picker-cell"
-                                        :class="{currentMonth: isCurrentMonth(day), selected: isSelected(day)}"
+                                        :class="{
+                                            currentMonth: isCurrentMonth(day), 
+                                            selected: isSelected(day),
+                                            today: isToday(day)
+                                        }"
                                         v-for="day in getWeek(i, visibleDays)"
                                         :key="day.getTime()"
                                         @click="onClickCell(day)">
@@ -58,7 +62,8 @@
                         </div>
                     </div>
                     <div class="yu-date-picker-actions">
-                        <yu-button>清除</yu-button>
+                        <yu-button @click="onClickToday">今天</yu-button>
+                        <yu-button @click="onClickClear">清除</yu-button>
                     </div>
                 </div>
             </template>
@@ -84,8 +89,7 @@ export default {
     components: { YuPopover, YuInput, YuIcon, YuButton },
     props: {
         value: {
-            type: Date,
-            default: () => new Date()
+            type: Date
         },
         range: {
             type: Array,
@@ -93,7 +97,7 @@ export default {
         }
     },
     data() {
-        let [year, month] = getYearMonthDay(this.value)
+        let [year, month] = getYearMonthDay(this.value || new Date())
         return {
             mode: 'days',
             weekdays: ['一', '二', '三', '四', '五', '六', '日'],
@@ -114,6 +118,7 @@ export default {
             return array;
         },
         formattedValue() {
+            if (!this.value) return ''
             const [year, month, day] = getYearMonthDay(this.value)
             return `${year}-${month + 1}-${day}`
         },
@@ -154,8 +159,14 @@ export default {
             return year1 === year && month1 === month
         },
         isSelected(date) {
+            if (!this.value) return false
             const [year, month, day] = getYearMonthDay(date)
             const [year1, month1, day1] = getYearMonthDay(this.value)
+            return year === year1 && month === month1 && day === day1
+        },
+        isToday(date) {
+            const [year, month, day] = getYearMonthDay(date)
+            const [year1, month1, day1] = getYearMonthDay(new Date())
             return year === year1 && month === month1 && day === day1
         },
         onClickPrevYear() {
@@ -203,6 +214,15 @@ export default {
             } else {
                 this.display.month = month
             }
+        },
+        onClickToday() {
+            const today = new Date()
+            const [year, month, day] = getYearMonthDay(today)
+            this.display = {year, month}
+            this.$emit('input', today)
+        },
+        onClickClear() {
+            this.$emit('input', undefined)
         }
     }
 }
@@ -232,6 +252,7 @@ $cell-height: 32px;
         color: #ddd;
         cursor: not-allowed;
         border-radius: $border-radius;
+        box-sizing: border-box;
         &.currentMonth {
             color: #333;
             &:hover {
@@ -240,9 +261,12 @@ $cell-height: 32px;
                 color: #fff;
             }
         }
+        &.today {
+            border: 1px solid red;
+            background-color: $grey;
+        }
         &.selected {
             border: 1px solid $blue;
-            box-sizing: border-box;
         }
     }
     &-selectYearAndMonth {
@@ -251,6 +275,10 @@ $cell-height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    &-actions {
+        padding: 8px;
+        text-align: right;
     }
 }
 /deep/.xxx {
