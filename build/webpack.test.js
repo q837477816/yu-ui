@@ -9,7 +9,9 @@ module.exports = {
     resolve: {
         extensions: ['.vue', '.js', '.json'],
         alias: {
-            'vue$': 'vue/dist/vue.esm.js' // 用 webpack 1 时需用 'vue/dist/vue.common.js'
+            'vue$': 'vue/dist/vue.esm.js', // 用 webpack 1 时需用 'vue/dist/vue.common.js'
+            'src': path.resolve(__dirname, '../src/'),
+            '_var.scss': path.resolve(__dirname, '../src/styles/_var.scss')
         }
     },
     module: {
