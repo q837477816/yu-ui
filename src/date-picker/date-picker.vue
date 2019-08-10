@@ -11,12 +11,20 @@
                 <div class="yu-date-picker-pop" @selectstart.prevent>
                     <div class="yu-date-picker-nav">
                         <span 
-                            class="yu-date-picker-prev-year yu-date-picker-nav-item"
+                            :class="[
+                                'yu-date-picker-prev-year',
+                                'yu-date-picker-nav-item',
+                                {preYearNavDisabled}
+                            ]"
                             @click="onClickPrevYear">
                             <yu-icon name="back"/>
                         </span>
                         <span 
-                            class="yu-date-picker-prev-month yu-date-picker-nav-item" 
+                            :class="[
+                                'yu-date-picker-prev-month', 
+                                'yu-date-picker-nav-item',
+                                {preMonthNavDisabled}
+                            ]" 
                             @click="onClickPrevMonth">
                             <yu-icon name="left"/>
                         </span>
@@ -29,12 +37,20 @@
                             </span>
                         </span>
                         <span 
-                            class="yu-date-picker-next-month yu-date-picker-nav-item" 
+                            :class="[
+                                'yu-date-picker-next-month', 
+                                'yu-date-picker-nav-item',
+                                {nextMonthNavDisabled}
+                            ]" 
                             @click="onClickNextMonth">
                             <yu-icon name="right"/>
                         </span>
                         <span 
-                            class="yu-date-picker-next-year yu-date-picker-nav-item" 
+                            :class="[
+                                'yu-date-picker-next-year', 
+                                'yu-date-picker-nav-item',
+                                {nextYearNavDisabled}
+                            ]" 
                             @click="onClickNextYear">
                             <yu-icon name="next"/>
                         </span>
@@ -151,10 +167,19 @@ export default {
         },
         preYearNavDisabled() {
             const preYearDate = new Date(this.display.year - 1, this.display.month)
-            console.log(preYearDate)
-            console.log(this.range[0])
-            console.log(preYearDate < this.range[0])
             return preYearDate < this.range[0]
+        },
+        nextYearNavDisabled() {
+            const nextYearDate = new Date(this.display.year + 1, this.display.month)
+            return nextYearDate > this.range[1]
+        },
+        preMonthNavDisabled() {
+            const preMonthDate = new Date(this.display.year, this.display.month - 1)
+            return preMonthDate < this.range[0]
+        },
+        nextMonthNavDisabled() {
+            const nextMonthDate = new Date(this.display.year, this.display.month + 1)
+            return nextMonthDate > this.range[1]
         }
     },
     mounted() {
@@ -196,28 +221,36 @@ export default {
             return year === year1 && month === month1 && day === day1
         },
         onClickPrevYear() {
-            const oldDate = new Date(this.display.year, this.display.month)
-            const newDate = addYear(oldDate, -1)
-            const [year, month] = getYearMonthDay(newDate)
-            this.display = {year, month}
+            if (!this.preYearNavDisabled) {
+                const oldDate = new Date(this.display.year, this.display.month)
+                const newDate = addYear(oldDate, -1)
+                const [year, month] = getYearMonthDay(newDate)
+                this.display = {year, month}
+            }
         },
         onClickNextYear() {
-            const oldDate = new Date(this.display.year, this.display.month)
-            const newDate = addYear(oldDate, 1)
-            const [year, month] = getYearMonthDay(newDate)
-            this.display = {year, month}
+            if (!this.nextYearNavDisabled) {
+                const oldDate = new Date(this.display.year, this.display.month)
+                const newDate = addYear(oldDate, 1)
+                const [year, month] = getYearMonthDay(newDate)
+                this.display = {year, month}
+            }
         },
         onClickPrevMonth() {
-            const oldDate = new Date(this.display.year, this.display.month)
-            const newDate = addMonth(oldDate, -1)
-            const [year, month] = getYearMonthDay(newDate)
-            this.display = {year, month}
+            if (!this.preMonthNavDisabled) {
+                const oldDate = new Date(this.display.year, this.display.month)
+                const newDate = addMonth(oldDate, -1)
+                const [year, month] = getYearMonthDay(newDate)
+                this.display = {year, month}
+            }
         },
         onClickNextMonth() {
-            const oldDate = new Date(this.display.year, this.display.month)
-            const newDate = addMonth(oldDate, 1)
-            const [year, month] = getYearMonthDay(newDate)
-            this.display = {year, month}
+            if (!this.nextMonthNavDisabled) {
+                const oldDate = new Date(this.display.year, this.display.month)
+                const newDate = addMonth(oldDate, 1)
+                const [year, month] = getYearMonthDay(newDate)
+                this.display = {year, month}
+            }
         },
         onSelectYearChange(e) {
             const year = Number.parseInt(e.target.value)
@@ -281,6 +314,12 @@ $cell-height: 32px;
     }
     &-nav-item {
         cursor: pointer;
+        &.preYearNavDisabled, 
+        &.preMonthNavDisabled,
+        &.nextYearNavDisabled,
+        &.nextMonthNavDisabled {
+            cursor: not-allowed;
+        }
     }
     &-cell {
         color: #ddd;
