@@ -9,7 +9,11 @@ module.exports = {
         path: path.resolve(__dirname, '../dist'),
     },
     resolve: {
-        extensions: ['.vue', '.js', '.json']
+        extensions: ['.vue', '.js', '.json'],
+        alias: {
+            'src': path.resolve(__dirname, '../src/'),
+            '_var.scss': path.resolve(__dirname, '../src/styles/_var.scss')
+        }
     },
     devServer: {
         port: 3000,
