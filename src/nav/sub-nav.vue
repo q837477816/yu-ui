@@ -94,7 +94,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/_var.scss";
+@import "~_var.scss";
 .yu-sub-nav {
     position: relative;
     &:not(.vertical) {

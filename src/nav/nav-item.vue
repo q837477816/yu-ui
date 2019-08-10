@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/_var.scss";
+@import "~_var.scss";
 .yu-nav-item {
     padding: 10px 20px;
     position: relative;

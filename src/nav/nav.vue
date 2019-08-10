@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/_var.scss";
+@import "~_var.scss";
 .yu-nav {
     display: flex;
     border-bottom: 1px solid $grey;

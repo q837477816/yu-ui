@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import '../styles/_var.scss';
+    @import "~_var.scss";
     $font-size: 14px;
     $button-height: 32px;
     $border-radius: 4px;

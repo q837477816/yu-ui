@@ -156,7 +156,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./styles/_var.scss";
+@import "~_var.scss";
 .yu-uploader {
     &-fileList {
         list-style: none;
