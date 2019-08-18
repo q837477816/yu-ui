@@ -7,7 +7,8 @@ module.exports = {
     },
     "env": {
         "es6": true,
-        "browser": true
+        "browser": true,
+        "node": true
     },
     "extends": [
         "eslint:recommended",
@@ -15,16 +16,26 @@ module.exports = {
     ],
     "rules": {
         // enable additional rules
-        "indent": ["error", 2],
+        "indent": ["error", 4],
         "linebreak-style": ["error", "unix"],
         "quotes": ["error", "single"],
         "semi": ["error", "never"],
+        "comma-dangle": ["error", "never"],
 
         // override default options for rules from base configurations
         "no-cond-assign": ["error", "always"],
 
         // disable rules from base configurations
         "no-console": "off",
+
+        "vue/html-indent": ["error", 4],
+        "vue/max-attributes-per-line": ["error", {
+            "singleline": 3,
+            "multiline": {
+                "max": 1,
+                "allowFirstLine": false
+            }
+        }]
     },
     "plugins": [
         "vue"

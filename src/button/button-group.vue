@@ -1,6 +1,6 @@
 <template>
     <div class="yu-button-group">
-        <slot></slot>
+        <slot />
     </div>
 </template>
 

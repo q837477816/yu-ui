@@ -1,12 +1,12 @@
 <template>
     <button 
-        class="yu-button"
-        :class="{[`icon-${iconPosition}`]: true}"
-        @click="$emit('click')">
-        <yu-icon class="icon" v-if="icon && !loading" :name="icon"></yu-icon>
-        <yu-icon class="loading icon" v-if="loading" name="loading"></yu-icon>
+        :class="['yu-button', {[`icon-${iconPosition}`]: true}]"
+        @click="$emit('click')"
+    >
+        <yu-icon v-if="icon && !loading" class="icon" :name="icon" />
+        <yu-icon v-if="loading" class="loading icon" name="loading" />
         <div class="yu-content">
-            <slot></slot>
+            <slot />
         </div>
     </button>
 </template>
@@ -19,7 +19,11 @@ export default {
         'yu-icon': Icon
     },
     props: {
-        icon: {},
+        icon: {
+            type: String,
+            default: undefined,
+            required: false
+        },
         loading: {
             type: Boolean,
             default: false
@@ -28,7 +32,7 @@ export default {
             type: String,
             default: 'left',
             validator(val) {
-                return ['left', 'right'].includes(val); 
+                return ['left', 'right'].includes(val)
             }
         }
     }

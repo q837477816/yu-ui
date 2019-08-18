@@ -1,6 +1,6 @@
 <template>
     <svg class="yu-icon" @click="$emit('click', $event)">
-        <use :xlink:href="`#i-${name}`"></use>
+        <use :xlink:href="`#i-${name}`" />
     </svg>
 </template>
 
@@ -10,7 +10,8 @@ export default {
     name: 'YuIcon',
     props: {
         name: {
-            type: String
+            type: String,
+            required: true
         }
     }
 }

@@ -8,10 +8,11 @@
             @change="$emit('change', $event.target.value, $event)"
             @input="$emit('input', $event.target.value, $event)"
             @focus="$emit('focus', $event.target.value, $event)"
-            @blur="$emit('blur', $event.target.value, $event)">
+            @blur="$emit('blur', $event.target.value, $event)"
+        >
         <template v-if="error">
-            <icon name="error" class="icon-error"></icon>
-            <span class="errorMessage">{{error}}</span>
+            <icon name="error" class="icon-error" />
+            <span class="errorMessage">{{ error }}</span>
         </template>
     </div>
 </template>
@@ -25,7 +26,8 @@ export default {
     },
     props: {
         value: {
-            type: [String, Date]
+            type: [String, Date],
+            required: true
         },
         disabled: {
             type: Boolean,
@@ -36,7 +38,9 @@ export default {
             default: false
         },
         error: {
-            type: String
+            type: String,
+            required: false,
+            default: undefined
         }
     }
 }

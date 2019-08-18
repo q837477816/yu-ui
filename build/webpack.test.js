@@ -15,7 +15,8 @@ module.exports = {
         }
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 test: /\.vue$/,
                 use: 'vue-loader'
             },
@@ -54,6 +55,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new VueLoaderPlugin(),
+        new VueLoaderPlugin()
     ]
 }

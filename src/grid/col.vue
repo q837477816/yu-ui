@@ -1,6 +1,6 @@
 <template>
     <div class="col" :class="colClass" :style="colStyle">
-        <slot></slot>
+        <slot />
     </div>
 </template>
 
@@ -19,10 +19,13 @@ export default {
     name: 'YuCol',
     props: {
         span: {
-            type: [Number, String]
+            type: [Number, String],
+            required: true
         },
         offset: {
-            type: [Number, String]
+            type: [Number, String],
+            required: false,
+            default: 0
         },
         pad: {
             type: Object,

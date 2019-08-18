@@ -1,18 +1,22 @@
 <template>
     <div class="row" :style="rowStyle" :class="rowClass">
-        <slot></slot>
+        <slot />
     </div>
 </template>
 
 <script>
 export default {
-    name: "YuRow",
+    name: 'YuRow',
     props: {
         gutter: {
-            type: [Number, String]
+            type: [Number, String],
+            required: false,
+            default: 0
         },
         align: {
             type: String,
+            required: false,
+            default: 'left',
             validator(value) {
                 return ['left', 'right', 'center'].includes(value)
             }
