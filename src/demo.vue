@@ -1,11 +1,8 @@
 <template>
   	<div class="demo-wrapper">
-		<yu-date-picker 
-			:value="d" 
-			@input="d = $event"
-			:range="[new Date(2010, 7), new Date(2020, 5)]">
-		</yu-date-picker>
-		<p>other content</p>
+		<yu-button loading>加载中</yu-button>
+		<yu-button icon="back">加载中</yu-button>
+		<yu-button disabled>加载中</yu-button>
   	</div>
 </template>
 

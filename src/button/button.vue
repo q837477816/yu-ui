@@ -1,9 +1,12 @@
 <template>
     <button 
-        :class="['yu-button', {[`icon-${iconPosition}`]: true}]"
-        @click="$emit('click')"
-    >
-        <yu-icon v-if="icon && !loading" class="icon" :name="icon" />
+        :class="[
+            'yu-button', 
+            {[`icon-${iconPosition}`]: true},
+            {'yu-button--disabled': disabled}
+        ]"
+        @click="onClick">
+        <yu-icon v-if="iconVisible" class="icon" :name="icon" />
         <yu-icon v-if="loading" class="loading icon" name="loading" />
         <div class="yu-content">
             <slot />
@@ -12,12 +15,10 @@
 </template>
 
 <script>
-import Icon from '../icon'
+import YuIcon from '../icon'
 export default {
     name: 'YuButton',
-    components: {
-        'yu-icon': Icon
-    },
+    components: { YuIcon },
     props: {
         icon: {
             type: String,
@@ -34,6 +35,21 @@ export default {
             validator(val) {
                 return ['left', 'right'].includes(val)
             }
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
+            required: false
+        }
+    },
+    computed: {
+        iconVisible() {
+            return this.icon && !this.loading
+        }
+    },
+    methods: {
+        onClick() {
+            !this.disabled && this.$emit('click')
         }
     }
 }
@@ -41,9 +57,7 @@ export default {
 
 <style lang="scss" scoped>
     @import "~_var.scss";
-    $font-size: 14px;
     $button-height: 32px;
-    $border-radius: 4px;
     $border-color: #999;
     $button-bg: white;
     $border-color-hover: #666;
@@ -59,14 +73,18 @@ export default {
         border: 1px solid $border-color;
         background: $button-bg;
         vertical-align: middle;
-        &:hover{
-            border-color: $border-color-hover;
-        }
-        &:active{
-            background-color: $button-active-bg;
-        }
-        &:focus{
-            outline: none;
+        &:not(&--disabled) {
+            cursor: pointer;
+            &:hover{
+                border-color: $border-color-hover;
+            }
+            &:active{
+                background-color: $button-active-bg;
+            }
+            &:focus{
+                outline: none;
+            }
+
         }
         > .icon{
             order: 1;
@@ -85,10 +103,17 @@ export default {
                 margin-left: .3em;
             }
         }
+        &--disabled {
+            outline: none;
+            color: #c0c4cc;
+            border-color: #ebeef5;
+            cursor: not-allowed;
+        }
         .loading{
-            width: 32px;
-            height: 32px;
             @include loading;
+        }
+        & + & {
+            margin-left: 8px;
         }
     }
 </style>
