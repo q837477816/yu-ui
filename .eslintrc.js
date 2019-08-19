@@ -35,6 +35,10 @@ module.exports = {
                 "max": 1,
                 "allowFirstLine": false
             }
+        }],
+        "vue/html-closing-bracket-newline": ["error", {
+            "singleline": "never",
+            "multiline": "never"
         }]
     },
     "plugins": [

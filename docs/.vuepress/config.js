@@ -1,3 +1,4 @@
+const path = require('path')
 module.exports = {
     base: '/yu-ui/',
     title: 'yu-ui',
@@ -23,5 +24,13 @@ module.exports = {
                 ]
             },
         ]
+    },
+    configureWebpack: {
+        resolve: {
+            alias: {
+                'src': path.resolve(__dirname, '../../src/'),
+                '_var.scss': path.resolve(__dirname, '../../src/styles/_var.scss')
+            }
+        }
     }
 }

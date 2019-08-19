@@ -14,8 +14,8 @@
     "dev": "webpack-dev-server --config build/webpack.config.js --watch",
     "test": "karma start --single-run",
     "dev-test": "karma start",
-    "docs:dev": "npx vuepress dev docs",
-    "docs:build": "npx vuepress build docs"
+    "dev:docs": "npx vuepress dev docs",
+    "build:docs": "npx vuepress build docs"
   },
   "repository": {
     "type": "git",
