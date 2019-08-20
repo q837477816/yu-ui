@@ -1,16 +1,15 @@
 <template>
-  	<div class="demo-wrapper">
-		<yu-button loading>加载中</yu-button>
-		<yu-button icon="back">加载中</yu-button>
-		<yu-button disabled>加载中</yu-button>
-  	</div>
+    <div class="demo-wrapper">
+		<yu-input v-model="value" placeholder="请输入文本"></yu-input>
+        {{ value }}
+    </div>
 </template>
 
 <script>
 export default {
-	  data() {
+	data() {
     	return {
-			d: new Date()
+			value: ''
     	};
   	},
 };

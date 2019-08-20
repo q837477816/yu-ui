@@ -2,32 +2,35 @@
     <div class="wrapper" :class="{error}">
         <input 
             type="text" 
-            :value="value" 
+            :value="value"
+            :placeholder="placeholder"
             :disabled="disabled" 
             :readonly="readonly" 
             @change="$emit('change', $event.target.value, $event)"
             @input="$emit('input', $event.target.value, $event)"
             @focus="$emit('focus', $event.target.value, $event)"
-            @blur="$emit('blur', $event.target.value, $event)"
-        >
+            @blur="$emit('blur', $event.target.value, $event)">
         <template v-if="error">
-            <icon name="error" class="icon-error" />
+            <yu-icon name="error" class="icon-error" />
             <span class="errorMessage">{{ error }}</span>
         </template>
     </div>
 </template>
 
 <script>
-import Icon from './icon'
+import YuIcon from 'src/icon/icon'
 export default {
     name: 'YuInput',
-    components: {
-        Icon
-    },
+    components: { YuIcon },
     props: {
         value: {
             type: [String, Date],
             required: true
+        },
+        placeholder: {
+            type: String,
+            required: false,
+            default: undefined
         },
         disabled: {
             type: Boolean,

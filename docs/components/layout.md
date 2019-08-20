@@ -1,9 +1,8 @@
 ---
 title: Layout
 ---
-# 按钮
+# Layout 布局
 
-使用方法
 
 <ClientOnly>
 <layout-demos></layout-demos>

@@ -1,6 +1,7 @@
 <template>
     <div>
         <div>
+            <p>基础用法</p>
             <yu-button>默认按钮</yu-button>
             <yu-button icon="settings">默认按钮</yu-button>
             <yu-button loading>加载中</yu-button>
@@ -19,12 +20,10 @@
 </template>
 
 <script>
-import Button from 'src/button/button'
+import YuButton from 'src/button/button'
 export default {
     name: 'ButtonDemos',
-    components: {
-        'yu-button': Button
-    },
+    components: { YuButton },
     data() {
         return {
             usage1: `

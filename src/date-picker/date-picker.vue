@@ -108,10 +108,10 @@
 </template>
 
 <script>
-import YuPopover from '../popover'
-import YuInput from '../input'
-import YuIcon from '../icon'
-import YuButton from '../button/button'
+import YuPopover from 'src/popover/popover'
+import YuInput from 'src/input/input'
+import YuIcon from 'src/icon'
+import YuButton from 'src/button/button'
 import { 
     getYearMonthDay, 
     getFirstDayOfMonth, 

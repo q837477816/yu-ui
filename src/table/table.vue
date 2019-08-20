@@ -102,11 +102,11 @@
 </template>
 
 <script>
-import YuIcon from '../icon'
+import YuIcon from 'src/icon/icon'
 import Render from './render'
 export default {
     name: 'YuTable',
-    components: { Render },
+    components: { Render, YuIcon },
     props: {
         columns: {
             type: Array,

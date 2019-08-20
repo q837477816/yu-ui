@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import YuIcon from './icon'
-import YuButton from './button/button'
+import YuIcon from 'src/icon/icon'
+import YuButton from 'src/button/button'
 import ajax from './ajax'
 export default {
     name: 'YuUploader',

@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import ClickOutside from '../click-outside.js';
-import YuIcon from '../icon.vue'
+import ClickOutside from '../click-outside.js'
+import YuIcon from 'src/icon/icon.vue'
 export default {
     name: 'YuSubNav',
     directives: {

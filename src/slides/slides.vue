@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import YuIcon from '../icon'
+import YuIcon from 'src/icon/icon'
 export default {
     name: 'YuSlides',
     components: {
