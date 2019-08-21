@@ -1,5 +1,5 @@
 <template>
-    <div class="row" :style="rowStyle" :class="rowClass">
+    <div class="yu-row" :style="rowStyle" :class="rowClass">
         <slot />
     </div>
 </template>
@@ -44,9 +44,9 @@ export default {
 
 
 <style lang="scss" scoped>
-    .row {
+    .yu-row {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         &.align-left {
             justify-content: flex-start;
         } 

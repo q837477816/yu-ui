@@ -1,5 +1,5 @@
 <template>
-    <div class="col" :class="colClass" :style="colStyle">
+    <div class="yu-col" :class="colClass" :style="colStyle">
         <slot />
     </div>
 </template>
@@ -29,24 +29,51 @@ export default {
         },
         pad: {
             type: Object,
+            required: false,
+            default: undefined,
             validator
         },
         narrowPc: {
             type: Object,
+            required: false,
+            default: undefined,
             validator
         },
         pc: {
             type: Object,
+            required: false,
+            default: undefined,
             validator
         },
         widePc: {
             type: Object,
+            required: false,
+            default: undefined,
             validator
         }
     },
     data() {
         return {
             gutter: 0
+        }
+    },
+    computed: {
+        colClass() {
+            let {span, offset, pad, narrowPc, pc, widePc} = this
+            let createClasses = this.createClasses
+            return [
+                ...createClasses({span, offset}),
+                ...createClasses(pad, 'pad-'),
+                ...createClasses(narrowPc, 'narrow-pc-'),
+                ...createClasses(pc, 'pc-'),
+                ...createClasses(widePc, 'wide-pc-')
+            ]
+        },
+        colStyle() {
+            return {
+                paddingLeft: this.gutter / 2 + 'px', 
+                paddingRight: this.gutter / 2 + 'px'
+            }
         }
     },
     methods: {
@@ -62,32 +89,13 @@ export default {
             return array
 
         }
-    },
-    computed: {
-        colClass() {
-            let {span, offset, pad, narrowPc, pc, widePc} = this
-            let createClasses = this.createClasses;
-            return [
-                ...createClasses({span, offset}),
-                ...createClasses(pad, 'pad-'),
-                ...createClasses(narrowPc, 'narrow-pc-'),
-                ...createClasses(pc, 'pc-'),
-                ...createClasses(widePc, 'wide-pc-'),
-            ]
-        },
-        colStyle() {
-            return {
-                paddingLeft: this.gutter / 2 + 'px', 
-                paddingRight: this.gutter / 2 + 'px'
-            }
-        }
     }
 }
 
 </script>
 
 <style lang="scss" scoped>
-.col {
+.yu-col {
   $class-prefix: col-;
   @for $n from 1 through 24 {
     &.#{$class-prefix}#{$n} {
