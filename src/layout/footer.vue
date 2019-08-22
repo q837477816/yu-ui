@@ -1,11 +1,11 @@
 <template>
-    <div class="footer">
-        <slot></slot>
+    <div class="yu-footer">
+        <slot />
     </div>
 </template>
 
-<style lang="scss" scoped>
-.footer {
-    
+<script>
+export default {
+    name: 'YuFooter'
 }
-</style>
+</script>

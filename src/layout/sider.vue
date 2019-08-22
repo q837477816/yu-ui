@@ -1,7 +1,7 @@
 <template>
     <transition name="slide">
-        <div class="sider" v-if="visible">
-            <slot></slot>
+        <div class="yu-sider" v-if="visible">
+            <slot />
             <button @click="visible = false">close</button>
         </div>
     </transition>
@@ -20,7 +20,7 @@ export default {
 
 
 <style lang="scss" scoped>
-.sider {
+.yu-sider {
     position: relative;
     > button {
         position: absolute;

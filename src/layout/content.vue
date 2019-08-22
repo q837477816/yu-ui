@@ -1,6 +1,6 @@
 <template>
     <div class="yu-content">
-        <slot></slot>
+        <slot />
     </div>
 </template>
 
@@ -9,7 +9,6 @@ export default {
     name: 'YuContent'
 }
 </script>
-
 
 <style lang="scss" scoped>
 .yu-content {

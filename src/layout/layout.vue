@@ -1,6 +1,6 @@
 <template>
-    <div class="layout" :class="layoutClass">
-        <slot></slot>
+    <div class="yu-layout" :class="layoutClass">
+        <slot />
     </div>
 </template>
 
@@ -15,18 +15,14 @@ export default {
         }
     },
     mounted() {
-        this.$children.forEach(vm => {
-            if (vm.$options.name === 'YuSider') {
-                this.layoutClass.hasSider = true
-            }
-        })
+        this.layoutClass.hasSider = this.$children.some(vm => vm.$options.name === 'YuSider')
     }
 }
 </script>
 
 
 <style lang="scss" scoped>
-.layout {
+.yu-layout {
     flex-grow: 1;
     display: flex;
     flex-direction: column;

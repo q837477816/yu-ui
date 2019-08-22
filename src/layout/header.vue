@@ -1,6 +1,6 @@
 <template>
-    <div class="header">
-        <slot></slot>
+    <div class="yu-header">
+        <slot />
     </div>
 </template>
 
@@ -9,9 +9,3 @@ export default {
     name: 'YuHeader'
 }
 </script>
-
-<style lang="scss" scoped>
-.header {
-    
-}
-</style>
