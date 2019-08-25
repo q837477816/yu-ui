@@ -5,8 +5,8 @@ import Toast from './toast'
 let currentToast
 
 export default {
-    install(Vue, options) {
-        Vue.prototype.$toast = function(message, toastOptions) {
+    install(Vue) {
+        Vue.prototype.$toast = (message, toastOptions) => {
             if (currentToast) {
                 currentToast.close()
             }

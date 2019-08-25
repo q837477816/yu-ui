@@ -1,4 +1,8 @@
 ---
 title: Toast
 ---
-# 按钮
+# Toast 消息提示
+
+<ClientOnly>
+<toast-demos></toast-demos>
+</ClientOnly>

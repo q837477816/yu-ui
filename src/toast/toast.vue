@@ -1,13 +1,16 @@
 <template>
-    <div class="wrapper" :class="toastClasses">
-        <div class="toast" ref="toast" >
+    <div class="yu-toast-wrapper" :class="toastClasses">
+        <div ref="toast" class="yu-toast">
             <div class="message">
-                <slot v-if="!enableHtml"></slot>
-                <div v-else v-html="$slots.default[0]"></div>
+                <slot v-if="!enableHtml" />
+                <div v-else v-html="$slots.default[0]" />
             </div>
-            <div class="line" ref="line"></div>
-            <span class="close" v-if="closeButton" @click="onClickClose">
-                {{closeButton.text}}
+            <div ref="line" class="line" />
+            <span 
+                v-if="closeButton" 
+                class="close"  
+                @click="onClickClose">
+                {{ closeButton.text }}
             </span>
         </div>
     </div>
@@ -15,7 +18,7 @@
 
 <script>
 export default {
-    name: "YuToast",
+    name: 'YuToast',
     props: {
         autoClose: {
             type: [Boolean, Number],
@@ -114,36 +117,37 @@ export default {
             opacity: 1;
         }
     }
-    .wrapper {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        $animation-duration: 250ms;
-        &.position-top {
-            top: 0;
-            .toast {
-                border-top-left-radius: 0;
-                border-top-right-radius: 0;
-                animation: slide-down $animation-duration;
+    .yu-toast {
+        &-wrapper {
+            z-index: 2000;
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            $animation-duration: 250ms;
+            &.position-top {
+                top: 0;
+                .yu-toast {
+                    border-top-left-radius: 0;
+                    border-top-right-radius: 0;
+                    animation: slide-down $animation-duration;
+                }
+            }
+            &.position-bottom {
+                bottom: 0;
+                .yu-toast {
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
+                    animation: slide-up $animation-duration;
+                }
+            }
+            &.position-middle {
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                .yu-toast {
+                    animation: fade-in $animation-duration;
+                }
             }
         }
-        &.position-bottom {
-            bottom: 0;
-            .toast {
-                border-bottom-left-radius: 0;
-                border-bottom-right-radius: 0;
-                animation: slide-up $animation-duration;
-            }
-        }
-        &.position-middle {
-            top: 50%;
-            transform: translateX(-50%) translateY(-50%);
-            .toast {
-                animation: fade-in $animation-duration;
-            }
-        }
-    }
-    .toast {
         font-size: $font-size;
         line-height: 1.8;
         min-height: $toast-min-height;
@@ -160,7 +164,7 @@ export default {
         .close {
             padding-left: 16px;
             flex-shrink: 0;
-
+            cursor: pointer;
         }
         .line {
             border-left: 1px solid #666;
