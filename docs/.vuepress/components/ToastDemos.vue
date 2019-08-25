@@ -76,6 +76,7 @@ export default {
                     open () {
                         this.$toast('<a href="http://www.baidu.com">百度一下</a>', {enableHtml: true})
                     }
+                }
             `.replace(/^ {16}/gm, '').trim(),
         }
     },
