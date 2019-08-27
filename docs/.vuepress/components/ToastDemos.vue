@@ -9,7 +9,7 @@
         <div style="margin-top: 40px;">
             <p>可以通过设置 postion 属性改变提示展示的位置，可选的有 top、bottom、center，默认为 top</p>
             <yu-button @click="$toast('提示消息', {position: 'bottom'})">下方</yu-button>
-            <yu-button @click="$toast('提示消息', {position: 'center'})">中间</yu-button>
+            <yu-button @click="$toast('提示消息', {position: 'middle'})">中间</yu-button>
 
             <pre><code>{{usage2}}</code></pre>
         </div>
