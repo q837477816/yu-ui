@@ -1,9 +1,9 @@
 <template>
-    <div class="tabs-head">
-        <slot></slot>
-        <div class="line" ref="line"></div>
+    <div class="yu-tabs-head">
+        <slot />
+        <div ref="line" class="line" />
         <div class="actions-wrapper">
-            <slot name="actions"></slot>
+            <slot name="actions" />
         </div>
     </div>
 </template>
@@ -12,18 +12,18 @@
 export default {
     name: 'YuTabsHead',
     inject: ['eventBus'],
-    data() {
-        return {
-            x: false
-        }
-    },
     mounted() {
         this.eventBus.$on('update:selected', (item, vm) => {
-            this.x = true
-            let {width, height, top, left} = vm.$el.getBoundingClientRect()
-            this.$refs.line.style.width = `${width}px`
-            this.$refs.line.style.left = `${left}px`
+            this.updateUnderlinePosition(vm)
         })
+    },
+    methods: {
+        updateUnderlinePosition(selectedVm) {
+            const {width, left: left1} = selectedVm.$el.getBoundingClientRect()
+            const {left: left2} = this.$el.getBoundingClientRect() 
+            this.$refs.line.style.width = `${width}px`
+            this.$refs.line.style.left = `${left1 - left2}px`
+        }
     }
 }
 </script>
@@ -32,7 +32,7 @@ export default {
     $tab-height: 40px;
     $blue: blue;
     $border-color: #ddd;
-    .tabs-head {
+    .yu-tabs-head {
         display: flex;
         height: $tab-height;
         justify-content: flex-start;

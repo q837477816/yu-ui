@@ -1,6 +1,9 @@
 <template>
-    <div class="tabs-item" :class="classes" @click="onClick" :data-name="name">
-        <slot></slot>
+    <div 
+        :class="['yu-tabs-item', classes]"
+        :data-name="name" 
+        @click="onClick">
+        <slot />
     </div>
 </template>
 
@@ -14,8 +17,8 @@ export default {
             default: false
         },
         name: {
-            typs: [String, Number],
-            require: true
+            type: [String, Number],
+            required: true
         }
     },
     data() {
@@ -40,10 +43,9 @@ export default {
     },
     methods: {
         onClick() {
-            if (this.disabled) { return }
-            this.$emit('click', this)
-            if (this.eventBus) {
-                this.eventBus.$emit('update:selected', this.name, this)
+            if (!this.disabled) { 
+                this.$emit('click', this)
+                this.eventBus && this.eventBus.$emit('update:selected', this.name, this)
             }
         }
     }
@@ -53,7 +55,7 @@ export default {
 <style lang="scss" scoped>
     $blue: blue;
     $disabled-text-color: grey; 
-    .tabs-item {
+    .yu-tabs-item {
         flex-shrink: 0;
         padding: 0 1em;
         cursor: pointer;

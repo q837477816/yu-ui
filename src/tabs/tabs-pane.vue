@@ -1,6 +1,6 @@
 <template>
-    <div class="tabs-pane" :class="classes" v-if="active">
-        <slot></slot>
+    <div v-if="active" :class="['yu-tabs-pane', classes]">
+        <slot />
     </div>
 </template>
 
@@ -10,8 +10,8 @@ export default {
     inject: ['eventBus'],
     props: {
         name: {
-            typs: [String, Number],
-            require: true
+            type: [String, Number],
+            required: true
         }
     },
     data() {
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .tabs-pane {
+    .yu-tabs-pane {
         &.active {
             padding: 1em;
         }
