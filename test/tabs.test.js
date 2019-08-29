@@ -1,10 +1,10 @@
 const expect = chai.expect;
 import Vue from 'vue'
-import Tabs from '../src/tab/tabs'
-import TabsHead from '../src/tab/tabs-head'
-import TabsBody from '../src/tab/tabs-body'
-import TabsItem from '../src/tab/tabs-item'
-import TabsPane from '../src/tab/tabs-pane'
+import Tabs from '../src/tabs/tabs'
+import TabsHead from '../src/tabs/tabs-head'
+import TabsBody from '../src/tabs/tabs-body'
+import TabsItem from '../src/tabs/tabs-item'
+import TabsPane from '../src/tabs/tabs-pane'
 Vue.component('yu-tabs', Tabs)
 Vue.component('yu-tabs-head', TabsHead)
 Vue.component('yu-tabs-body', TabsBody)
@@ -41,7 +41,7 @@ describe('Tabs', () => {
             el: div
         })
         vm.$nextTick(() => {
-            let x = vm.$el.querySelector('.tabs-item[data-name="finance"]')
+            let x = vm.$el.querySelector('.yu-tabs-item[data-name="finance"]')
             expect(x.classList.contains('active')).to.be.true
             done()
         })

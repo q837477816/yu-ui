@@ -1,5 +1,5 @@
 const expect = chai.expect;
-import TabsItem from '../src/tab/tabs-item'
+import TabsItem from '../src/tabs/tabs-item'
 import {mount} from '@vue/test-utils'
 
 
