@@ -1,4 +1,8 @@
 ---
 title: Tabs
 ---
-# 按钮
+# Tabs 标签页
+
+<ClientOnly>
+<tabs-demos></tabs-demos>
+</ClientOnly>
