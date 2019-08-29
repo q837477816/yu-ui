@@ -12,13 +12,6 @@ export default {
         selected: {
             type: String,
             required: true
-        },
-        direction: {
-            type: String,
-            default: 'horizontal',
-            validator(value) {
-                return ['horizontal', 'vertical'].includes(value)
-            }
         }
     },
     data() {
