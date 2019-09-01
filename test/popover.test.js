@@ -1,6 +1,6 @@
 import {expect} from 'chai'
 import {mount} from '@vue/test-utils'
-import Popover from '../src/popover'
+import Popover from '../src/popover/popover'
 
 describe('Button.vue', () => {
     it('存在.', () => {

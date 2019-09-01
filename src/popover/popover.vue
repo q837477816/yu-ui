@@ -1,13 +1,13 @@
 <template>
-    <div class="yu-popover" ref="popover">
+    <div ref="popover" class="yu-popover">
         <div 
+            v-if="visible"
             ref="contentWrapper" 
-            :class="['yu-popover-content-wrapper', `position-${position}`, customClass]" 
-            v-if="visible">
-            <slot name="content" :close="close"></slot>
+            :class="['yu-popover-content-wrapper', `position-${position}`, customClass]">
+            <slot name="content" :close="close" />
         </div>
-        <span ref="triggerWrapper" style="display: inline-block;">
-            <slot></slot>
+        <span ref="triggerWrapper" class="yu-popover-trigger-wrapper">
+            <slot />
         </span>
     </div>
 </template>
@@ -31,15 +31,19 @@ export default {
             }
         },
         customClass: {
-            type: String
+            type: String,
+            required: false,
+            default: undefined
         },
         container: {
-            type: Element
+            type: Element,
+            required: false,
+            default: undefined
         }
     },
     data() {
         return {
-            visible: false,
+            visible: false
         }
     },
     mounted() {
@@ -56,7 +60,7 @@ export default {
         this.$refs.popover.removeEventListener('mouseleave', this.close)
     },
     methods: {
-        positionContent() {
+        updateContentPosition() {
             const {contentWrapper, triggerWrapper} = this.$refs
             const container = this.container || document.body
             container.appendChild(contentWrapper)
@@ -94,7 +98,7 @@ export default {
             this.visible = true
             this.$emit('open')
             this.$nextTick(() => {
-                this.positionContent()
+                this.updateContentPosition()
                 document.addEventListener('click', this.onClickDocument)
             })
         },
@@ -207,5 +211,8 @@ export default {
                 right: calc(100% - 1px);
             }
         }
+    }
+    .yu-popover-trigger-wrapper {
+        display: inline-block;
     }
 </style>
