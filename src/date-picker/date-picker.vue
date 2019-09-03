@@ -115,7 +115,6 @@ import YuButton from 'src/button/button'
 import { 
     getYearMonthDay, 
     getFirstDayOfMonth, 
-    getLastDayOfMonth, 
     addYear, 
     addMonth 
 } from '../utils'
@@ -344,7 +343,7 @@ $cell-height: 32px;
         }
     }
     &-cell {
-        color: #ddd;
+        color: $light-grey;
         cursor: not-allowed;
         border-radius: $border-radius;
         box-sizing: border-box;

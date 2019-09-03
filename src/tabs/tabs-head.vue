@@ -29,9 +29,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    @import "~_var.scss";
     $tab-height: 40px;
     $blue: blue;
-    $border-color: #ddd;
+    $border-color: $light-grey;
     .yu-tabs-head {
         display: flex;
         height: $tab-height;
@@ -51,6 +52,5 @@ export default {
             justify-content: center;
             padding: 0 1em;
         }
-        
     }
 </style>

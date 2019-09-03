@@ -156,6 +156,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~_var.scss";
 .yu-slides {
     &-window {
         overflow: hidden;
@@ -176,7 +177,7 @@ export default {
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background-color: #ddd;
+            background-color: $light-grey;
             margin: 0 8px;
             font-size: 12px;
             &:hover {

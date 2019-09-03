@@ -1,6 +1,6 @@
 <template>
-    <div class="collapse">
-        <slot></slot>
+    <div class="yu-collapse">
+        <slot />
     </div>
 </template>
 
@@ -14,7 +14,8 @@ export default {
             default: false
         },
         selected: {
-            typs: Array
+            type: Array,
+            required: true
         }
     },
     data() {
@@ -29,32 +30,41 @@ export default {
     },
     mounted() {
         this.eventBus.$emit('update:selected', this.selected)
-        this.eventBus.$on('update:addSelected', (name) => {
+        this.eventBus.$on('update:addSelected', this.addSelected)
+        this.eventBus.$on('update:removeSelected', this.removeSelected)
+    },
+    beforeDestroy() {
+        this.eventBus.$off('update:addSelected')
+        this.eventBus.$off('update:removeSelected')
+    },
+    methods: {
+        addSelected(name) {
             let selectedCopy = JSON.parse(JSON.stringify(this.selected))
             if (this.single) {
                 selectedCopy = [name]
             } else {
                 selectedCopy.push(name)
             }
-            this.eventBus.$emit('update:selected', selectedCopy)
-            this.$emit('update:selected', selectedCopy)
-        })
-        this.eventBus.$on('update:removeSelected', (name) => {
+            this.notifyChildrenAndParent(selectedCopy)
+        },
+        removeSelected(name) {
             let selectedCopy = JSON.parse(JSON.stringify(this.selected))
             let index = selectedCopy.indexOf(name)
             selectedCopy.splice(index, 1)
-            this.eventBus.$emit('update:selected', selectedCopy)
-            this.$emit('update:selected', selectedCopy)
-        })
+            this.notifyChildrenAndParent(selectedCopy)
+        },
+        notifyChildrenAndParent(selected) {
+            this.eventBus.$emit('update:selected', selected)
+            this.$emit('update:selected', selected)
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-$grey: #ddd;
-$border-radius: 4px;
-.collapse {
-    border: 1px solid $grey;
+@import "~_var.scss";
+.yu-collapse {
+    border: 1px solid $light-grey;
     border-radius: $border-radius;
 }
 </style>

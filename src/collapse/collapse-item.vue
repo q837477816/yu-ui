@@ -1,10 +1,10 @@
 <template>
-    <div class="collapseItem">
+    <div class="yu-collapse-item">
         <div class="title" @click="toggle">
-            {{title}}
+            {{ title }}
         </div>
-        <div class="content" v-if="open">
-            <slot></slot>
+        <div v-if="open" class="content">
+            <slot />
         </div>
     </div>
 </template>
@@ -29,13 +29,16 @@ export default {
         }
     },
     mounted() {
-        this.eventBus.$on('update:selected', (names) => {
-            if (names.includes(this.name)) {
+        this.eventBus.$on('update:selected', (selectedNames) => {
+            if (selectedNames.includes(this.name)) {
                 this.open = true
             } else {
                 this.open = false
             }
         })
+    },
+    beforeDestroy() {
+        this.eventBus.$off('update:selected')
     },
     methods: {
         toggle() {
@@ -50,11 +53,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$grey: #ddd;
-$border-radius: 4px;
-.collapseItem {
+@import "~_var.scss";
+.yu-collapse-item {
     >.title {
-        border: 1px solid $grey;
+        border: 1px solid $light-grey;
         margin: -1px -1px 0 -1px;
         min-height: 32px;
         display: flex;
