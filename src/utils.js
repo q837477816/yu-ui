@@ -43,11 +43,54 @@ const addMonth = (date, n) => {
     return copyDate
 }
 
+const typeOf = (obj) => {
+    const toString = Object.prototype.toString
+    const map = {
+        '[object Boolean]'  : 'boolean',
+        '[object Number]'   : 'number',
+        '[object String]'   : 'string',
+        '[object Function]' : 'function',
+        '[object Array]'    : 'array',
+        '[object Date]'     : 'date',
+        '[object RegExp]'   : 'regExp',
+        '[object Undefined]': 'undefined',
+        '[object Null]'     : 'null',
+        '[object Object]'   : 'object'
+    }
+    return map[toString.call(obj)]
+}
+
+const deepCopy = (data) => {
+    const type = typeOf(data)
+    let o
+
+    if (type === 'array') {
+        o = []
+    } else if (type === 'object') {
+        o = {}
+    } else {
+        return data
+    }
+
+    if (type === 'array') {
+        for (let i = 0; i < data.length; i++) {
+            o.push(deepCopy(data[i]))
+        }
+    } else if (type === 'object') {
+        for (let i in data) {
+            o[i] = deepCopy(data[i])
+        }
+    }
+
+    return o
+}
+
 export {
     getScrollBarWidth,
     getYearMonthDay,
     getFirstDayOfMonth,
     getLastDayOfMonth,
     addYear,
-    addMonth
+    addMonth,
+    deepCopy
 }
