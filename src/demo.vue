@@ -1,26 +1,22 @@
 <template>
     <div class="demo-wrapper">
-		<yu-input v-model="value" placeholder="请输入文本"></yu-input>
-        {{ value }}
+        <yu-checkbox v-model="single">单选</yu-checkbox>
     </div>
 </template>
 
 <script>
+import YuCheckbox from 'src/checkbox/checkbox'
 export default {
-	data() {
-    	return {
-			value: ''
-    	};
-  	},
-};
+    components: { YuCheckbox },
+    data() {
+        return {
+            single: ''
+        }
+    }
+}
 </script>
 
 <style lang="scss" scoped>
-* {
-  	margin: 0;
-  	padding: 0;
-  	box-sizing: border-box;
-}
 
 :root {
   	--font-size: 14px;
