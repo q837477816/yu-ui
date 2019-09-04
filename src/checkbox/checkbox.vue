@@ -1,7 +1,15 @@
 <template>
     <label>
         <span>
+            <input
+                v-if="group" 
+                v-model="model"
+                type="checkbox"
+                :disabled="disabled"
+                :value="label"
+                @change="change">
             <input 
+                v-else
                 type="checkbox"
                 :disabled="disabled"
                 :checked="currentValue"
@@ -12,6 +20,7 @@
 </template>
 
 <script>
+import {findComponentUpward} from '../utils'
 export default {
     name: 'YuCheckbox',
     props: {
@@ -30,11 +39,18 @@ export default {
         falseValue: {
             type: [String, Number, Boolean],
             default: false
+        },
+        label: {
+            type: [String, Number, Boolean],
+            default: undefined
         }
     },
     data() {
         return {
-            currentValue: this.value
+            currentValue: this.value,
+            model: [],
+            group: false,
+            parent: null
         }
     },
     watch: {
@@ -45,6 +61,16 @@ export default {
                 throw 'Value should be trueValue or falseValue.'
             }
         }
+    },
+    mounted() {
+        this.parent = findComponentUpward(this, 'YuCheckboxGroup')
+        if (this.parent) this.group = true
+        if (this.group) {
+            this.parent.updateModel(true)
+        } else {
+            this.updateModel()
+        }
+        console.log(this.group)
     },
     methods: {
         change(e) {

@@ -85,6 +85,45 @@ const deepCopy = (data) => {
     return o
 }
 
+const findComponentUpward = (context, componentName) => {
+    let parent = context.$parent
+    let name = parent.$options.name
+
+    while (parent && (!name || name !== componentName)) {
+        parent = parent.$parent
+        if (parent) name = parent.$options.name
+    }
+    return parent
+}
+
+const findComponentDownward = (context, componentName) => {
+    const children = context.$children
+    let ret = null
+
+    if (children.length) {
+        for (const child of children) {
+            const name = child.$options.name
+
+            if (name === componentName) {
+                ret = child
+                break
+            } else {
+                ret = findComponentDownward(child, componentName)
+                if (ret) break
+            }
+        }
+    }
+    return ret
+}
+
+const findComponentsDownward = (context, componentName) => {
+    return context.$children.reduce((components, child) => {
+        if (child.$options.name === componentName) components.push(child)
+        const foundChildren = findComponentsDownward(child, componentName)
+        return components.concat(foundChildren)
+    }, [])
+}
+
 export {
     getScrollBarWidth,
     getYearMonthDay,
@@ -92,5 +131,8 @@ export {
     getLastDayOfMonth,
     addYear,
     addMonth,
-    deepCopy
+    deepCopy,
+    findComponentUpward,
+    findComponentDownward,
+    findComponentsDownward
 }
