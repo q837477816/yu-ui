@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="yu-checkbox-group">
         <slot />
     </div>
 </template>
@@ -38,6 +38,7 @@ export default {
 
                     if (update) {
                         child.currentValue = value.includes(child.label)
+                        child.group = true
                     }
                 })
             }

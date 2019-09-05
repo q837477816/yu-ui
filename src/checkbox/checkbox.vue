@@ -1,5 +1,5 @@
 <template>
-    <label>
+    <label :class="['yu-checkbox', {disabled}]">
         <span>
             <input
                 v-if="group" 
@@ -7,13 +7,13 @@
                 type="checkbox"
                 :disabled="disabled"
                 :value="label"
-                @change="change">
+                @change="onChange">
             <input 
                 v-else
                 type="checkbox"
                 :disabled="disabled"
                 :checked="currentValue"
-                @change="change">
+                @change="onChange">
         </span>
         <slot />
     </label> 
@@ -73,7 +73,7 @@ export default {
         console.log(this.group)
     },
     methods: {
-        change(e) {
+        onChange(e) {
             if (this.disabled) {
                 return false
             }
@@ -83,7 +83,11 @@ export default {
 
             const value = checked ? this.trueValue : this.falseValue
             this.$emit('input', value)
-            this.$emit('change', value)
+            if (this.group) {
+                this.parent.change(this.model)
+            } else {
+                this.$emit('change', value)
+            }
         },
         updateModel() {
             this.currentValue = this.value === this.trueValue
@@ -91,3 +95,14 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.yu-checkbox {
+    cursor: pointer;
+    &.disabled {
+        cursor: not-allowed;
+        input { cursor: not-allowed; }
+    }
+    input { cursor: pointer; }
+}
+</style>
