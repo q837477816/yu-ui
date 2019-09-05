@@ -19,6 +19,7 @@ module.exports = {
                     '/components/grid',
                     '/components/layout',
                     '/components/input',
+                    '/components/checkbox',
                     '/components/tabs',
                     '/components/toast',
                     '/components/popover',

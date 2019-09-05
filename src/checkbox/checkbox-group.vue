@@ -51,3 +51,11 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.yu-checkbox-group {
+    .yu-checkbox + .yu-checkbox {
+        margin-left: 8px;
+    }
+}
+</style>
