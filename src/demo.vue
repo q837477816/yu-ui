@@ -1,35 +1,56 @@
 <template>
-    <div class="demo-wrapper">
-        <!-- <yu-checkbox v-model="single">单选</yu-checkbox>
+  <div class="demo-wrapper">
+    <!-- <yu-checkbox v-model="single">单选</yu-checkbox>
 
-        数据：{{ single }} -->
+    数据：{{ single }}-->
 
-        <yu-checkbox-group v-model="multiple">
-            <yu-checkbox label="option1">选项1</yu-checkbox>
-            <yu-checkbox label="option2">选项2</yu-checkbox>
-            <yu-checkbox label="option3">选项3</yu-checkbox>
-        </yu-checkbox-group>
-
-        数据：{{ multiple }}
-    </div>
+    <yu-tree :data="data" checkbox-visible />
+  </div>
 </template>
 
 <script>
-import YuCheckbox from 'src/checkbox/checkbox'
-import YuCheckboxGroup from 'src/checkbox/checkbox-group'
+import YuTree from "src/tree/tree";
 export default {
-    components: { YuCheckbox, YuCheckboxGroup },
-    data() {
-        return {
-            single: true,
-            multiple: []
+  components: { YuTree },
+  data() {
+    return {
+      data: [
+        {
+          title: "parent 1",
+          expand: true,
+          children: [
+            {
+              title: "parent 1-1",
+              expand: true,
+              children: [
+                {
+                  title: "leaf 1-1-1"
+                },
+                {
+                  title: "leaf 1-1-2"
+                }
+              ]
+            },
+            {
+              title: "parent 1-2",
+              children: [
+                {
+                  title: "leaf 1-2-1"
+                },
+                {
+                  title: "leaf 1-2-1"
+                }
+              ]
+            }
+          ]
         }
-    }
-}
+      ]
+    };
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-
 // :root {
 //   	--font-size: 14px;
 // }
