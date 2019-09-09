@@ -13,7 +13,7 @@ describe('validate', () => {
             email: ''
         }
         let rules = [
-            {key: 'email', required: true}
+            {prop: 'email', required: true}
         ]
         let validator = new Validator()
         let errors = validator.validate(data, rules)
@@ -25,7 +25,7 @@ describe('validate', () => {
             email: 0
         }
         let rules = [
-            {key: 'email', required: true}
+            {prop: 'email', required: true}
         ]
         let validator = new Validator()
         let errors = validator.validate(data, rules)
@@ -37,7 +37,7 @@ describe('validate', () => {
             email: '@yuyu.com'
         }
         let rules = [
-            {key: 'email', pattern: /^.+@.+$/}
+            {prop: 'email', pattern: /^.+@.+$/}
         ]
         let validator = new Validator()
         let errors = validator.validate(data, rules)
@@ -49,7 +49,7 @@ describe('validate', () => {
             email: '1111@yuyu.com'
         }
         let rules = [
-            {key: 'email', pattern: /^.+@.+$/}
+            {prop: 'email', pattern: /^.+@.+$/}
         ]
         let validator = new Validator()
         let errors = validator.validate(data, rules)
@@ -61,7 +61,7 @@ describe('validate', () => {
             email: '@yuyu.com'
         }
         let rules = [
-            {key: 'email', pattern: 'email'}
+            {prop: 'email', pattern: 'email'}
         ]
         let validator = new Validator()
         let errors = validator.validate(data, rules)
@@ -73,7 +73,7 @@ describe('validate', () => {
             email: '111@yuyu.com'
         }
         let rules = [
-            {key: 'email', pattern: 'email'}
+            {prop: 'email', pattern: 'email'}
         ]
         let validator = new Validator()
         let errors = validator.validate(data, rules)
@@ -85,7 +85,7 @@ describe('validate', () => {
             email: ''
         }
         let rules = [
-            {key: 'email', pattern: 'email', required: true}
+            {prop: 'email', pattern: 'email', required: true}
         ]
         let validator = new Validator()
         let errors = validator.validate(data, rules)
@@ -98,7 +98,7 @@ describe('validate', () => {
             email: ''
         }
         let rules = [
-            {key: 'email', pattern: 'email', minLength: 6}
+            {prop: 'email', pattern: 'email', minLength: 6}
         ]
         let validator = new Validator()
         let errors = validator.validate(data, rules)
@@ -111,7 +111,7 @@ describe('validate', () => {
             email: '123456789'
         }
         let rules = [
-            {key: 'email', pattern: 'email', maxLength: 5}
+            {prop: 'email', pattern: 'email', maxLength: 5}
         ]
         let validator = new Validator()
         let errors = validator.validate(data, rules)
@@ -125,7 +125,7 @@ describe('validate', () => {
         }
         let rules = [
             {
-                key: 'email',
+                prop: 'email',
                 required: true,
                 minLength: 5,
                 maxLength: 10,
@@ -144,7 +144,7 @@ describe('validate', () => {
             email: 'abc'
         }
         let rules = [
-            {key: 'email', required: true, hasNumber: true}
+            {prop: 'email', required: true, hasNumber: true}
         ]
         let validator = new Validator()
         validator.hasNumber = (value) => {
@@ -165,7 +165,7 @@ describe('validate', () => {
             email: 'abc'
         }
         let rules = [
-            {key: 'email', required: true, hasNumber: true}
+            {prop: 'email', required: true, hasNumber: true}
         ]
         let validator1 = new Validator()
         let validator2 = new Validator()
@@ -189,7 +189,7 @@ describe('validate', () => {
             email: 'abc'
         }
         let rules = [
-            {key: 'email', required: true, hasNumber: true}
+            {prop: 'email', required: true, hasNumber: true}
         ]
         let validator1 = new Validator()
         let validator2 = new Validator()

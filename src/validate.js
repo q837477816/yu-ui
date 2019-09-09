@@ -8,22 +8,22 @@ class Validator {
     validate(data, rules) {
         let errors = {}
         rules.forEach(rule => {
-            let value = data[rule.key]
+            let value = data[rule.prop]
             if (rule.required) {
                 let error = this.required(value)
                 if (error) {
-                    ensureObject(errors, rule.key)
-                    errors[rule.key].required = error
+                    ensureObject(errors, rule.prop)
+                    errors[rule.prop].required = error
                     return
                 }
             }
-            let validators = Object.keys(rule).filter(key => !['key', 'required'].includes(key))
+            let validators = Object.keys(rule).filter(key => !['prop', 'required'].includes(key))
             validators.forEach(validator => {
                 if (this[validator]) {
                     let error = this[validator](value, rule[validator])
                     if (error) {
-                        ensureObject(errors, rule.key)
-                        errors[rule.key][validator] = error
+                        ensureObject(errors, rule.prop)
+                        errors[rule.prop][validator] = error
                     }
                 } else {
                     throw `不存在校验器：${validator}`
@@ -57,9 +57,9 @@ class Validator {
     }
 }
 
-function ensureObject(obj, key) {
-    if (typeof obj[key] !== 'object') {
-        obj[key] = {}
+function ensureObject(obj, prop) {
+    if (typeof obj[prop] !== 'object') {
+        obj[prop] = {}
     }
 }
 
