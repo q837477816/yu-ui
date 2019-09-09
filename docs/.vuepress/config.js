@@ -24,6 +24,7 @@ module.exports = {
                     '/components/toast',
                     '/components/popover',
                     '/components/collapse',
+                    '/components/tree',
                 ]
             },
         ]
