@@ -20,7 +20,7 @@ describe('validate', () => {
         expect(errors.email.required).to.eq('必填')
     })
 
-    it('trequired true 通过', () => {
+    it('required true 通过', () => {
         let data = {
             email: 0
         }
