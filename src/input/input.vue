@@ -7,9 +7,9 @@
             :disabled="disabled" 
             :readonly="readonly" 
             @change="$emit('change', $event.target.value, $event)"
-            @input="$emit('input', $event.target.value, $event)"
+            @input="handleInput"
             @focus="$emit('focus', $event.target.value, $event)"
-            @blur="$emit('blur', $event.target.value, $event)">
+            @blur="handleBlur">
         <template v-if="error">
             <yu-icon name="error" class="icon-error" />
             <span class="errorMessage">{{ error }}</span>
@@ -19,9 +19,11 @@
 
 <script>
 import YuIcon from 'src/icon/icon'
+import Emitter from 'src/mixins/emitter'
 export default {
     name: 'YuInput',
     components: { YuIcon },
+    mixins: [ Emitter ],
     props: {
         value: {
             type: [String, Date],
@@ -45,6 +47,16 @@ export default {
             required: false,
             default: undefined
         }
+    },
+    methods: {
+        handleInput($event) {
+            this.$emit('input', $event.target.value, $event)
+            this.dispatch('YuFormItem', 'on-form-change', $event.target.value)
+        },
+        handleBlur($event) {
+            this.$emit('blur', $event.target.value, $event)
+            this.dispatch('YuFormItem', 'on-form-blur', $event.target.value)
+        } 
     }
 }
 </script>
@@ -65,23 +77,23 @@ export default {
                 margin-right: .5em;
             }
             > input {
-            height: 32px;
-            border: 1px solid $border-color;
-            border-radius: $border-radius;
-            padding: 0 8px;
-            font-size: inherit;
-            &:hover {
-                border-color: $border-color-hover;
-            }
-            &:focus {
-                box-shadow: inset 0 1px 3px $box-shadow-color;
-                outline: none;
-            }
-            &[disabled], &[readonly] {
-                border-color: #bbb;
-                color: #bbb;
-                cursor: not-allowed;
-            }
+                height: 32px;
+                border: 1px solid $border-color;
+                border-radius: $border-radius;
+                padding: 0 8px;
+                font-size: inherit;
+                &:hover {
+                    border-color: $border-color-hover;
+                }
+                &:focus {
+                    box-shadow: inset 0 1px 3px $box-shadow-color;
+                    outline: none;
+                }
+                &[disabled], &[readonly] {
+                    border-color: #bbb;
+                    color: #bbb;
+                    cursor: not-allowed;
+                }
             }
             &.error {
                 > input {
