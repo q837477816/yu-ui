@@ -25,6 +25,7 @@ module.exports = {
                     '/components/popover',
                     '/components/collapse',
                     '/components/tree',
+                    '/components/form',
                 ]
             },
         ]
