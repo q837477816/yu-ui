@@ -1,26 +1,32 @@
 <template>
     <div :class="['yu-pager', {hide}]">
         <span 
-            :class="['yu-pager-nav', 
-                    'prev', 
-                    {disabled: currentPage === 1}]"
+            :class="[
+                'yu-pager-nav', 
+                'prev', 
+                { disabled: currentPage === 1 }
+            ]"
             @click="onClickPage(currentPage - 1)">
-            <yu-icon name="left"></yu-icon>
+            <yu-icon name="left" />
         </span>
         <span 
             v-for="page in pages"
-            :class="['yu-pager-item', 
-                    {active: page === currentPage},
-                    {dots: page === '...'}]"
+            :class="[
+                'yu-pager-item', 
+                { active: page === currentPage },
+                { dots: page === '...' }
+            ]"
             @click="onClickPage(page)">
-            {{page}}
+            {{ page }}
         </span>
         <span 
-            :class="['yu-pager-nav',
-                    'next', 
-                    {disabled: currentPage === totalPage}]"
+            :class="[
+                'yu-pager-nav',
+                'next', 
+                { disabled: currentPage === totalPage }
+            ]"
             @click="onClickPage(currentPage + 1)">
-            <yu-icon name="right"></yu-icon>
+            <yu-icon name="right" />
         </span>
     </div>
 </template>
@@ -54,7 +60,7 @@ export default {
                 this.currentPage + 1, 
                 this.currentPage + 2, 
                 this.totalPage
-                ]
+            ]
                 .filter(item => item > 0 && item <= this.totalPage)
                 .sort((a, b) => a - b)
                 .reduce((prev, next) => {
