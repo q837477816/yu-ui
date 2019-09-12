@@ -26,6 +26,7 @@ module.exports = {
                     '/components/collapse',
                     '/components/tree',
                     '/components/form',
+                    '/components/pager',
                 ]
             },
         ]
