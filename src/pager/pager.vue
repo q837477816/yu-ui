@@ -84,6 +84,7 @@ export default {
     methods: {
         onClickPage(page) {
             if (typeof page === 'number' && page >= 1 && page <= this.totalPage) {
+                if (page !== this.currentPage) this.$emit('change', page)
                 this.$emit('update:currentPage', page)
             }
         }
@@ -92,7 +93,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./styles/var";
+@import "~_var.scss";
 .yu-pager {
     $width: 20px;
     $height: 20px;
@@ -118,6 +119,7 @@ export default {
         cursor: pointer;
         &.dots {
             border: none;
+            cursor: default;
         }
         &.active, &:hover {
             border-color: $blue;
