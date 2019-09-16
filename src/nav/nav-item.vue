@@ -1,8 +1,13 @@
 <template>
-    <div class="yu-nav-item" :class="{selected, vertical}" @click="onClick" :data-name="name">
-        <slot></slot>
+    <div 
+        :class="[
+            'yu-nav-item',
+            {selected, vertical}
+        ]" 
+        :data-name="name"
+        @click="onClick">
+        <slot />
     </div>
-    
 </template>
 
 <script>

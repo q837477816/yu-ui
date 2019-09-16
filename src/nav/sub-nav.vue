@@ -1,28 +1,33 @@
 <template>
-    <div :class="['yu-sub-nav', {active, vertical}]" v-click-outside="close">
+    <div v-click-outside="close" :class="['yu-sub-nav', {active, vertical}]">
         <span class="yu-sub-nav-label" @click="onClick">
-            <slot name="title"></slot>
+            <slot name="title" />
             <span class="yu-sub-nav-icon" :class="{open, vertical}">
-                <yu-icon name="right"></yu-icon>
+                <yu-icon name="right" />
             </span>
         </span>
         <template v-if="vertical">
-            <transition name="x" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
-                <div :class="['yu-sub-nav-popover', {vertical}]" v-show="open">
-                    <slot></slot>
+            <transition 
+                name="x" 
+                @enter="enter" 
+                @after-enter="afterEnter" 
+                @leave="leave" 
+                @after-leave="afterLeave">
+                <div v-show="open" :class="['yu-sub-nav-popover', {vertical}]">
+                    <slot />
                 </div>
             </transition>
         </template>
         <template v-else>
-            <div class="yu-sub-nav-popover" v-show="open">
-                <slot></slot>
+            <div v-show="open" class="yu-sub-nav-popover">
+                <slot />
             </div>
         </template>
     </div>
 </template>
 
 <script>
-import ClickOutside from '../click-outside.js'
+import ClickOutside from 'src/click-outside.js'
 import YuIcon from 'src/icon/icon.vue'
 export default {
     name: 'YuSubNav',
@@ -39,14 +44,14 @@ export default {
             required: true
         }
     },
+    data() {
+        return {
+            open: false
+        }
+    },
     computed: {
         active() {
             return this.root.namePath.includes(this.name)
-        }
-    },
-    data() {
-        return {
-            open: false,
         }
     },
     methods: {
@@ -58,11 +63,7 @@ export default {
         },
         updateNamePath() {
             this.root.namePath.unshift(this.name)
-            if (this.$parent.updateNamePath) {
-                this.$parent.updateNamePath()
-            } else {
-                // this.root.namePath = []
-            }
+            if (this.$parent.updateNamePath) this.$parent.updateNamePath()
         },
         enter(el, done) {
             el.style.height = 'auto'

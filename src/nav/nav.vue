@@ -1,6 +1,6 @@
 <template>
     <div :class="['yu-nav', {vertical}]">
-        <slot></slot>
+        <slot />
     </div>
 </template>
 
@@ -16,6 +16,7 @@ export default {
     props: {
         selected: {
             type: String,
+            required: true
         },
         vertical: {
             type: Boolean,
@@ -31,7 +32,6 @@ export default {
     mounted() {
         this.updateChildren()
         this.listenToChildren()
-        
     },
     updated() {
         this.updateChildren()
@@ -51,10 +51,10 @@ export default {
         },
         listenToChildren() {
             this.items.forEach(vm => {
-            vm.$on('update:selected', (name) => {
-                this.$emit('update:selected', name)
+                vm.$on('update:selected', (name) => {
+                    this.$emit('update:selected', name)
+                })
             })
-        })
         }
     }
 
