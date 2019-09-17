@@ -27,6 +27,7 @@ module.exports = {
                     '/components/tree',
                     '/components/form',
                     '/components/pager',
+                    '/components/nav',
                 ]
             },
         ]

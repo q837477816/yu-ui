@@ -31,12 +31,8 @@ import ClickOutside from 'src/click-outside.js'
 import YuIcon from 'src/icon/icon.vue'
 export default {
     name: 'YuSubNav',
-    directives: {
-        ClickOutside
-    },
-    components: {
-        YuIcon
-    },
+    directives: { ClickOutside },
+    components: { YuIcon },
     inject: ['root', 'vertical'],
     props: {
         name: {
