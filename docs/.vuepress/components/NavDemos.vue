@@ -16,17 +16,17 @@
 
             <yu-nav :selected.sync="selected2">
                 <yu-sub-nav name="item1">
-                    <span slot="title">菜单1</span>
+                    <template slot="title">菜单1</template>
                     <yu-nav-item name="item1-1">菜单1-1</yu-nav-item>
                     <yu-nav-item name="item1-2">菜单1-2</yu-nav-item>
                     <yu-nav-item name="item1-3">菜单1-3</yu-nav-item>
                 </yu-sub-nav>
                 <yu-sub-nav name="item2">
-                    <span slot="title">菜单2</span>
+                    <template slot="title">菜单2</template>
                     <yu-nav-item name="item2-1">菜单2-1</yu-nav-item>
                     <yu-nav-item name="item2-2">菜单2-2</yu-nav-item>
                     <yu-sub-nav name="item2-3">
-                        <span slot="title">菜单2-3</span>
+                        <template slot="title">菜单2-3</template>
                         <yu-nav-item name="item2-3-1">菜单2-3-1</yu-nav-item>
                         <yu-nav-item name="item2-3-2">菜单2-3-2</yu-nav-item>
                         <yu-nav-item name="item2-3-3">菜单2-3-3</yu-nav-item>
@@ -43,17 +43,17 @@
 
             <yu-nav :selected.sync="selected3" vertical  style="width: 150px;">
                 <yu-sub-nav name="item1">
-                    <span slot="title">菜单1</span>
+                    <template slot="title">菜单1</template>
                     <yu-nav-item name="item1-1">菜单1-1</yu-nav-item>
                     <yu-nav-item name="item1-2">菜单1-2</yu-nav-item>
                     <yu-nav-item name="item1-3">菜单1-3</yu-nav-item>
                 </yu-sub-nav>
                 <yu-sub-nav name="item2">
-                    <span slot="title">菜单2</span>
+                    <template slot="title">菜单2</template>
                     <yu-nav-item name="item2-1">菜单2-1</yu-nav-item>
                     <yu-nav-item name="item2-2">菜单2-2</yu-nav-item>
                     <yu-sub-nav name="item2-3">
-                        <span slot="title">菜单2-3</span>
+                        <template slot="title">菜单2-3</template>
                         <yu-nav-item name="item2-3-1">菜单2-3-1</yu-nav-item>
                         <yu-nav-item name="item2-3-2">菜单2-3-2</yu-nav-item>
                         <yu-nav-item name="item2-3-3">菜单2-3-3</yu-nav-item>
