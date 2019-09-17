@@ -31,7 +31,6 @@ export default {
     },
     mounted() {
         this.updateChildren()
-        this.listenToChildren()
     },
     updated() {
         this.updateChildren()
@@ -47,13 +46,6 @@ export default {
                 } else {
                     vm.selected = false
                 }
-            })
-        },
-        listenToChildren() {
-            this.items.forEach(vm => {
-                vm.$on('update:selected', (name) => {
-                    this.$emit('update:selected', name)
-                })
             })
         }
     }

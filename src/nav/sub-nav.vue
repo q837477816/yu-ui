@@ -1,5 +1,7 @@
 <template>
-    <div v-click-outside="close" :class="['yu-sub-nav', {active, vertical}]">
+    <div 
+        v-click-outside="close" 
+        :class="['yu-sub-nav', {active, vertical}]">
         <span class="yu-sub-nav-label" @click="onClick">
             <slot name="title" />
             <span class="yu-sub-nav-icon" :class="{open, vertical}">
@@ -59,7 +61,7 @@ export default {
         },
         updateNamePath() {
             this.root.namePath.unshift(this.name)
-            if (this.$parent.updateNamePath) this.$parent.updateNamePath()
+            if (this.$parent.$options.name === 'YuSubNav') this.$parent.updateNamePath()
         },
         enter(el, done) {
             el.style.height = 'auto'

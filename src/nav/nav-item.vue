@@ -1,9 +1,6 @@
 <template>
     <div 
-        :class="[
-            'yu-nav-item',
-            {selected, vertical}
-        ]" 
+        :class="['yu-nav-item', {selected, vertical}]" 
         :data-name="name"
         @click="onClick">
         <slot />
@@ -31,8 +28,8 @@ export default {
     methods: {
         onClick() {
             this.root.namePath = []
-            this.$parent.updateNamePath && this.$parent.updateNamePath()
-            this.$emit('update:selected', this.name)
+            this.$parent.$options.name === 'YuSubNav' && this.$parent.updateNamePath()
+            this.root.$emit('update:selected', this.name)
         }
     }
 }
