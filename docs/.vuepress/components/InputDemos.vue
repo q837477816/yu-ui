@@ -9,7 +9,7 @@
         </div>
         <div style="margin-top: 40px;">
             <p>禁用状态</p>
-            <yu-input placeholder="请输入内容" disabled></yu-input>
+            <yu-input v-model="text" placeholder="请输入内容" disabled></yu-input>
 
             <pre><code>{{usage2}}</code></pre>
         </div>
@@ -35,6 +35,7 @@ export default {
     components: { YuInput },
     data() {
         return {
+            text: '不可编辑',
             text1: '', 
             text2: '这是一个只读的input框',
             text3: '错误的输入',
@@ -42,7 +43,7 @@ export default {
                 <yu-input v-model="text1" placeholder="请输入内容"></yu-input>
             `.replace(/^ {16}/gm, '').trim(),
             usage2: `
-                <yu-input placeholder="请输入内容" disabled></yu-input>
+                <yu-input v-model="text" placeholder="请输入内容" disabled></yu-input>
             `.replace(/^ {16}/gm, '').trim(),
             usage3: `
                 <yu-input v-model="text2" readonly></yu-input>
