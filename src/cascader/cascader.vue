@@ -9,7 +9,6 @@
                 :items="source"  
                 :height="popoverHeight" 
                 :selected="selected"
-                :load-data="loadData"
                 :loading-item="loadingItem" />
         </div>
     </div>
@@ -71,20 +70,6 @@ export default {
         },
         toggle() {
             this.popoverVisible ? this.close() : this.open()
-        },
-        onUpdateSelected(newSelected) {
-            this.$emit('update:selected', newSelected)
-            if (typeof this.loadData === 'function') {
-                let lastItem = newSelected[newSelected.length - 1]
-                let updateSource = (result) => {
-                    this.loadingItem = {} // TODO: 用户连续点击多个时，异步存在BUG
-                    result.length && this.$set(lastItem, 'children', result)
-                }
-                if (!lastItem.isLeaf) {
-                    this.loadingItem = lastItem
-                    this.loadData(lastItem, updateSource)
-                }
-            }
         }
     }
 }

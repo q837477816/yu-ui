@@ -8,7 +8,8 @@
                 @click="onClickLabel(item)">
                 <span class="name">{{ item.name }}</span>
                 <span class="icons">
-                    <template v-if="item.name === loadingItem.name">
+                    <!-- <template v-if="item.name === loadingItem.name"> -->
+                    <template v-if="loading">
                         <yu-icon class="icon loading" name="loading" />
                     </template>
                     <template v-else>
@@ -23,7 +24,6 @@
                 :height="height" 
                 :level="level + 1"
                 :selected="selected"
-                :load-data="loadData"
                 :loading-item="loadingItem" />
         </div>
     </div>
@@ -52,10 +52,6 @@ export default {
             type: Number,
             default: 0
         },
-        loadData: {
-            type: Function,
-            default: undefined
-        },
         loadingItem: {
             type: Object,
             default: () => {
@@ -64,6 +60,11 @@ export default {
         }
     },
     inject: ['cascader'],
+    data() {
+        return {
+            loading: false
+        }
+    },
     computed: {
         rightItems() {
             let currentSelected = this.selected[this.level]
@@ -76,13 +77,21 @@ export default {
     },
     methods: {
         rightArrowVisible(item) {
-            return this.loadData ? !item.isLeaf : item.children
+            return this.cascader.loadData ? !item.isLeaf : item.children
         },
         onClickLabel(item) {
             let copy = deepCopy(this.selected)
             copy[this.level] = item
             copy.splice(this.level + 1)
             this.cascader.$emit('update:selected', copy)
+            if (typeof this.cascader.loadData === 'function' && !item.isLeaf) {
+                this.loading = true
+                const updateSource = (nodes) => {
+                    if (nodes && nodes.length) this.$set(item, 'children', nodes)
+                    this.loading = false
+                }
+                this.cascader.loadData(item, updateSource)
+            }
         }
     }
 }
