@@ -1,56 +1,60 @@
 <template>
-    <div class="cascader-items" :style="{height: height}">
-        <div class="left">
-            <div class="label" v-for="(item,index) in items" :key="index" @click="onClickLabel(item)">
-                <span class="name">{{item.name}}</span>
+    <div class="yu-cascader-items" :style="{height}">
+        <div class="yu-cascader-left">
+            <div 
+                v-for="(item, index) in items" 
+                :key="index" 
+                class="label" 
+                @click="onClickLabel(item)">
+                <span class="name">{{ item.name }}</span>
                 <span class="icons">
                     <template v-if="item.name === loadingItem.name">
-                        <yu-icon class="icon loading" name="loading"></yu-icon>
+                        <yu-icon class="icon loading" name="loading" />
                     </template>
                     <template v-else>
-                        <icon class="next" v-if="rightArrowVisible(item)" name="right"></icon>
+                        <yu-icon v-if="rightArrowVisible(item)" class="next" name="right" />
                     </template>
                 </span>
             </div>
         </div>
-        <div class="right" v-if="rightItems">
+        <div v-if="rightItems" class="yu-cascader-right">
             <yu-cascader-items 
                 :items="rightItems" 
                 :height="height" 
                 :level="level + 1"
                 :selected="selected"
-                :loadData="loadData"
-                :loading-item="loadingItem"
-                @update:selected="onUpdateSelected"
-            ></yu-cascader-items>
+                :load-data="loadData"
+                :loading-item="loadingItem" />
         </div>
     </div>
 </template>
 
 <script>
 import YuIcon from 'src/icon/icon'
+import { deepCopy } from 'src/utils'
 export default {
     name: 'YuCascaderItems',
     components: { YuIcon },
     props: {
         items: {
-            type: Array
+            type: Array,
+            required: true
         },
         height: {
-            type: String
+            type: String,
+            default: 'auto'
         },
         selected: {
             type: Array,
-            default: () => {
-                return []
-            }
+            default: () => []
         },
         level: {
             type: Number,
             default: 0
         },
         loadData: {
-            type: Function
+            type: Function,
+            default: undefined
         },
         loadingItem: {
             type: Object,
@@ -59,11 +63,7 @@ export default {
             }
         }
     },
-    data() {
-        return {
-            
-        }
-    },
+    inject: ['cascader'],
     computed: {
         rightItems() {
             let currentSelected = this.selected[this.level]
@@ -79,26 +79,24 @@ export default {
             return this.loadData ? !item.isLeaf : item.children
         },
         onClickLabel(item) {
-            let copy = JSON.parse(JSON.stringify(this.selected))
+            let copy = deepCopy(this.selected)
             copy[this.level] = item
             copy.splice(this.level + 1)
-            this.$emit('update:selected', copy)
-        },
-        onUpdateSelected(newSelected) {
-            this.$emit('update:selected', newSelected)
+            this.cascader.$emit('update:selected', copy)
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/var';
-.cascader-items {
+@import "~_var.scss";
+.yu-cascader-items {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    height: 100px;
-    .left {
+    height: 160px;
+    .yu-cascader-left {
+        box-sizing: border-box;
         height: 100%;
         padding: 0.3em 0;
         overflow: auto;
@@ -126,7 +124,7 @@ export default {
             }
         }
     }
-    .right {
+    .yu-cascader-right {
         height: 100%;
         border-left: 1px solid $border-color-light;
     }
