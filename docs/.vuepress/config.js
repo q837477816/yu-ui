@@ -28,6 +28,7 @@ module.exports = {
                     '/components/form',
                     '/components/pager',
                     '/components/nav',
+                    '/components/cascader',
                 ]
             },
         ]
