@@ -8,8 +8,7 @@
                 class="yu-cascader-popover"
                 :items="source"  
                 :height="popoverHeight" 
-                :selected="selected"
-                :loading-item="loadingItem" />
+                :selected="selected" />
         </div>
     </div>
 </template>
@@ -52,8 +51,7 @@ export default {
     },
     data() {
         return {
-            popoverVisible: false,
-            loadingItem: {}
+            popoverVisible: false
         }
     },
     computed: {

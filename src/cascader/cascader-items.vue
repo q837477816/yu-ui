@@ -8,8 +8,7 @@
                 @click="onClickLabel(item)">
                 <span class="name">{{ item.name }}</span>
                 <span class="icons">
-                    <!-- <template v-if="item.name === loadingItem.name"> -->
-                    <template v-if="loading">
+                    <template v-if="item.name === loadingItem.name">
                         <yu-icon class="icon loading" name="loading" />
                     </template>
                     <template v-else>
@@ -23,8 +22,7 @@
                 :items="rightItems" 
                 :height="height" 
                 :level="level + 1"
-                :selected="selected"
-                :loading-item="loadingItem" />
+                :selected="selected" />
         </div>
     </div>
 </template>
@@ -51,18 +49,12 @@ export default {
         level: {
             type: Number,
             default: 0
-        },
-        loadingItem: {
-            type: Object,
-            default: () => {
-                return {}
-            }
         }
     },
     inject: ['cascader'],
     data() {
         return {
-            loading: false
+            loadingItem: {}
         }
     },
     computed: {
@@ -84,13 +76,14 @@ export default {
             copy[this.level] = item
             copy.splice(this.level + 1)
             this.cascader.$emit('update:selected', copy)
-            if (typeof this.cascader.loadData === 'function' && !item.isLeaf) {
-                this.loading = true
+            if (typeof this.cascader.loadData === 'function' && !item.isLeaf && !item.children) {
+                this.loadingItem = item
                 const updateSource = (nodes) => {
                     if (nodes && nodes.length) this.$set(item, 'children', nodes)
-                    this.loading = false
+                    this.loadingItem = {}
                 }
-                this.cascader.loadData(item, updateSource)
+                const currentNode = Object.assign(item, {level: this.level})
+                this.cascader.loadData(currentNode, updateSource)
             }
         }
     }
