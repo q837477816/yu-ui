@@ -20,6 +20,17 @@
 
             <pre><code>{{usage2}}</code></pre>
         </div>
+        <div style="margin-top: 40px;">
+            <p>支持传入 loadData 方法进行异步加载子节点，注意只有 isLeaf 为 false 的非叶子节点在展开的时候会调用 loadData 方法；loadData 方法有两个参数，第一个为当前点击的 node ，另一个则是在loadData 方法最后必须调用的回调函数</p>
+
+            <yu-cascader 
+                v-model="selected3"
+                :source="source1"
+                :load-data="loadData"
+                popover-height="100px" />
+
+            <pre><code>{{usage3}}</code></pre>
+        </div>
     </div>
 </template>
 
@@ -32,6 +43,7 @@ export default {
         return {
             selected1: [],
             selected2: [],
+            selected3: [],
             source: [
                 {
                     name: '福建省',
@@ -90,6 +102,12 @@ export default {
                             ]
                         }
                     ]
+                }
+            ],
+            source1: [
+                {
+                    name: '选项0',
+                    isLeaf: false
                 }
             ],
             usage1: `
@@ -235,7 +253,57 @@ export default {
                     }
                 }
             `.replace(/^ {16}/gm, '').trim(),
+            usage3: `
+                <yu-cascader 
+                    v-model="selected3"
+                    :source="source1"
+                    :load-data="loadData"
+                    popover-height="100px" />
+
+                data() {
+                    return {
+                        selected3: [],
+                        source1: [
+                            {
+                                name: '选项0',
+                                isLeaf: false
+                            }
+                        ]
+                    }
+                }
+
+                methods: {
+                    loadData(node, updateSource) {
+                        const {name, level} = node;
+                        setTimeout(() => {
+                            const nodes = [];
+                            for (let i = 0; i < 2; i++) {
+                                nodes.push({
+                                    name: \`\${name}-\${i}\`,
+                                    isLeaf: level > 1
+                                })
+                            }
+                            updateSource(nodes);
+                        }, 1000);
+                    }
+                }
+            `.replace(/^ {16}/gm, '').trim(),
         
+        }
+    },
+    methods: {
+        loadData(node, updateSource) {
+            const {name, level} = node;
+            setTimeout(() => {
+                const nodes = [];
+                for (let i = 0; i < 2; i++) {
+                    nodes.push({
+                        name: `${name}-${i}`,
+                        isLeaf: level > 1
+                    })
+                }
+                updateSource(nodes);
+            }, 1500);
         }
     }
     
