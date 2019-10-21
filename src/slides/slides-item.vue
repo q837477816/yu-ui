@@ -1,7 +1,7 @@
 <template>
     <transition name="slide">
-        <div class="slides-item" v-if="visible" :class="{reverse}">
-            <slot></slot>
+        <div v-if="visible" :class="['yu-slides-item', {reverse}]">
+            <slot />
         </div>
     </transition>
 </template>
@@ -11,7 +11,7 @@ export default {
     name: 'YuSlidesItem',
     props: {
         name: {
-            typs: String,
+            type: String,
             required: true
         }
     },
@@ -30,14 +30,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .slides-item {
-
-    }
     .slide-leave-active {
         position: absolute;
         left: 0;
         top: 0;
-        background: red !important;
         height: 100%;
         width: 100%;
     }

@@ -5,24 +5,23 @@
         @mouseleave="onMouseLeave"
         @touchstart="onTouchStart"
         @touchend="onTouchEnd">
-        <div class="yu-slides-window" ref="window">
+        <div ref="window" class="yu-slides-window">
             <div class="yu-slides-wrapper">
-                <slot></slot>
+                <slot />
             </div>
         </div>
         <div class="yu-slides-dots">
             <span data-action="prev" @click="select(selectedIndex - 1)">
-                <yu-icon name="left"></yu-icon>
+                <yu-icon name="left" />
             </span>
             <span 
                 v-for="n in childrenLength" 
-                :class="{active: selectedIndex === n - 1}"
                 :key="n"
+                :class="{active: selectedIndex === n - 1}"
                 :data-index="n"
-                @click="select(n-1)"
-            >{{n}}</span>
+                @click="select(n - 1)">{{ n }}</span>
             <span data-action="next" @click="select(selectedIndex + 1)">
-                <yu-icon name="right"></yu-icon>
+                <yu-icon name="right" />
             </span>
         </div>
     </div>
@@ -32,12 +31,11 @@
 import YuIcon from 'src/icon/icon'
 export default {
     name: 'YuSlides',
-    components: {
-        YuIcon
-    },
+    components: { YuIcon },
     props: {
         selected: {
-            type: String
+            type: String,
+            required: true
         },
         autoPlay: {
             type: Boolean,
@@ -53,15 +51,13 @@ export default {
             childrenLength: 0,
             lastSelectedIndex: undefined,
             timerId: undefined,
-            startTouch: undefined,
+            startTouch: undefined
         }
     },
     computed: {
         selectedIndex() {
-            if (this.names.indexOf(this.selected) === -1) {
-                return 0
-            }
-            return this.names.indexOf(this.selected)
+            const idx = this.names.indexOf(this.selected)
+            return idx > -1 ? idx : 0
         },
         names() {
             return this.$children.filter(vm => vm.$options.name === 'YuSlidesItem').map(vm => vm.name)
@@ -113,7 +109,7 @@ export default {
                 this.select(newIndex)
                 this.timerId = setTimeout(run, this.autoPlayDelay)
             }
-            this.timerId = setTimeout(run, this.autoPlayDelay);
+            this.timerId = setTimeout(run, this.autoPlayDelay)
         },
         pause() {
             window.clearTimeout(this.timerId)
