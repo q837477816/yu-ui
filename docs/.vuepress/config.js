@@ -30,6 +30,7 @@ module.exports = {
                     '/components/nav',
                     '/components/cascader',
                     '/components/slides',
+                    '/components/scroll',
                 ]
             },
         ]
