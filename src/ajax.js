@@ -15,5 +15,5 @@ export default {
     },
     post(url, options) {
         return http('post', url, options)
-    },
+    }
 }
